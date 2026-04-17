@@ -1,0 +1,1110 @@
+🔍  DRY RUN — no DB writes will occur
+
+============================================================
+TIERS 1+2  nominatim+high rows
+============================================================
+Fetched 1716 nominatim+high rows — classifying...
+
+  Outside US bounds             : 20
+  Wrong city (>50.0 km from ZIP) : 260
+  Likely OK                     : 1436
+
+  [wrong_city (1196.4 km from ZIP)] id=1948 | shaw's | zip=02341
+    current  : (39.1122703, -84.5088888)
+    query    : 476 Liberty St, Hanson, MA 02341
+    ✓ new    : (42.066353, -70.872490)  confidence=high
+  [wrong_city (676.0 km from ZIP)] id=1930 | shaw's | zip=02453
+    current  : (43.6613192, -79.3583924)
+    query    : 130 River St, Waltham, MA 02453
+    ✓ new    : (42.370147, -71.221945)  confidence=high
+  [wrong_city (890.6 km from ZIP)] id=1935 | shaw's | zip=02189
+    current  : (37.3477343, -79.2082811)
+    query    : 610 Middle St, Weymouth, MA 02189
+    ✓ new    : (42.202238, -70.943399)  confidence=high
+  [wrong_city (302.8 km from ZIP)] id=1919 | star market | zip=02140
+    current  : (40.7183969, -74.0041959)
+    query    : 49 White St, Cambridge, MA 02140
+    ✓ new    : (42.390026, -71.118266)  confidence=high
+  [wrong_city (1171.9 km from ZIP)] id=1921 | star market | zip=02445
+    current  : (39.0850834, -84.3819527)
+    query    : 1717 Beacon St, Brookline, MA 02445
+    ✓ new    : (42.338101, -71.139494)  confidence=high
+  [wrong_city (292.9 km from ZIP)] id=1927 | star market | zip=02132
+    current  : (40.7226777, -73.9977694)
+    query    : 75 Spring St, West Roxbury, MA 02132
+    ✓ new    : (42.278750, -71.163306)  confidence=high
+  [wrong_city (4154.7 km from ZIP)] id=1933 | star market | zip=02466
+    current  : (34.1089069, -118.2849886)
+    query    : 2040 Commonwealth Ave, Auburndale, MA 02466
+    ✓ new    : (42.347048, -71.244925)  confidence=high
+  [wrong_city (5101.6 km from ZIP)] id=1989 | shaw's | zip=03249
+    current  : (60.5398404, -145.7346332)
+    query    : 1400 Lakeshore Dr, Gilford, NH 03249
+    ✓ new    : (43.653937, -71.496808)  confidence=medium
+  [wrong_city (501.4 km from ZIP)] id=1955 | shaw's | zip=02052
+    current  : (45.4071935, -75.6771928)
+    query    : 230 Main St, Medfield, MA 02052
+    ✓ new    : (42.194127, -71.288096)  confidence=high
+  [wrong_city (394.2 km from ZIP)] id=1967 | shaw's | zip=01721
+    current  : (43.0649308, -76.1524676)
+    query    : 301 Pond St, Ashland, MA 01721
+    ✓ new    : (42.241341, -71.432977)  confidence=high
+  [wrong_city (610.4 km from ZIP)] id=1956 | shaw's | zip=02330
+    current  : (39.5360233, -77.3145668)
+    query    : 100 N Main St, Carver, MA 02330
+    ✓ new    : (41.914572, -70.802729)  confidence=high
+  [wrong_city (1226.8 km from ZIP)] id=1985 | shaw's | zip=03820
+    current  : (39.1040002, -84.5204376)
+    query    : 851 Central Ave, Dover, NH 03820
+    ✓ new    : (43.218169, -70.879767)  confidence=high
+  [wrong_city (242.3 km from ZIP)] id=1966 | shaw's | zip=01776
+    current  : (40.9915984, -73.6740002)
+    query    : 509 Boston Post Rd, Sudbury, MA 01776
+    ✓ new    : (42.359263, -71.430615)  confidence=high
+  [wrong_city (270.7 km from ZIP)] id=1965 | shaw's | zip=02664
+    current  : (42.7008833, -73.1743194)
+    query    : 1108 State Rd, South Yarmouth, MA 02664
+    ✓ new    : (41.893297, -70.543480)  confidence=medium
+  [wrong_city (1009.0 km from ZIP)] id=1952 | shaw's | zip=02048
+    current  : (39.8484544, -82.890258)
+    query    : 390 West St, Mansfield, MA 02048
+    ✓ new    : (42.022947, -71.233689)  confidence=high
+  [wrong_city (1415.6 km from ZIP)] id=1980 | shaw's | zip=03244
+    current  : (39.0017368, -87.9107654)
+    query    : 276 W Main St, Hillsborough, NH 03244
+    ✓ new    : (43.111487, -71.915672)  confidence=high
+  [wrong_city (1933.2 km from ZIP)] id=1990 | shaw's | zip=03784
+    current  : (30.3923802, -86.495843)
+    query    : 10 Benning Dr, West Lebanon, NH 03784
+    ⚠ New result (41.3318, -81.2968) is 781 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (969.4 km from ZIP)] id=1979 | shaw's | zip=03458
+    current  : (35.8598198, -78.6380707)
+    query    : 135 Dublin Rd, Peterborough, NH 03458
+    ✓ new    : (42.873367, -71.967239)  confidence=high
+  [wrong_city (513.8 km from ZIP)] id=1974 | shaw's | zip=03053
+    current  : (43.2521469, -77.6804765)
+    query    : 1 Orchard View Dr, Londonderry, NH 03053
+    ✓ new    : (42.859876, -71.355218)  confidence=high
+  [wrong_city (105.6 km from ZIP)] id=1960 | shaw's | zip=02747
+    current  : (41.3264393, -72.1947698)
+    query    : 15 State Rd, Dartmouth, MA 02747
+    ✓ new    : (41.637941, -71.041644)  confidence=high
+  [wrong_city (85.9 km from ZIP)] id=1951 | shaw's | zip=02067
+    current  : (41.6366071, -70.3558149)
+    query    : 780 S Main St, Sharon, MA 02067
+    ✓ new    : (42.094172, -71.219884)  confidence=high
+  [wrong_city (88.5 km from ZIP)] id=2012 | kings food markets | zip=07027
+    current  : (41.1369754, -73.4892784)
+    query    : 300 South Ave, Garwood, NJ 07027
+    ✓ new    : (40.652194, -74.323696)  confidence=high
+  [wrong_city (147.7 km from ZIP)] id=2024 | kings food markets | zip=07030
+    current  : (41.1178118, -72.3457834)
+    query    : 1212 Shipyard Ln, Hoboken, NJ 07030
+    ✓ new    : (40.752315, -74.024621)  confidence=high
+  [wrong_city (710.5 km from ZIP)] id=2020 | kings food markets | zip=07039
+    current  : (39.7128674, -82.5754276)
+    query    : 255 S Livingston Ave, Livingston, NJ 07039
+    ✓ new    : (40.787817, -74.313282)  confidence=high
+  [wrong_city (444.4 km from ZIP)] id=2028 | kings food markets | zip=07043
+    current  : (44.0664395, -77.4058386)
+    query    : 650 Valley Rd, Upper Montclair, NJ 07043
+    ✓ new    : (40.843972, -74.207571)  confidence=high
+  [wrong_city (720.2 km from ZIP)] id=2027 | kings food markets | zip=07960
+    current  : (39.8504653, -82.8954211)
+    query    : 191 South St, Morristown, NJ 07960
+    ✓ new    : (40.790798, -74.474410)  confidence=high
+  [wrong_city (149.4 km from ZIP)] id=1991 | shaw's | zip=03813
+    current  : (43.2195872, -72.582993)
+    query    : 1150 Eastman Rd, Center Conway, NH 03813
+    ✓ new    : (43.995252, -71.085949)  confidence=medium
+  [wrong_city (319.1 km from ZIP)] id=2002 | shaw's | zip=04210
+    current  : (41.7740219, -72.5461566)
+    query    : 600 Center St, Auburn, ME 04210
+    ✓ new    : (44.123633, -70.227103)  confidence=high
+  [wrong_city (244.1 km from ZIP)] id=2005 | shaw's | zip=04330
+    current  : (42.3631169, -71.1263004)
+    query    : 150 Western Ave, Augusta, ME 04330
+    ✓ new    : (44.311546, -69.794726)  confidence=high
+  [wrong_city (543.8 km from ZIP)] id=2008 | shaw's | zip=04401
+    current  : (45.404901, -75.6753373)
+    query    : 353 Main St, Bangor, ME 04401
+    ✓ new    : (44.794232, -68.776186)  confidence=high
+  [wrong_city (4070.6 km from ZIP)] id=2001 | shaw's | zip=04240
+    current  : (45.4244593, -122.6625113)
+    query    : 27 E Ave, Lewiston, ME 04240
+    ✓ new    : (44.086064, -70.199979)  confidence=high
+  [wrong_city (1243.7 km from ZIP)] id=1992 | shaw's | zip=04073
+    current  : (39.1108794, -84.5119736)
+    query    : 1364 Main St, Sanford, ME 04073
+    ✓ new    : (43.413606, -70.744328)  confidence=high
+  [wrong_city (2038.7 km from ZIP)] id=1997 | shaw's | zip=04105
+    current  : (27.2808678, -80.2932955)
+    query    : 251 US Hwy 1, Falmouth, ME 04105
+    ⚠ New result (38.3240, -77.4684) is 852 km from ZIP centroid — rejecting, trying next strategy
+    ⚠ New result (38.3240, -77.4684) is 852 km from ZIP centroid — rejecting, trying next strategy
+    ⚠ New result (40.8465, -111.9082) is 3404 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2019.4 km from ZIP)] id=2003 | shaw's | zip=04530
+    current  : (37.9937227, -92.6609102)
+    query    : 1 Chandler Dr, Bath, ME 04530
+    ✓ new    : (43.909228, -69.829262)  confidence=high
+  [wrong_city (1759.8 km from ZIP)] id=2010 | shaw's | zip=04426
+    current  : (44.2564685, -91.5108121)
+    query    : 1073 W Main St, Dover Foxcroft, ME 04426
+    ✓ new    : (45.183129, -69.256677)  confidence=high
+  [wrong_city (362.3 km from ZIP)] id=2053 | acme markets | zip=07719
+    current  : (43.2386895, -72.6094822)
+    query    : 2007 Route 35, Wall Township, NJ 07719
+    ✓ new    : (40.132175, -74.064708)  confidence=high
+  [wrong_city (334.7 km from ZIP)] id=2038 | kings food markets | zip=07005
+    current  : (42.0274992, -70.6824959)
+    query    : 115 Hawkins Place, Boonton, NJ 07005
+    ✓ new    : (40.906999, -74.424823)  confidence=high
+  [wrong_city (95.7 km from ZIP)] id=2044 | kings food markets | zip=07626
+    current  : (41.2983938, -72.9258047)
+    query    : 70 Union Ave, Cresskill, NJ 07626
+    ✓ new    : (40.941134, -73.960313)  confidence=high
+  [wrong_city (185.3 km from ZIP)] id=2043 | kings food markets | zip=07642
+    current  : (42.6608019, -73.76976)
+    query    : 381 Washington Ave, Hillsdale, NJ 07642
+    ✓ new    : (41.001590, -74.040877)  confidence=high
+  [wrong_city (746.3 km from ZIP)] id=2048 | kings food markets | zip=08889
+    current  : (39.5388084, -83.4338358)
+    query    : 531 US Hwy 22 E, Whitehouse Station, NJ 08889
+    ⚠ New result (40.5881, -75.6090) is 71 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1896.7 km from ZIP)] id=3434 | publix | zip=33472
+    current  : (38.7290827, -94.4232575)
+    query    : 8340 S Jog Rd, Boynton Beach, FL 33472
+    ⚠ New result (38.7291, -94.4233) is 1897 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1996.0 km from ZIP)] id=3437 | publix | zip=33417
+    current  : (37.8229062, -96.8815905)
+    query    : 4075 N Haverhill Rd, West Palm Beach, FL 33417
+    ⚠ New result (42.9477, -70.9683) is 1986 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1090.3 km from ZIP)] id=3439 | publix | zip=32444
+    current  : (32.3644596, -96.8546622)
+    query    : 2310 S Highway 77, Lynn Haven, FL 32444
+    ⚠ New result (33.5037, -81.6848) is 521 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (973.6 km from ZIP)] id=2176 | safeway | zip=20744
+    current  : (34.28227, -86.3571496)
+    query    : 990 E Swan Creek Rd, Fort Washington, MD 20744
+    ✓ new    : (38.724950, -77.005124)  confidence=high
+  [wrong_city (588.9 km from ZIP)] id=2180 | safeway | zip=21037
+    current  : (41.7403398, -70.6635848)
+    query    : 52 W Central Ave, Edgewater, MD 21037
+    ✓ new    : (38.920887, -76.555746)  confidence=high
+  [wrong_city (1472.6 km from ZIP)] id=2198 | safeway | zip=21043
+    current  : (34.7943301, -92.4472969)
+    query    : 4370 Montgomery Rd, Ellicott City, MD 21043
+    ✓ new    : (39.251095, -76.818716)  confidence=high
+  [wrong_city (3841.2 km from ZIP)] id=2194 | safeway | zip=21619
+    current  : (49.2679769, -123.101177)
+    query    : 1925 Main St, Chester, MD 21619
+    ✓ new    : (38.974085, -76.274182)  confidence=high
+  [wrong_city (323.6 km from ZIP)] id=2196 | safeway | zip=20902
+    current  : (40.6555205, -73.8905295)
+    query    : 11201 Georgia Ave, Wheaton, MD 20902
+    ✓ new    : (39.038889, -77.050606)  confidence=high
+  [wrong_city (3141.8 km from ZIP)] id=2189 | safeway | zip=20901
+    current  : (32.2317913, -110.9738026)
+    query    : 116 University W Blvd, Silver Spring, MD 20901
+    ✓ new    : (39.029200, -77.020879)  confidence=high
+  [wrong_city (3706.7 km from ZIP)] id=2188 | safeway | zip=20903
+    current  : (33.876989, -118.2921918)
+    query    : 10101 New Hampshire Ave, Silver Spring, MD 20903
+    ✓ new    : (39.020817, -76.976013)  confidence=high
+  [wrong_city (1270.1 km from ZIP)] id=2218 | safeway | zip=21769
+    current  : (44.2498638, -91.4879384)
+    query    : 815 E Main St, Middletown, MD 21769
+    ✓ new    : (39.438812, -77.525650)  confidence=high
+  [wrong_city (180.8 km from ZIP)] id=2210 | safeway | zip=20879
+    current  : (40.0035539, -75.3715852)
+    query    : 20211 Goshen Rd, Gaithersburg, MD 20879
+    ✓ new    : (39.188445, -77.185019)  confidence=high
+  [wrong_city (1975.6 km from ZIP)] id=2211 | safeway | zip=20872
+    current  : (29.6786957, -95.4270501)
+    query    : 9807 Main St, Damascus, MD 20872
+    ✓ new    : (39.290197, -77.202209)  confidence=high
+  [wrong_city (719.0 km from ZIP)] id=2230 | jewel-osco | zip=46321
+    current  : (43.1726915, -79.0236191)
+    query    : 716 Ridge Rd, Munster, IN 46321
+    ✓ new    : (41.559548, -87.509762)  confidence=high
+  [wrong_city (1148.8 km from ZIP)] id=2232 | jewel-osco | zip=60617
+    current  : (40.6330337, -73.891505)
+    query    : 1655 E 95th St, Chicago, IL 60617
+    ✓ new    : (41.720275, -87.582772)  confidence=high
+  [wrong_city (64.4 km from ZIP)] id=3512 | publix | zip=31047
+    current  : (32.7438783, -84.2165161)
+    query    : 1114 Georgia Highway 96, Kathleen, GA 31047
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (397.6 km from ZIP)] id=3500 | publix | zip=30290
+    current  : (35.2168363, -80.8109142)
+    query    : 1512 Highway 74 N, Tyrone, GA 30290
+    ⚠ New result (35.1433, -83.9712) is 194 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2222.2 km from ZIP)] id=2273 | albertsons | zip=59427
+    current  : (39.001876, -87.913249)
+    query    : 501 W Main St, Cut Bank, MT 59427
+    ✓ new    : (48.640564, -112.338593)  confidence=high
+  [wrong_city (2913.9 km from ZIP)] id=2268 | albertsons | zip=59404
+    current  : (38.9090645, -77.015443)
+    query    : 1414 3rd St NW, Great Falls, MT 59404
+    ✓ new    : (47.520093, -111.311501)  confidence=high
+  [wrong_city (2720.0 km from ZIP)] id=2252 | albertsons | zip=59101
+    current  : (37.5333024, -77.4139917)
+    query    : 611 N 27th St, Billings, MT 59101
+    ✓ new    : (45.787253, -108.508760)  confidence=high
+  [wrong_city (1234.5 km from ZIP)] id=2259 | albertsons | zip=59047
+    current  : (37.9548667, -121.3250367)
+    query    : 2120 W Park St, Livingston, MT 59047
+    ✓ new    : (45.646549, -110.573038)  confidence=high
+  [wrong_city (2099.0 km from ZIP)] id=2251 | albertsons | zip=59102
+    current  : (39.1004645, -84.5195446)
+    query    : 511 Central Ave, Billings, MT 59102
+    ✓ new    : (45.770572, -108.528538)  confidence=high
+  [wrong_city (1540.0 km from ZIP)] id=2236 | jewel-osco | zip=60637
+    current  : (46.4023299, -105.8395639)
+    query    : 6014 S Cottage Grove, Chicago, IL 60637
+    ✓ new    : (41.784610, -87.607321)  confidence=high
+  [wrong_city (1147.4 km from ZIP)] id=2237 | jewel-osco | zip=60620
+    current  : (40.787061, -73.9712156)
+    query    : 87 W 87th St, Chicago, IL 60620
+    ✓ new    : (41.736182, -87.627320)  confidence=high
+  [wrong_city (440.4 km from ZIP)] id=2245 | jewel-osco | zip=60654
+    current  : (40.139363, -82.9286143)
+    query    : 550 N State St, Chicago, IL 60654
+    ✓ new    : (41.892171, -87.628573)  confidence=high
+  [wrong_city (1638.9 km from ZIP)] id=2274 | safeway | zip=59722
+    current  : (44.3237103, -91.9165401)
+    query    : 201 N Main St, Deer Lodge, MT 59722
+    ✓ new    : (46.403201, -112.734297)  confidence=high
+  [wrong_city (2142.8 km from ZIP)] id=2261 | safeway | zip=59715
+    current  : (41.0783417, -85.1647445)
+    query    : 1735 W Main St, Bozeman, MT 59715
+    ✓ new    : (45.679388, -111.060144)  confidence=high
+  [wrong_city (3026.3 km from ZIP)] id=2276 | albertsons | zip=59711
+    current  : (30.442361, -84.2612374)
+    query    : 1300 E Park Ave, Anaconda, MT 59711
+    ✓ new    : (46.127018, -112.935243)  confidence=high
+  [wrong_city (786.4 km from ZIP)] id=2272 | albertsons | zip=59474
+    current  : (47.6195776, -122.347205)
+    query    : 130 5th Ave N, Shelby, MT 59474
+    ✓ new    : (48.507283, -111.859998)  confidence=high
+  [wrong_city (552.9 km from ZIP)] id=2279 | albertsons | zip=59526
+    current  : (48.2347589, -101.2927894)
+    query    : 117 Main St S, Harlem, MT 59526
+    ✓ new    : (48.531666, -108.784881)  confidence=high
+  [wrong_city (1772.1 km from ZIP)] id=2357 | jewel-osco | zip=60914
+    current  : (35.098895, -106.6713586)
+    query    : 655 Main St NW, Bourbonnais, IL 60914
+    ✓ new    : (41.160854, -87.886216)  confidence=high
+  [wrong_city (998.6 km from ZIP)] id=2312 | jewel-osco | zip=60305
+    current  : (43.2255578, -75.7464553)
+    query    : 7525 W Lake St, River Forest, IL 60305
+    ✓ new    : (41.890826, -87.844586)  confidence=medium
+  [wrong_city (225.7 km from ZIP)] id=2310 | jewel-osco | zip=60304
+    current  : (43.4827069, -86.1062021)
+    query    : 7036 Roosevelt Rd, Oak Park, IL 60304
+    ✓ new    : (41.865378, -87.800618)  confidence=high
+  [wrong_city (2216.5 km from ZIP)] id=2277 | safeway | zip=59860
+    current  : (45.5497358, -85.1131978)
+    query    : 146 South Shore Route, Polson, MT 59860
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1361.8 km from ZIP)] id=2284 | safeway | zip=59937
+    current  : (36.1704908, -115.1309885)
+    query    : 6580 Hwy 93 S, Whitefish, MT 59937
+    ⚠ New result (46.8385, -114.0388) is 176 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1648.0 km from ZIP)] id=2288 | safeway | zip=83805
+    current  : (33.9803438, -118.274027)
+    query    : 6519 S Main St, Bonners Ferry, ID 83805
+    ✓ new    : (48.677742, -116.328841)  confidence=high
+  [wrong_city (1782.2 km from ZIP)] id=2287 | safeway | zip=59840
+    current  : (44.252282, -91.499196)
+    query    : 101 E Main St, Hamilton, MT 59840
+    ✓ new    : (46.246671, -114.176289)  confidence=high
+  [wrong_city (1674.6 km from ZIP)] id=2327 | jewel-osco | zip=60526
+    current  : (29.4525611, -98.4863703)
+    query    : 507 E Woodlawn Ave, La Grange Park, IL 60526
+    ✓ new    : (41.823529, -87.869452)  confidence=high
+  [wrong_city (969.8 km from ZIP)] id=2348 | jewel-osco | zip=60007
+    current  : (35.2932993, -80.8526139)
+    query    : 20 W Biesterfield, Elk Grove Village, IL 60007
+    ✓ new    : (42.006651, -88.045426)  confidence=high
+  [wrong_city (758.4 km from ZIP)] id=2350 | jewel-osco | zip=60126
+    current  : (42.8892143, -78.8009039)
+    query    : 153 Schiller St, Elmhurst, IL 60126
+    ✓ new    : (41.901587, -87.937089)  confidence=high
+  [wrong_city (251.8 km from ZIP)] id=2337 | jewel-osco | zip=60018
+    current  : (44.2491318, -88.378895)
+    query    : 1500 S Lee St, Des Plaines, IL 60018
+    ✓ new    : (42.008480, -87.894500)  confidence=high
+  [wrong_city (102.8 km from ZIP)] id=2352 | jewel-osco | zip=60056
+    current  : (42.9863235, -87.9058373)
+    query    : 333 E Euclid Ave, Mount Prospect, IL 60056
+    ✓ new    : (42.087363, -87.930963)  confidence=high
+  [wrong_city (655.8 km from ZIP)] id=2370 | jewel-osco | zip=60491
+    current  : (38.8229742, -94.7753202)
+    query    : 14200 S Bell Rd, Homer Glen, IL 60491
+    ✓ new    : (41.630625, -87.932976)  confidence=high
+  [wrong_city (717.3 km from ZIP)] id=2385 | jewel-osco | zip=60021
+    current  : (42.2525898, -79.5059733)
+    query    : 800 NW Hwy 14, Fox River Grove, IL 60021
+    ✓ new    : (42.194930, -88.213023)  confidence=high
+  [wrong_city (904.9 km from ZIP)] id=2365 | jewel-osco | zip=60404
+    current  : (34.7812172, -82.382426)
+    query    : 199 Brookforest Ave, Shorewood, IL 60404
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1368.5 km from ZIP)] id=2374 | jewel-osco | zip=60142
+    current  : (49.1515461, -102.9916839)
+    query    : 10090 HWY 47, Huntley, IL 60142
+    ⚠ New result (41.2039, -88.0312) is 113 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (501.2 km from ZIP)] id=2387 | jewel-osco | zip=60120
+    current  : (44.9082784, -93.0518284)
+    query    : 1040 Summit Ave, Elgin, IL 60120
+    ✓ new    : (41.750927, -88.289906)  confidence=medium
+  [wrong_city (1490.0 km from ZIP)] id=2384 | jewel-osco | zip=60177
+    current  : (44.0878638, -70.1492884)
+    query    : 375 Randall Rd, South Elgin, IL 60177
+    ✓ new    : (41.986769, -88.338736)  confidence=high
+  [wrong_city (1435.6 km from ZIP)] id=2382 | jewel-osco | zip=60119
+    current  : (42.1832675, -71.0536577)
+    query    : 800 N Main St, Elburn, IL 60119
+    ✓ new    : (41.901252, -88.474574)  confidence=high
+  [wrong_city (2806.3 km from ZIP)] id=2388 | jewel-osco | zip=60020
+    current  : (47.0065871, -123.3889518)
+    query    : 1350 US Route 12, Fox Lake, IL 60020
+    ✓ new    : (42.258340, -88.286736)  confidence=medium
+  [wrong_city (1947.2 km from ZIP)] id=2372 | jewel-osco | zip=60098
+    current  : (40.2945067, -111.6771577)
+    query    : 145 S Eastwood Dr, Woodstock, IL 60098
+    ✓ new    : (42.315499, -88.434238)  confidence=high
+  [wrong_city (2387.2 km from ZIP)] id=2366 | jewel-osco | zip=60450
+    current  : (47.6707759, -117.4110199)
+    query    : 1414 N Division St, Morris, IL 60450
+    ⚠ New result (40.8903, -88.6333) is 56 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (621.6 km from ZIP)] id=2358 | jewel-osco | zip=60416
+    current  : (37.2248377, -93.2409852)
+    query    : 2707 E Division St, Diamond, IL 60416
+    ✓ new    : (41.288647, -88.247916)  confidence=high
+  [wrong_city (1392.5 km from ZIP)] id=2359 | jewel-osco | zip=60451
+    current  : (42.4520754, -71.1376308)
+    query    : 2021 E Laraway Rd, New Lenox, IL 60451
+    ✓ new    : (41.484061, -87.909769)  confidence=high
+  [wrong_city (1261.4 km from ZIP)] id=2379 | jewel-osco | zip=60118
+    current  : (41.5526488, -73.0641887)
+    query    : 1250 W Main St, West Dundee, IL 60118
+    ✓ new    : (42.100443, -88.300047)  confidence=high
+  [wrong_city (1063.9 km from ZIP)] id=2431 | albertsons | zip=71854
+    current  : (41.5725519, -87.5254156)
+    query    : 3710 State Line Ave, Texarkana, AR 71854
+    ✓ new    : (33.459201, -94.041879)  confidence=high
+  [wrong_city (1986.7 km from ZIP)] id=2403 | jewel-osco | zip=60585
+    current  : (40.5066282, -111.9489543)
+    query    : 13460 S Rt 59, Plainfield, IL 60585
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (229.6 km from ZIP)] id=2405 | jewel-osco | zip=60446
+    current  : (43.2533072, -86.3220899)
+    query    : 20 S Weber Rd, Romeoville, IL 60446
+    ✓ new    : (41.610711, -88.123149)  confidence=high
+  [wrong_city (1593.5 km from ZIP)] id=2468 | market street | zip=75070
+    current  : (26.5530822, -81.9461551)
+    query    : 6100 W El Dorado Pkwy, McKinney, TX 75070
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (373.2 km from ZIP)] id=2457 | tom thumb | zip=75225
+    current  : (29.710748, -95.441236)
+    query    : 4001 Villanova St, Dallas, TX 75225
+    ✓ new    : (32.864201, -96.778570)  confidence=high
+  [wrong_city (1782.5 km from ZIP)] id=2469 | tom thumb | zip=75071
+    current  : (39.1878854, -78.1411434)
+    query    : 6800 W Virginia Pkwy, McKinney, TX 75071
+    ⚠ New result (39.1879, -78.1411) is 1782 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2450.7 km from ZIP)] id=2438 | tom thumb | zip=75182
+    current  : (40.6346459, -122.3914054)
+    query    : 3400 Beltline Rd, Sunnyvale, TX 75182
+    ✓ new    : (32.875899, -96.058121)  confidence=medium
+  [wrong_city (1273.1 km from ZIP)] id=2499 | tom thumb | zip=75041
+    current  : (42.2140152, -88.2505841)
+    query    : 925 Northwest Hwy, Garland, TX 75041
+    ✓ new    : (32.864177, -96.660033)  confidence=high
+  [wrong_city (1611.9 km from ZIP)] id=2509 | tom thumb | zip=75201
+    current  : (42.3580898, -83.0070527)
+    query    : 2380 Field St, Dallas, TX 75201
+    ✓ new    : (32.789106, -96.806802)  confidence=high
+  [wrong_city (2254.5 km from ZIP)] id=2507 | tom thumb | zip=75219
+    current  : (41.0773791, -73.5345135)
+    query    : 3878 Oaklawn Ave #18, Dallas, TX 75219
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (376.2 km from ZIP)] id=2521 | albertsons | zip=76001
+    current  : (34.5945967, -100.4585112)
+    query    : 6220 US Hwy 287, Arlington, TX 76001
+    ✓ new    : (32.605498, -97.154605)  confidence=high
+  [wrong_city (1982.4 km from ZIP)] id=2541 | albertsons | zip=76086
+    current  : (38.8156811, -77.0583496)
+    query    : 225 E Spring St, Weatherford, TX 76086
+    ✓ new    : (32.760442, -97.794057)  confidence=high
+  [wrong_city (1293.1 km from ZIP)] id=2540 | albertsons | zip=76116
+    current  : (36.0843402, -83.9405351)
+    query    : 6700 W Freeway, Fort Worth, TX 76116
+    ✓ new    : (32.736945, -97.433038)  confidence=high
+  [wrong_city (864.2 km from ZIP)] id=2550 | randalls | zip=77406
+    current  : (37.4096507, -96.1630208)
+    query    : 1890 FM 359 Rd, Richmond, TX 77406
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1272.5 km from ZIP)] id=2525 | tom thumb | zip=75165
+    current  : (43.8238596, -96.7203197)
+    query    : 1940 N Hwy 77, Waxahachie, TX 75165
+    ✓ new    : (32.442009, -96.837435)  confidence=high
+  [wrong_city (2225.1 km from ZIP)] id=2529 | tom thumb | zip=76240
+    current  : (41.712066, -73.8987914)
+    query    : 206 N Grand Ave, Gainesville, TX 76240
+    ✓ new    : (33.625419, -97.132579)  confidence=high
+  [wrong_city (275.7 km from ZIP)] id=2532 | tom thumb | zip=76107
+    current  : (30.281499, -97.7731795)
+    query    : 2400 W 7th St, Fort Worth, TX 76107
+    ✓ new    : (32.751581, -97.351311)  confidence=high
+  [wrong_city (1873.7 km from ZIP)] id=2594 | albertsons | zip=82609
+    current  : (39.7669607, -84.1566441)
+    query    : 2625 E 2nd St, Casper, WY 82609
+    ✓ new    : (42.848302, -106.292414)  confidence=high
+  [wrong_city (1003.7 km from ZIP)] id=2592 | safeway | zip=82201
+    current  : (33.1834912, -102.820815)
+    query    : 1307 16th St, Wheatland, WY 82201
+    ✓ new    : (42.060794, -104.964539)  confidence=high
+  [wrong_city (1707.6 km from ZIP)] id=2587 | market street | zip=79762
+    current  : (39.8331057, -86.0864613)
+    query    : 4950 E 42nd St, Odessa, TX 79762
+    ✓ new    : (31.893002, -102.335935)  confidence=high
+  [wrong_city (1356.0 km from ZIP)] id=2572 | united supermarkets | zip=76380
+    current  : (44.4208987, -92.0087676)
+    query    : 202 N Main St, Seymour, TX 76380
+    ✓ new    : (33.589191, -99.260116)  confidence=high
+  [wrong_city (1491.5 km from ZIP)] id=2569 | united supermarkets | zip=76424
+    current  : (43.0220159, -87.9271197)
+    query    : 1207 W Walker St, Breckenridge, TX 76424
+    ✓ new    : (32.754768, -98.917818)  confidence=high
+  [wrong_city (1109.6 km from ZIP)] id=2579 | united supermarkets | zip=76306
+    current  : (41.9105765, -90.863709)
+    query    : 2522 Iowa Park Rd, Wichita Falls, TX 76306
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2353.0 km from ZIP)] id=2623 | safeway | zip=81416
+    current  : (34.6151205, -82.0856472)
+    query    : 1550 Hwy 92, Delta, CO 81416
+    ⚠ New result (40.3656, -111.5556) is 350 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1294.0 km from ZIP)] id=2580 | united supermarkets | zip=79252
+    current  : (39.1734916, -86.5450862)
+    query    : 1000 W 11th St, Quanah, TX 79252
+    ✓ new    : (34.291795, -99.752358)  confidence=high
+  [wrong_city (335.1 km from ZIP)] id=2570 | united supermarkets | zip=79549
+    current  : (32.6984598, -97.3352977)
+    query    : 3500 College Ave, Snyder, TX 79549
+    ✓ new    : (32.706524, -100.918991)  confidence=high
+  [wrong_city (265.9 km from ZIP)] id=2563 | united supermarkets | zip=76801
+    current  : (29.4238369, -98.4897775)
+    query    : 300 E Commerce St, Brownwood, TX 76801
+    ✓ new    : (31.731194, -98.976542)  confidence=high
+  [wrong_city (469.1 km from ZIP)] id=2574 | united supermarkets | zip=79356
+    current  : (35.2585821, -96.9363875)
+    query    : 123 N Broadway St, Post, TX 79356
+    ✓ new    : (33.192092, -101.378742)  confidence=high
+  [wrong_city (1565.9 km from ZIP)] id=2566 | united supermarkets | zip=79605
+    current  : (42.984582, -87.930344)
+    query    : 3301 S 14th St, Abilene, TX 79605
+    ✓ new    : (32.432207, -99.764276)  confidence=high
+  [wrong_city (3044.3 km from ZIP)] id=2627 | albertsons | zip=83404
+    current  : (30.3542765, -81.6471166)
+    query    : 590 E 17th St, Idaho Falls, ID 83404
+    ✓ new    : (43.480993, -112.021751)  confidence=high
+  [wrong_city (1908.3 km from ZIP)] id=2633 | albertsons | zip=83647
+    current  : (44.3260126, -91.9181388)
+    query    : 528 N Main St, Mountain Home, ID 83647
+    ⚠ New result (43.6083, -116.3917) is 77 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2955.4 km from ZIP)] id=2620 | safeway | zip=81504
+    current  : (26.7200211, -80.2569607)
+    query    : 2901 F Rd, Grand Junction, CO 81504
+    ✓ new    : (39.090400, -108.513697)  confidence=high
+  [wrong_city (1744.4 km from ZIP)] id=2599 | safeway | zip=80550
+    current  : (39.1124354, -84.5125746)
+    query    : 1535 Main St, Windsor, CO 80550
+    ✓ new    : (40.477969, -104.928057)  confidence=high
+  [wrong_city (2956.3 km from ZIP)] id=2609 | safeway | zip=82520
+    current  : (40.9151327, -72.6893167)
+    query    : 1165 W Main St, Lander, WY 82520
+    ✓ new    : (42.842314, -108.746148)  confidence=high
+  [wrong_city (1575.2 km from ZIP)] id=2600 | safeway | zip=80634
+    current  : (39.780722, -86.219475)
+    query    : 3526 W 10th St, Greeley, CO 80634
+    ✓ new    : (40.422909, -104.716851)  confidence=high
+  [wrong_city (1600.6 km from ZIP)] id=2615 | safeway | zip=69361
+    current  : (47.6074792, -122.3213449)
+    query    : 601 Broadway, Scottsbluff, NE 69361
+    ✓ new    : (41.854321, -103.662802)  confidence=high
+  [wrong_city (1388.6 km from ZIP)] id=2610 | safeway | zip=80487
+    current  : (38.8059581, -90.8468221)
+    query    : 37500 US-40, Steamboat Springs, CO 80487
+    ✓ new    : (40.454023, -106.816741)  confidence=high
+  [wrong_city (2942.2 km from ZIP)] id=2621 | safeway | zip=81507
+    current  : (40.7930135, -73.9726444)
+    query    : 2512 Broadway, Grand Junction, CO 81507
+    ✓ new    : (39.065651, -108.586644)  confidence=high
+  [wrong_city (3811.4 km from ZIP)] id=2665 | albertsons | zip=83686
+    current  : (25.843565, -80.306284)
+    query    : 2400 12th Ave Rd, Nampa, ID 83686
+    ⚠ New result (42.2833, -92.2595) is 1977 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (3448.6 km from ZIP)] id=2652 | albertsons | zip=83638
+    current  : (41.9202656, -73.0784815)
+    query    : 132 E Lake St, McCall, ID 83638
+    ✓ new    : (44.909823, -116.102183)  confidence=high
+  [wrong_city (657.7 km from ZIP)] id=2674 | safeway | zip=97702
+    current  : (38.1075487, -121.2773597)
+    query    : 320 W Century Blvd, Bend, OR 97702
+    ⚠ New result (45.4750, -122.9136) is 206 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (3404.7 km from ZIP)] id=2653 | safeway | zip=83814
+    current  : (39.9668629, -75.1434731)
+    query    : 1001 N 4th St, Coeur D'Alene, ID 83814
+    ✓ new    : (47.683049, -116.781785)  confidence=high
+  [wrong_city (1985.9 km from ZIP)] id=2656 | albertsons | zip=83661
+    current  : (44.3190407, -91.9142453)
+    query    : 405 S Main St, Payette, ID 83661
+    ✓ new    : (44.070207, -116.934132)  confidence=high
+  [wrong_city (3928.7 km from ZIP)] id=2684 | albertsons | zip=97230
+    current  : (40.7108698, -73.7807396)
+    query    : 451 NE 181st St, Portland, OR 97230
+    ✓ new    : (45.753446, -122.511182)  confidence=medium
+  [wrong_city (2406.9 km from ZIP)] id=2705 | albertsons | zip=97123
+    current  : (34.5073122, -98.4161522)
+    query    : 7500 SW Baseline Rd, Hillsboro, OR 97123
+    ✓ new    : (45.509206, -123.284508)  confidence=medium
+  [wrong_city (900.6 km from ZIP)] id=2682 | safeway | zip=97038
+    current  : (45.6813586, -111.0583373)
+    query    : 1525 W Main St, Molalla, OR 97038
+    ✓ new    : (45.147721, -122.578845)  confidence=high
+  [wrong_city (3994.3 km from ZIP)] id=2749 | albertsons | zip=97404
+    current  : (40.7072467, -73.9668517)
+    query    : 55 Division Ave, Eugene, OR 97404
+    ✓ new    : (44.100496, -123.128396)  confidence=high
+  [wrong_city (3431.4 km from ZIP)] id=2727 | safeway | zip=97303
+    current  : (38.3235597, -82.2192327)
+    query    : 4990 River Rd, Keizer, OR 97303
+    ✓ new    : (44.996251, -123.023909)  confidence=high
+  [wrong_city (904.7 km from ZIP)] id=2735 | safeway | zip=97383
+    current  : (36.7092149, -121.6560756)
+    query    : 1535 N First St, Stayton, OR 97383
+    ⚠ New result (45.4187, -122.6644) is 69 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (3562.9 km from ZIP)] id=2724 | safeway | zip=97381
+    current  : (43.1357341, -77.6588953)
+    query    : 301 Westfield St, Silverton, OR 97381
+    ✓ new    : (45.003262, -122.793922)  confidence=high
+  [wrong_city (639.0 km from ZIP)] id=2731 | safeway | zip=97128
+    current  : (39.5114787, -122.1938685)
+    query    : 2490 N Hwy 99 W, McMinnville, OR 97128
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (3332.1 km from ZIP)] id=2729 | safeway | zip=97301
+    current  : (41.494267, -81.7035627)
+    query    : 1265 Center St, Salem, OR 97301
+    ✓ new    : (44.940607, -123.024069)  confidence=high
+  [wrong_city (2524.3 km from ZIP)] id=2737 | safeway | zip=97801
+    current  : (29.427915, -98.537558)
+    query    : 201 SW 20th St, Pendleton, OR 97801
+    ✓ new    : (45.678915, -118.806945)  confidence=high
+  [wrong_city (3194.1 km from ZIP)] id=2747 | safeway | zip=97386
+    current  : (39.1124656, -84.5123668)
+    query    : 1540 Main St, Sweet Home, OR 97386
+    ✓ new    : (44.399438, -122.725705)  confidence=high
+  [wrong_city (3351.9 km from ZIP)] id=2739 | safeway | zip=97141
+    current  : (40.0003296, -82.9989711)
+    query    : 1815 4th St, Tillamook, OR 97141
+    ✓ new    : (45.455143, -123.845443)  confidence=high
+  [wrong_city (3310.7 km from ZIP)] id=2748 | safeway | zip=97448
+    current  : (40.1826, -83.0009247)
+    query    : 1755 Ivy St, Junction City, OR 97448
+    ✓ new    : (44.229290, -123.206773)  confidence=high
+  [wrong_city (78.7 km from ZIP)] id=2726 | safeway | zip=97016
+    current  : (45.5437964, -122.5206949)
+    query    : 401 W Columbia River Hwy, Clatskanie, OR 97016
+    ✓ new    : (46.101958, -123.194507)  confidence=high
+  [wrong_city (2731.6 km from ZIP)] id=2720 | safeway | zip=97211
+    current  : (33.5142568, -94.6130415)
+    query    : 5920 NE Martin Luther King Blvd, Portland, OR 97211
+    ✓ new    : (45.565931, -122.660130)  confidence=high
+  [wrong_city (1188.4 km from ZIP)] id=2755 | albertsons | zip=97478
+    current  : (33.99015, -118.2740293)
+    query    : 5755 S Main St, Springfield, OR 97478
+    ⚠ New result (44.5277, -122.9071) is 52 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (3180.4 km from ZIP)] id=2746 | safeway | zip=97355
+    current  : (32.3480206, -89.4734545)
+    query    : 1983 S Main St, Lebanon, OR 97355
+    ✓ new    : (44.544776, -122.907073)  confidence=high
+  [wrong_city (202.7 km from ZIP)] id=2771 | albertsons | zip=97501
+    current  : (44.0980513, -123.1203187)
+    query    : 113 Ross Ln, Medford, OR 97501
+    ✓ new    : (42.325830, -122.899277)  confidence=high
+  [wrong_city (1053.4 km from ZIP)] id=2787 | haggen | zip=98290
+    current  : (45.7874358, -108.549119)
+    query    : 1301 Avenue D, Snohomish, WA 98290
+    ✓ new    : (47.927760, -122.096516)  confidence=high
+  [wrong_city (2041.2 km from ZIP)] id=2782 | haggen | zip=98258
+    current  : (42.0552174, -97.356881)
+    query    : 8915 Market Place NE, Lake Stevens, WA 98258
+    ⚠ New result (42.0552, -97.3569) is 2041 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2076.4 km from ZIP)] id=2786 | haggen | zip=98270
+    current  : (41.5019147, -97.3752207)
+    query    : 3711 88th St NE, Marysville, WA 98270
+    ✓ new    : (48.076817, -122.180531)  confidence=high
+  [wrong_city (2337.2 km from ZIP)] id=2788 | safeway | zip=98290
+    current  : (41.5979474, -93.6339353)
+    query    : 1119 13th St, Snohomish, WA 98290
+    ✓ new    : (47.926151, -122.095468)  confidence=high
+  [wrong_city (3623.7 km from ZIP)] id=2761 | safeway | zip=97424
+    current  : (43.1606395, -77.5714639)
+    query    : 1500 E Main St, Cottage Grove, OR 97424
+    ✓ new    : (43.798582, -123.052186)  confidence=high
+  [wrong_city (3799.6 km from ZIP)] id=2764 | safeway | zip=97459
+    current  : (38.4833752, -78.870694)
+    query    : 1735 Virginia Ave, North Bend, OR 97459
+    ✓ new    : (43.405231, -124.235517)  confidence=high
+  [wrong_city (4541.8 km from ZIP)] id=2765 | safeway | zip=97467
+    current  : (44.1338376, -66.1512502)
+    query    : 1499 Hwy 101, Reedsport, OR 97467
+    ✓ new    : (43.699146, -124.112113)  confidence=high
+  [wrong_city (355.8 km from ZIP)] id=2768 | safeway | zip=97526
+    current  : (45.6262799, -122.6708441)
+    query    : 115 E 7th St, Grants Pass, OR 97526
+    ✓ new    : (42.457337, -123.320730)  confidence=high
+  [wrong_city (1174.0 km from ZIP)] id=2797 | safeway | zip=98296
+    current  : (37.2999187, -122.0321516)
+    query    : 17520 SR 9 SE, Snohomish, WA 98296
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (3671.8 km from ZIP)] id=2760 | safeway | zip=97439
+    current  : (35.1066431, -82.338665)
+    query    : 700 Hwy 101, Florence, OR 97439
+    ✓ new    : (43.981185, -124.101223)  confidence=high
+  [wrong_city (686.2 km from ZIP)] id=2762 | safeway | zip=97423
+    current  : (49.3108154, -123.0765643)
+    query    : 155 E 1st St, Coquille, OR 97423
+    ✓ new    : (43.174790, -124.187430)  confidence=high
+  [wrong_city (2417.3 km from ZIP)] id=2779 | safeway | zip=98201
+    current  : (48.3572783, -89.3535197)
+    query    : 1715 Broadway Ave, Everett, WA 98201
+    ✓ new    : (47.994745, -122.201051)  confidence=high
+  [wrong_city (1686.9 km from ZIP)] id=2812 | haggen | zip=98225
+    current  : (33.8884174, -118.3896788)
+    query    : 1401 12th St, Bellingham, WA 98225
+    ✓ new    : (48.719084, -122.501420)  confidence=high
+  [wrong_city (3774.4 km from ZIP)] id=2818 | haggen | zip=98248
+    current  : (40.6369616, -75.3793092)
+    query    : 1815 Main St, Ferndale, WA 98248
+    ✓ new    : (48.843117, -122.580615)  confidence=high
+  [wrong_city (2576.8 km from ZIP)] id=2803 | safeway | zip=98026
+    current  : (41.0221848, -91.0452314)
+    query    : 23632 Hwy 99, Edmonds, WA 98026
+    ✓ new    : (47.784250, -122.345007)  confidence=high
+  [wrong_city (3101.2 km from ZIP)] id=2821 | safeway | zip=98382
+    current  : (40.1949161, -85.3918903)
+    query    : 680F W Washington St, Sequim, WA 98382
+    ✓ new    : (48.079631, -123.103692)  confidence=high
+  [wrong_city (2943.5 km from ZIP)] id=2822 | safeway | zip=98346
+    current  : (34.2246254, -92.0201169)
+    query    : 8196 NE Hwy 104, Kingston, WA 98346
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1667.9 km from ZIP)] id=2806 | safeway | zip=98221
+    current  : (40.0040003, -105.2789663)
+    query    : 911 11th St, Anacortes, WA 98221
+    ✓ new    : (48.512260, -122.611717)  confidence=high
+  [wrong_city (3002.6 km from ZIP)] id=2871 | safeway | zip=98038
+    current  : (29.7686048, -95.4753581)
+    query    : 26916 Maple Valley Rd, Maple Valley, WA 98038
+    ✓ new    : (47.360171, -122.018303)  confidence=high
+  [wrong_city (3241.2 km from ZIP)] id=2876 | safeway | zip=98407
+    current  : (40.0155263, -83.0109794)
+    query    : 2637 N Pearl St, Tacoma, WA 98407
+    ✓ new    : (47.272698, -122.513797)  confidence=high
+  [wrong_city (4399.6 km from ZIP)] id=2850 | safeway | zip=98332
+    current  : (25.7748438, -80.2779744)
+    query    : 11330 NW 51st Ave, Gig Harbor, WA 98332
+    ✓ new    : (47.359904, -122.606721)  confidence=medium
+  [wrong_city (3299.3 km from ZIP)] id=2856 | safeway | zip=98391
+    current  : (43.6477305, -79.6713213)
+    query    : 21301 Hwy 410, Bonney Lake, WA 98391
+    ✓ new    : (47.161748, -122.484293)  confidence=medium
+  [wrong_city (2198.3 km from ZIP)] id=2908 | safeway | zip=98531
+    current  : (40.7872158, -96.7047789)
+    query    : 1129 Harrison Ave, Centralia, WA 98531
+    ✓ new    : (46.727686, -122.981044)  confidence=high
+  [wrong_city (2110.2 km from ZIP)] id=2898 | safeway | zip=98125
+    current  : (45.1386395, -94.8758424)
+    query    : 12318 15th Ave NE, Seattle, WA 98125
+    ✓ new    : (47.718045, -122.311964)  confidence=high
+  [wrong_city (3826.6 km from ZIP)] id=2896 | safeway | zip=98408
+    current  : (39.9497062, -75.2349979)
+    query    : 707 S 56th St, Tacoma, WA 98408
+    ✓ new    : (47.207041, -122.440759)  confidence=high
+  [wrong_city (1402.6 km from ZIP)] id=2914 | safeway | zip=98674
+    current  : (33.7885484, -118.194429)
+    query    : 1725 Pacific Ave, Woodland, WA 98674
+    ✓ new    : (45.912514, -122.748535)  confidence=high
+  [wrong_city (2953.9 km from ZIP)] id=2923 | safeway | zip=98663
+    current  : (29.791328, -95.373812)
+    query    : 3707 N Main St, Vancouver, WA 98663
+    ✓ new    : (45.253076, -122.721670)  confidence=medium
+  [wrong_city (2916.0 km from ZIP)] id=2916 | safeway | zip=98604
+    current  : (39.0016663, -87.9177249)
+    query    : 904 W Main St, Battle Ground, WA 98604
+    ✓ new    : (45.781831, -122.546725)  confidence=high
+  [wrong_city (223.7 km from ZIP)] id=2919 | safeway | zip=98665
+    current  : (47.6876938, -122.3238121)
+    query    : 408 NE 81st St, Vancouver, WA 98665
+    ✓ new    : (45.681524, -122.668470)  confidence=high
+  [wrong_city (4348.1 km from ZIP)] id=2917 | safeway | zip=98686
+    current  : (25.9028848, -80.1588249)
+    query    : 14300 NE 20th Ave, Vancouver, WA 98686
+    ✓ new    : (45.723620, -122.652844)  confidence=high
+  [wrong_city (3118.5 km from ZIP)] id=2915 | albertsons | zip=98604
+    current  : (38.2595831, -85.7851434)
+    query    : 2108 W Main St, Battle Ground, WA 98604
+    ✓ new    : (45.781764, -122.560158)  confidence=high
+  [wrong_city (1677.8 km from ZIP)] id=2900 | safeway | zip=98584
+    current  : (39.7257593, -104.9680001)
+    query    : 600 Franklin St, Shelton, WA 98584
+    ✓ new    : (47.214271, -123.106182)  confidence=high
+  [wrong_city (5390.8 km from ZIP)] id=2936 | eagle | zip=99587
+    current  : (34.2582783, -84.3241358)
+    query    : 147 Hightower Rd, Girdwood, AK 99587
+    ✓ new    : (60.963055, -149.133694)  confidence=high
+  [wrong_city (3985.5 km from ZIP)] id=2926 | safeway | zip=98671
+    current  : (43.0380427, -71.4842326)
+    query    : 3307 Evergreen Way Bldg 5, Washougal, WA 98671
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (4859.3 km from ZIP)] id=2941 | safeway | zip=99686
+    current  : (35.0073616, -90.7893652)
+    query    : 1313 Meals St, Valdez, AK 99686
+    ⚠ New result (35.0074, -90.7894) is 4859 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1460.0 km from ZIP)] id=2947 | publix | zip=33544
+    current  : (33.3634945, -96.4212875)
+    query    : 1920 County Road 581, Wesley Chapel, FL 33544
+    ⚠ New result (28.7917, -82.0684) is 66 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (202.6 km from ZIP)] id=2994 | publix | zip=34974
+    current  : (28.8218636, -81.7828404)
+    query    : 3551 US Highway 441 S, Okeechobee, FL 34974
+    ⚠ New result (30.1422, -82.6344) is 371 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1508.7 km from ZIP)] id=3037 | publix | zip=33324
+    current  : (39.1626012, -84.7507676)
+    query    : 8842 W State Road 84, Davie, FL 33324
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1905.8 km from ZIP)] id=3043 | publix | zip=33446
+    current  : (38.7290827, -94.4232575)
+    query    : 13860 S Jog Rd, West Delray Beach, FL 33446
+    ⚠ New result (38.7291, -94.4233) is 1906 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (228.5 km from ZIP)] id=3054 | publix | zip=33477
+    current  : (28.8598572, -80.8510459)
+    query    : 4060 S US Highway 1, Jupiter, FL 33477
+    ✓ new    : (26.675288, -80.054669)  confidence=medium
+  [wrong_city (182.8 km from ZIP)] id=3059 | publix | zip=34952
+    current  : (28.8590435, -80.8509897)
+    query    : 9100 S US Highway 1, Port Saint Lucie, FL 34952
+    ⚠ New result (26.7131, -80.0536) is 68 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1509.0 km from ZIP)] id=3068 | publix | zip=33325
+    current  : (39.1626012, -84.7507676)
+    query    : 13700 W State Road 84, Davie, FL 33325
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (630.1 km from ZIP)] id=3071 | publix | zip=32707
+    current  : (33.8531414, -78.6541977)
+    query    : 3385 S US Highway 17/92 Suite 181, Casselberry, FL 32707
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1642.8 km from ZIP)] id=3107 | publix | zip=32714
+    current  : (43.4053131, -82.6102205)
+    query    : 851 S State Road 434, Altamonte Springs, FL 32714
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1631.2 km from ZIP)] id=3155 | publix | zip=29803
+    current  : (27.790551, -97.4261466)
+    query    : 250 Eastgate Dr, Aiken, SC 29803
+    ⚠ New result (34.0891, -82.5863) is 105 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (692.9 km from ZIP)] id=3157 | publix | zip=30078
+    current  : (27.9857753, -81.5948666)
+    query    : 1905 Scenic Hwy N Ste 4000, Snellville, GA 30078
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (205.9 km from ZIP)] id=3165 | publix | zip=34448
+    current  : (26.9936406, -82.0522379)
+    query    : 3942 S Suncoast Blvd, Homosassa, FL 34448
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (102.6 km from ZIP)] id=3169 | publix | zip=32927
+    current  : (29.3332295, -81.1273237)
+    query    : 7325 N US Highway 1, Cocoa, FL 32927
+    ✓ new    : (28.865921, -80.851402)  confidence=medium
+  [wrong_city (508.0 km from ZIP)] id=3151 | publix | zip=32003
+    current  : (33.8499725, -78.6527368)
+    query    : 5000 US Highway 17 Ste 11, Fleming Island, FL 32003
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (151.7 km from ZIP)] id=3209 | publix | zip=34982
+    current  : (26.0359123, -80.143327)
+    query    : 2517 S Federal Hwy, Fort Pierce, FL 34982
+    ✓ new    : (27.261568, -80.282675)  confidence=medium
+  [wrong_city (1370.6 km from ZIP)] id=3315 | publix | zip=33702
+    current  : (39.8177153, -86.1774606)
+    query    : 7999 Dr Martin Luther King Jr St N, Saint Petersburg, FL 33702
+    ⚠ New result (39.8119, -86.1746) is 1370 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (536.4 km from ZIP)] id=3342 | publix | zip=32259
+    current  : (34.8112179, -80.4220464)
+    query    : 450 State Road 13 N Ste 109, Saint Johns, FL 32259
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (858.7 km from ZIP)] id=3556 | publix | zip=30248
+    current  : (32.0942394, -93.158776)
+    query    : 2730 Highway 155, Locust Grove, GA 30248
+    ✓ new    : (33.525559, -84.139821)  confidence=medium
+  [wrong_city (1793.1 km from ZIP)] id=3576 | publix | zip=35007
+    current  : (40.1606319, -104.9849872)
+    query    : 9200 Highway 119 Ste 1400, Alabaster, AL 35007
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1626.7 km from ZIP)] id=3577 | publix | zip=35080
+    current  : (45.4050237, -76.2783568)
+    query    : 4730 Highway 17, Helena, AL 35080
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (697.6 km from ZIP)] id=3579 | publix | zip=33844
+    current  : (33.8499725, -78.6527368)
+    query    : 617 US Highway 17 92 W, Haines City, FL 33844
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (318.6 km from ZIP)] id=3619 | publix | zip=30012
+    current  : (30.8547933, -83.9381966)
+    query    : 1591 Georgia Highway 20 NE, Conyers, GA 30012
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (816.4 km from ZIP)] id=3652 | publix | zip=34219
+    current  : (34.4249597, -79.3647763)
+    query    : 11245 US Highway 301 N, Parrish, FL 34219
+    ⚠ New result (28.9696, -82.0411) is 161 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1734.1 km from ZIP)] id=3664 | publix | zip=33837
+    current  : (43.7072691, -79.5908198)
+    query    : 39883 Highway 27, Davenport, FL 33837
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1897.3 km from ZIP)] id=3665 | publix | zip=34736
+    current  : (43.0895302, -70.7483349)
+    query    : 7975 State Road 50, Groveland, FL 34736
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (149.9 km from ZIP)] id=3670 | publix | zip=32408
+    current  : (30.4120007, -87.2465207)
+    query    : 2419 Navy Blvd, Panama City Beach, FL 32408
+    ✓ new    : (30.170660, -85.758813)  confidence=medium
+  [wrong_city (1741.5 km from ZIP)] id=3761 | publix | zip=33594
+    current  : (43.3364555, -85.8089689)
+    query    : 1971 E State Road 60, Valrico, FL 33594
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (314.9 km from ZIP)] id=3816 | publix | zip=31763
+    current  : (33.8116211, -81.9402547)
+    query    : 1212 US Highway 19 S, Leesburg, GA 31763
+    ⚠ New result (33.8116, -81.9403) is 315 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1687.1 km from ZIP)] id=3872 | publix | zip=32097
+    current  : (43.1027289, -70.7427701)
+    query    : 463855 State Road 200, Yulee, FL 32097
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (126.9 km from ZIP)] id=3880 | publix | zip=34275
+    current  : (26.1584566, -81.7972455)
+    query    : 1091 Tamiami Trl N, Nokomis, FL 34275
+    ✓ new    : (27.196907, -82.490148)  confidence=medium
+  [wrong_city (1757.5 km from ZIP)] id=3921 | publix | zip=33708
+    current  : (43.4795229, -85.3826937)
+    query    : 674 150th Ave, Madeira Beach, FL 33708
+    ✓ new    : (27.908868, -82.733555)  confidence=medium
+  [wrong_city (94.4 km from ZIP)] id=3960 | publix | zip=33525
+    current  : (27.5216816, -82.5329973)
+    query    : 11830 US Hwy 301, Dade City, FL 33525
+    ⚠ New result (27.5217, -82.5239) is 94 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (348.1 km from ZIP)] id=3962 | publix | zip=31792
+    current  : (27.9007237, -82.7270728)
+    query    : 13775 US Highway 19 S, Thomasville, GA 31792
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (128.9 km from ZIP)] id=3968 | publix | zip=32615
+    current  : (28.8218636, -81.7828404)
+    query    : 16193 NW US Hwy 441, Alachua, FL 32615
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1073.8 km from ZIP)] id=3988 | publix | zip=36081
+    current  : (41.3904831, -87.3202606)
+    query    : 1147 US Hwy 231 S, Troy, AL 36081
+    ⚠ New result (35.7698, -86.4027) is 444 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1689.0 km from ZIP)] id=3991 | publix | zip=34266
+    current  : (42.2525898, -79.5059733)
+    query    : 2551 SE Hwy 70, Arcadia, FL 34266
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1353.0 km from ZIP)] id=3998 | publix | zip=32778
+    current  : (40.4483771, -86.0318016)
+    query    : 2042 State Rd 19, Tavares, FL 32778
+    ⚠ New result (29.6403, -81.6765) is 93 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (717.2 km from ZIP)] id=4077 | publix | zip=32095
+    current  : (35.992098, -78.5286291)
+    query    : 7462 US Hwy 1 N, Saint Augustine, FL 32095
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (149.9 km from ZIP)] id=4079 | publix | zip=28443
+    current  : (35.5165579, -78.5621906)
+    query    : 2765 NC Hwy 210 E, Hampstead, NC 28443
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1721.8 km from ZIP)] id=4089 | publix | zip=28469
+    current  : (32.9189205, -96.9671207)
+    query    : 1560 Market Place Blvd, Ocean Isle Beach, NC 28469
+    ⚠ New result (34.1800, -84.1335) is 526 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1222.8 km from ZIP)] id=4164 | publix | zip=32064
+    current  : (41.1289594, -80.6465355)
+    query    : 2215 Ohio Ave N, Live Oak, FL 32064
+    ⚠ New result (30.8604, -82.0249) is 111 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1547.2 km from ZIP)] id=4177 | publix | zip=34212
+    current  : (41.3748735, -83.6491612)
+    query    : 13150 E SR 64, Bradenton, FL 34212
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (123.5 km from ZIP)] id=4199 | publix | zip=34420
+    current  : (30.05093, -82.598684)
+    query    : 10301 S US Hwy 441, Belleview, FL 34420
+    ⚠ New result (30.0509, -82.5987) is 124 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (555.4 km from ZIP)] id=4251 | publix | zip=37090
+    current  : (35.7600602, -80.1083662)
+    query    : 445 Hwy 109 N, Lebanon, TN 37090
+    ⚠ New result (35.7601, -80.1084) is 555 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (100.0 km from ZIP)] id=4317 | publix | zip=35010
+    current  : (33.4800507, -86.7744909)
+    query    : 4812 Hwy 280, Alexander City, AL 35010
+    ⚠ New result (33.3571, -86.5446) is 75 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (156.4 km from ZIP)] id=4318 | publix | zip=32506
+    current  : (30.1796609, -85.7029709)
+    query    : 9500 W Hwy 98, Pensacola, FL 32506
+    ✓ new    : (30.409833, -86.799087)  confidence=medium
+  [wrong_city (2033.3 km from ZIP)] id=4329 | publix | zip=30277
+    current  : (41.8838531, -105.2058798)
+    query    : 4957 Hwy 34 E, Sharpsburg, GA 30277
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2566.9 km from ZIP)] id=4377 | publix | zip=30143
+    current  : (45.6768255, -111.0759002)
+    query    : 178 Virginia Way, Jasper, GA 30143
+    ⚠ New result (33.7990, -83.7927) is 97 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1268.0 km from ZIP)] id=4380 | publix | zip=41094
+    current  : (46.828588, -95.8375638)
+    query    : 430 Richwood Rd, Walton, KY 41094
+    ✓ new    : (38.912759, -84.636790)  confidence=medium
+  [wrong_city (545.6 km from ZIP)] id=4384 | publix | zip=41051
+    current  : (42.4867022, -89.0171391)
+    query    : 5135 Jenkins Dr, Independence, KY 41051
+    ⚠ New result (39.7408, -84.2799) is 92 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (381.6 km from ZIP)] id=2487 | albertsons | zip=76039
+    current  : (36.1707655, -95.9965138)
+    query    : 1155 N Main St, Euless, TX 76039
+    ✓ new    : (32.853375, -97.083560)  confidence=high
+  [wrong_city (2494.1 km from ZIP)] id=2412 | albertsons | zip=70503
+    current  : (34.0782043, -118.2103401)
+    query    : 2678 Johnston St, Lafayette, LA 70503
+    ✓ new    : (30.207544, -92.038095)  confidence=high
+  [wrong_city (3368.4 km from ZIP)] id=2631 | albertsons | zip=83333
+    current  : (41.7925392, -72.7469482)
+    query    : 911 N Main St, Hailey, ID 83333
+    ✓ new    : (43.527302, -114.321885)  confidence=high
+  [wrong_city (965.0 km from ZIP)] id=2517 | albertsons | zip=76016
+    current  : (34.5687304, -87.0099035)
+    query    : 301 SW Plaza Shopping Center, Arlington, TX 76016
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (2299.4 km from ZIP)] id=2363 | jewel-osco | zip=60435
+    current  : (43.621438, -116.2086855)
+    query    : 1401 W Jefferson St, Joliet, IL 60435
+    ✓ new    : (41.522976, -88.115333)  confidence=high
+  [wrong_city (258.6 km from ZIP)] id=2356 | jewel-osco | zip=60901
+    current  : (42.3104544, -85.1963442)
+    query    : 446 S Washington Ave, Kankakee, IL 60901
+    ✓ new    : (41.116053, -87.867412)  confidence=high
+  [wrong_city (1067.3 km from ZIP)] id=1973 | shaw's | zip=03060
+    current  : (42.7249223, -84.5494039)
+    query    : 300 Main St, Nashua, NH 03060
+    ✓ new    : (42.751157, -71.459951)  confidence=high
+  [wrong_city (306.7 km from ZIP)] id=3574 | publix | zip=30094
+    current  : (30.8547933, -83.9381966)
+    query    : 2880 Georgia Highway 212 SW, Conyers, GA 30094
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1221.4 km from ZIP)] id=3614 | publix | zip=33572
+    current  : (37.8685375, -87.5715028)
+    query    : 6434 N US Highway 41, Apollo Beach, FL 33572
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1632.6 km from ZIP)] id=3654 | publix | zip=31324
+    current  : (46.5783637, -81.2945159)
+    query    : 12800 Highway 144, Richmond Hill, GA 31324
+    ⚠ New result (34.0244, -78.7514) is 335 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (903.9 km from ZIP)] id=3724 | publix | zip=32084
+    current  : (36.7646231, -76.1139463)
+    query    : 55 Ava Way, Saint Augustine, FL 32084
+    ⚠ New result (36.7646, -76.1139) is 904 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (643.4 km from ZIP)] id=3950 | publix | zip=29710
+    current  : (38.8522449, -86.7439789)
+    query    : 158 Highway 274, Lake Wylie, SC 29710
+    ✓ new    : (34.992007, -81.099987)  confidence=medium
+  [wrong_city (840.9 km from ZIP)] id=4036 | publix | zip=27012
+    current  : (28.5219669, -81.42977)
+    query    : 3150 Gammon Ln, Clemmons, NC 27012
+    ⚠ New result (38.4289, -81.9318) is 299 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (719.7 km from ZIP)] id=4147 | publix | zip=35475
+    current  : (30.0106702, -94.0451268)
+    query    : 13556 Hwy 69 N, Northport, AL 35475
+    ⚠ New result (29.9252, -93.9641) is 719 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (56.7 km from ZIP)] id=3016 | publix | zip=33408
+    current  : (27.292146, -80.3005024)
+    query    : 11566 US Highway 1, Palm Beach Gardens, FL 33408
+    ✓ new    : (26.807865, -80.056069)  confidence=medium
+  [wrong_city (443.9 km from ZIP)] id=4314 | publix | zip=32404
+    current  : (33.9286741, -84.003904)
+    query    : 4601 Lindsey Crossing, Panama City, FL 32404
+    ⚠ New result (30.4713, -81.6046) is 383 km from ZIP centroid — rejecting, trying next strategy
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (55.8 km from ZIP)] id=3047 | publix | zip=32958
+    current  : (27.3103303, -80.3111347)
+    query    : 13435 US Highway 1, Sebastian, FL 32958
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (881.7 km from ZIP)] id=3200 | publix | zip=33853
+    current  : (35.2947048, -84.9513534)
+    query    : 102 Hwy 60 E, Lake Wales, FL 33853
+    ✗ re-geocoding failed — row left unchanged
+  [wrong_city (1210.9 km from ZIP)] id=3271 | publix | zip=32771
+    current  : (39.2813871, -84.8695902)
+    query    : 5240 W State Road 46, Sanford, FL 32771
+    ✓ new    : (28.811254, -81.339168)  confidence=medium
+
+Tier 1+2 result: 178 fixed, 82 failed, 0 skipped
+
+============================================================
+OVERALL SUMMARY
+============================================================
+  Tiers 1+2 fixed   : 178
+  Tiers 1+2 failed  : 82
+  Tiers 1+2 skipped : 0
+  Tier 3 fixed      : 0
+  Tier 3 failed     : 0
+  Total fixed       : 178
+
+  (DRY RUN — nothing was written)
+============================================================

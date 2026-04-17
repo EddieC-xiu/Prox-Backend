@@ -1,0 +1,505 @@
+store_id,retailer,retailer_key,address,zip_code,full_address,latitude,longitude,geocode_source,geocode_confidence
+3696,Star Market,starmarket,90 Causeway St,02114,"90 Causeway St, Boston, MA 02114",42.3611,-71.0682,zip_centroid,zip_centroid
+602,Star Market,starmarket,53 Huntington Ave,02199,"53 Huntington Ave, Boston, MA 02199",42.3479,-71.0825,zip_centroid,zip_centroid
+3580,Star Market,starmarket,14 Mcgrath Hwy,02143,"14 Mcgrath Hwy, Somerville, MA 02143",42.3829,-71.1028,zip_centroid,zip_centroid
+2576,Star Market,starmarket,33 Kilmarnock St,02215,"33 Kilmarnock St, Boston, MA 02215",42.3471,-71.1027,zip_centroid,zip_centroid
+1208,Shaw's,shaws,246 Border St,02128,"246 Border St, East Boston, MA 02128",42.3642,-71.0257,zip_centroid,zip_centroid
+4587,Star Market,starmarket,45 Morrissey Blvd,02125,"45 Morrissey Blvd, Dorchester, MA 02125",42.2973,-71.0745,zip_centroid,zip_centroid
+3588,Star Market,starmarket,1065 Commonwealth Ave,02215,"1065 Commonwealth Ave, Boston, MA 02215",42.3471,-71.1027,zip_centroid,zip_centroid
+2575,Star Market,starmarket,275 Beacon St,02143,"275 Beacon St, Somerville, MA 02143",42.3829,-71.1028,zip_centroid,zip_centroid
+163,Star Market,starmarket,49 White St,02140,"49 White St, Cambridge, MA 02140",42.3932,-71.1338,zip_centroid,zip_centroid
+4572,Star Market,starmarket,370 Western Ave,02135,"370 Western Ave, Brighton, MA 02135",42.3478,-71.1566,zip_centroid,zip_centroid
+3566,Star Market,starmarket,1717 Beacon St,02445,"1717 Beacon St, Brookline, MA 02445",42.3259,-71.1341,zip_centroid,zip_centroid
+2565,Star Market,starmarket,699 Mt Auburn St,02138,"699 Mt Auburn St, Cambridge, MA 02138",42.377,-71.1256,zip_centroid,zip_centroid
+645,Star Market,starmarket,1 Boylston St,02467,"1 Boylston St, Chestnut Hill, MA 02467",42.3164,-71.1612,zip_centroid,zip_centroid
+604,Star Market,starmarket,4 River St,02124,"4 River St, Dorchester, MA 02124",42.2918,-71.0717,zip_centroid,zip_centroid
+2583,Star Market,starmarket,535 Trapelo Rd,02478,"535 Trapelo Rd, Belmont, MA 02478",42.3959,-71.1787,zip_centroid,zip_centroid
+3507,Shaw's,shaws,34 Essex St,02176,"34 Essex St, Melrose, MA 02176",42.4581,-71.0632,zip_centroid,zip_centroid
+3577,Star Market,starmarket,75 Spring St,02132,"75 Spring St, West Roxbury, MA 02132",42.2787,-71.1589,zip_centroid,zip_centroid
+3561,Star Market,starmarket,33 Austin St,02460,"33 Austin St, Newtonville, MA 02460",42.352,-71.2084,zip_centroid,zip_centroid
+2579,Shaw's,shaws,1377 Hyde Park Ave,02136,"1377 Hyde Park Ave, Hyde Park, MA 02136",42.254,-71.1261,zip_centroid,zip_centroid
+1497,Shaw's,shaws,130 River St,02453,"130 River St, Waltham, MA 02453",42.3654,-71.2317,zip_centroid,zip_centroid
+2573,Star Market,starmarket,130 Granite St,02169,"130 Granite St, Quincy, MA 02169",42.2491,-70.9978,zip_centroid,zip_centroid
+426,Star Market,starmarket,795 Providence Hwy,02026,"795 Providence Hwy, Dedham, MA 02026",42.2437,-71.1637,zip_centroid,zip_centroid
+4568,Star Market,starmarket,2040 Commonwealth Ave,02466,"2040 Commonwealth Ave, Auburndale, MA 02466",42.3441,-71.248,zip_centroid,zip_centroid
+1404,Shaw's,shaws,125 Pearl St,02184,"125 Pearl St, Braintree, MA 02184",42.2093,-70.9963,zip_centroid,zip_centroid
+3413,Shaw's,shaws,610 Middle St,02189,"610 Middle St, Weymouth, MA 02189",42.214,-70.9203,zip_centroid,zip_centroid
+1416,Shaw's,shaws,121 Memorial Pkwy,02368,"121 Memorial Pkwy, Randolph, MA 02368",42.1736,-71.0514,zip_centroid,zip_centroid
+3648,Shaw's,shaws,134 Water St,01880,"134 Water St, Wakefield, MA 01880",42.5009,-71.0685,zip_centroid,zip_centroid
+3567,Shaw's,shaws,134 Nahatan St,02062,"134 Nahatan St, Norwood, MA 02062",42.1868,-71.2033,zip_centroid,zip_centroid
+2569,Star Market,starmarket,1070 Lexington St,02452,"1070 Lexington St, Waltham, MA 02452",42.3943,-71.218,zip_centroid,zip_centroid
+428,Shaw's,shaws,95 Washington St,02021,"95 Washington St, Canton, MA 02021",42.1645,-71.1355,zip_centroid,zip_centroid
+2493,Shaw's,shaws,11 Traders Way,01970,"11 Traders Way, Salem, MA 01970",42.5151,-70.9003,zip_centroid,zip_centroid
+495,Shaw's,shaws,180 A Cambridge St,01803,"180 A Cambridge St, Burlington, MA 01803",42.5089,-71.2004,zip_centroid,zip_centroid
+2478,Shaw's,shaws,114-128 Essex Center Dr,01960,"114-128 Essex Center Dr, Peabody, MA 01960",42.5326,-70.9612,zip_centroid,zip_centroid
+2445,Shaw's,shaws,739 Chief Justice Cushing Hwy,02025,"739 Chief Justice Cushing Hwy, Cohasset, MA 02025",42.2395,-70.8128,zip_centroid,zip_centroid
+4407,Shaw's,shaws,715 Crescent St,02302,"715 Crescent St, Brockton, MA 02302",42.0847,-71.0002,zip_centroid,zip_centroid
+1429,Shaw's,shaws,641 Belmont St,02301,"641 Belmont St, Brockton, MA 02301",42.0794,-71.04,zip_centroid,zip_centroid
+440,Shaw's,shaws,35 Columbia Rd,02339,"35 Columbia Rd, Hanover, MA 02339",42.1214,-70.857,zip_centroid,zip_centroid
+1409,Shaw's,shaws,476 Liberty St,02341,"476 Liberty St, Hanson, MA 02341",42.0616,-70.8651,zip_centroid,zip_centroid
+2594,Star Market,starmarket,1 Snow Rd,02050,"1 Snow Rd, Marshfield, MA 02050",42.1062,-70.6993,zip_centroid,zip_centroid
+2408,Shaw's,shaws,690 Depot St,02356,"690 Depot St, North Easton, MA 02356",42.059,-71.1123,zip_centroid,zip_centroid
+418,Shaw's,shaws,780 S Main St,02067,"780 S Main St, Sharon, MA 02067",42.1094,-71.1759,zip_centroid,zip_centroid
+431,Shaw's,shaws,390 West St,02048,"390 West St, Mansfield, MA 02048",42.0212,-71.2178,zip_centroid,zip_centroid
+1420,Shaw's,shaws,300 New State Hwy,02767,"300 New State Hwy, Raynham, MA 02767",41.9324,-71.0469,zip_centroid,zip_centroid
+1412,Shaw's,shaws,125 Robert Toner Blvd,02763,"125 Robert Toner Blvd, North Attleboro, MA 02763",41.9726,-71.3082,zip_centroid,zip_centroid
+1414,Shaw's,shaws,230 Main St,02052,"230 Main St, Medfield, MA 02052",42.1845,-71.3048,zip_centroid,zip_centroid
+1632,Shaw's,shaws,100 N Main St,02330,"100 N Main St, Carver, MA 02330",41.8883,-70.7678,zip_centroid,zip_centroid
+2653,Shaw's,shaws,127 Marion Rd,02571,"127 Marion Rd, Wareham, MA 02571",41.7541,-70.7116,zip_centroid,zip_centroid
+2585,Shaw's,shaws,2260 State Rd,02360,"2260 State Rd, Plymouth, MA 02360",41.9104,-70.642,zip_centroid,zip_centroid
+1411,Shaw's,shaws,4171 N Main St,02720,"4171 N Main St, Fall River, MA 02720",41.7182,-71.14,zip_centroid,zip_centroid
+619,Shaw's,shaws,15 State Rd,02747,"15 State Rd, Dartmouth, MA 02747",41.6338,-70.9958,zip_centroid,zip_centroid
+603,Shaw's,shaws,137 Tea Ticket Hwy,02536,"137 Tea Ticket Hwy, East Falmouth, MA 02536",41.5968,-70.5671,zip_centroid,zip_centroid
+3581,Shaw's,shaws,255 E Central St,02038,"255 E Central St, Franklin, MA 02038",42.0935,-71.4058,zip_centroid,zip_centroid
+1598,Shaw's,shaws,1070 Iyannough Rd,02601,"1070 Iyannough Rd, Hyannis, MA 02601",41.6601,-70.2967,zip_centroid,zip_centroid
+4595,Shaw's,shaws,625 W Main St,02601,"625 W Main St, Hyannis, MA 02601",41.6601,-70.2967,zip_centroid,zip_centroid
+3692,Shaw's,shaws,1108 State Rd,02664,"1108 State Rd, South Yarmouth, MA 02664",41.6739,-70.1949,zip_centroid,zip_centroid
+2571,Shaw's,shaws,509 Boston Post Rd,01776,"509 Boston Post Rd, Sudbury, MA 01776",42.3837,-71.4282,zip_centroid,zip_centroid
+1419,Shaw's,shaws,301 Pond St,01721,"301 Pond St, Ashland, MA 01721",42.2539,-71.4583,zip_centroid,zip_centroid
+1430,Shaw's,shaws,65 Main St,02053,"65 Main St, Medway, MA 02053",42.1514,-71.4217,zip_centroid,zip_centroid
+2584,Shaw's,shaws,155 Great Rd,01775,"155 Great Rd, Stow, MA 01775",42.4308,-71.515,zip_centroid,zip_centroid
+2492,Shaw's,shaws,586 Nashua St,03055,"586 Nashua St, Milford, NH 03055",42.8285,-71.6606,zip_centroid,zip_centroid
+678,Shaw's,shaws,7 Continental Blvd,03054,"7 Continental Blvd, Merrimack, NH 03054",42.8667,-71.5128,zip_centroid,zip_centroid
+3505,Shaw's,shaws,570 Daniel Webster Hwy,03054,"570 Daniel Webster Hwy, Merrimack, NH 03054",42.8667,-71.5128,zip_centroid,zip_centroid
+113,Shaw's,shaws,300 Main St,03060,"300 Main St, Nashua, NH 03060",42.7564,-71.4667,zip_centroid,zip_centroid
+484,Shaw's,shaws,1 Orchard View Dr,03053,"1 Orchard View Dr, Londonderry, NH 03053",42.8656,-71.3772,zip_centroid,zip_centroid
+3510,Shaw's,shaws,213 Daniel Webster Hwy,03060,"213 Daniel Webster Hwy, Nashua, NH 03060",42.7564,-71.4667,zip_centroid,zip_centroid
+3483,Shaw's,shaws,55 Crystal Ave,03038,"55 Crystal Ave, Derry, NH 03038",42.8874,-71.302,zip_centroid,zip_centroid
+4486,Shaw's,shaws,1328 Hooksett Rd,03106,"1328 Hooksett Rd, Hooksett, NH 03106",43.0617,-71.4444,zip_centroid,zip_centroid
+686,Shaw's,shaws,43 Indian Rock Rd,03087,"43 Indian Rock Rd, Windham, NH 03087",42.8051,-71.3067,zip_centroid,zip_centroid
+4694,Shaw's,shaws,135 Dublin Rd,03458,"135 Dublin Rd, Peterborough, NH 03458",42.8856,-71.947,zip_centroid,zip_centroid
+4514,Shaw's,shaws,276 W Main St,03244,"276 W Main St, Hillsborough, NH 03244",43.1141,-71.8992,zip_centroid,zip_centroid
+811,Shaw's,shaws,20 D'amante Dr,03301,"20 D'amante Dr, Concord, NH 03301",43.2185,-71.5277,zip_centroid,zip_centroid
+3669,Shaw's,shaws,4 Plaistow Rd,03865,"4 Plaistow Rd, Plaistow, NH 03865",42.8356,-71.0934,zip_centroid,zip_centroid
+621,Shaw's,shaws,100 Shaws Ln,03885,"100 Shaws Ln, Stratham, NH 03885",43.0194,-70.8997,zip_centroid,zip_centroid
+4512,Shaw's,shaws,33 Lafayette Rd Unit 4,03862,"33 Lafayette Rd Unit 4, North Hampton, NH 03862",42.9776,-70.8267,zip_centroid,zip_centroid
+2479,Shaw's,shaws,851 Central Ave,03820,"851 Central Ave, Dover, NH 03820",43.1888,-70.8868,zip_centroid,zip_centroid
+4534,Shaw's,shaws,48 John Stark Hwy,03773,"48 John Stark Hwy, Newport, NH 03773",43.3532,-72.1838,zip_centroid,zip_centroid
+3533,Shaw's,shaws,32 Ames Plaza Ln #441,03608,"32 Ames Plaza Ln #441, Walpole, NH 03608",43.0765,-72.4155,zip_centroid,zip_centroid
+2190,Shaw's,shaws,96 Daniel Webster Hwy,03220,"96 Daniel Webster Hwy, Belmont, NH 03220",43.4512,-71.489,zip_centroid,zip_centroid
+1402,Shaw's,shaws,1400 Lakeshore Dr,03249,"1400 Lakeshore Dr, Gilford, NH 03249",43.5475,-71.4072,zip_centroid,zip_centroid
+4555,Shaw's,shaws,10 Benning Dr,03784,"10 Benning Dr, West Lebanon, NH 03784",43.644,-72.3007,zip_centroid,zip_centroid
+2403,Shaw's,shaws,1150 Eastman Rd,03813,"1150 Eastman Rd, Center Conway, NH 03813",43.9878,-71.0607,zip_centroid,zip_centroid
+4560,Shaw's,shaws,1364 Main St,04073,"1364 Main St, Sanford, ME 04073",43.4285,-70.7585,zip_centroid,zip_centroid
+2626,Shaw's,shaws,4 Scammon St Suite 10,04072,"4 Scammon St Suite 10, Saco, ME 04072",43.5209,-70.4546,zip_centroid,zip_centroid
+4543,Shaw's,shaws,1364 Congress St,04102,"1364 Congress St, Portland, ME 04102",43.6602,-70.2898,zip_centroid,zip_centroid
+3544,Shaw's,shaws,180 Waterman Dr,04106,"180 Waterman Dr, South Portland, ME 04106",43.6318,-70.2709,zip_centroid,zip_centroid
+2541,Shaw's,shaws,91 Auburn St,04103,"91 Auburn St, Portland, ME 04103",43.6876,-70.2876,zip_centroid,zip_centroid
+4651,Shaw's,shaws,251 US Hwy 1,04105,"251 US Hwy 1, Falmouth, ME 04105",43.734,-70.2625,zip_centroid,zip_centroid
+2538,Shaw's,shaws,770 Roosevelt Trail,04062,"770 Roosevelt Trail, Windham, ME 04062",43.7958,-70.4143,zip_centroid,zip_centroid
+608,Shaw's,shaws,200 Lower Main St,04032,"200 Lower Main St, Freeport, ME 04032",43.857,-70.1031,zip_centroid,zip_centroid
+628,Shaw's,shaws,147 Bath Rd,04011,"147 Bath Rd, Brunswick, ME 04011",43.8973,-69.9779,zip_centroid,zip_centroid
+4559,Shaw's,shaws,27 E Ave,04240,"27 E Ave, Lewiston, ME 04240",44.0985,-70.1916,zip_centroid,zip_centroid
+2550,Shaw's,shaws,600 Center St,04210,"600 Center St, Auburn, ME 04210",44.0948,-70.239,zip_centroid,zip_centroid
+553,Shaw's,shaws,1 Chandler Dr,04530,"1 Chandler Dr, Bath, ME 04530",43.9062,-69.8266,zip_centroid,zip_centroid
+1609,Shaw's,shaws,670 Bath Rd,04578,"670 Bath Rd, Wiscasset, ME 04578",44.0074,-69.6826,zip_centroid,zip_centroid
+2552,Shaw's,shaws,150 Western Ave,04330,"150 Western Ave, Augusta, ME 04330",44.3232,-69.7665,zip_centroid,zip_centroid
+3548,Shaw's,shaws,235 Camden St,04841,"235 Camden St, Rockland, ME 04841",44.1123,-69.1139,zip_centroid,zip_centroid
+3551,Shaw's,shaws,251 Kennedy Memorial Dr,04901,"251 Kennedy Memorial Dr, Waterville, ME 04901",44.5543,-69.6178,zip_centroid,zip_centroid
+4556,Shaw's,shaws,353 Main St,04401,"353 Main St, Bangor, ME 04401",44.8242,-68.7918,zip_centroid,zip_centroid
+57,Shaw's,shaws,175 High St,04605,"175 High St, Ellsworth, ME 04605",44.5548,-68.4121,zip_centroid,zip_centroid
+629,Shaw's,shaws,1073 W Main St,04426,"1073 W Main St, Dover Foxcroft, ME 04426",45.1877,-69.2045,zip_centroid,zip_centroid
+47,Albertsons,albertsons,511 Central Ave,59102,"511 Central Ave, Billings, MT 59102",45.7813,-108.5727,zip_centroid,zip_centroid
+4025,Albertsons,albertsons,611 N 27th St,59101,"611 N 27th St, Billings, MT 59101",45.7745,-108.5005,zip_centroid,zip_centroid
+630,Albertsons,albertsons,2334 Central Ave,59102,"2334 Central Ave, Billings, MT 59102",45.7813,-108.5727,zip_centroid,zip_centroid
+38,Albertsons,albertsons,1212 Grand Ave,59102,"1212 Grand Ave, Billings, MT 59102",45.7813,-108.5727,zip_centroid,zip_centroid
+1227,Albertsons,albertsons,670 Main St,59105,"670 Main St, Billings, MT 59105",45.9497,-108.599,zip_centroid,zip_centroid
+4041,Albertsons,albertsons,3137 Grand Ave,59102,"3137 Grand Ave, Billings, MT 59102",45.7813,-108.5727,zip_centroid,zip_centroid
+3447,Albertsons,albertsons,205 S 1st Ave,59044,"205 S 1st Ave, Laurel, MT 59044",45.6745,-108.769,zip_centroid,zip_centroid
+3367,Albertsons,albertsons,5317 Grand Ave,59106,"5317 Grand Ave, Billings, MT 59106",45.7753,-108.6519,zip_centroid,zip_centroid
+42,Albertsons,albertsons,2120 W Park St,59047,"2120 W Park St, Livingston, MT 59047",45.6546,-110.5609,zip_centroid,zip_centroid
+19,Albertsons,albertsons,117 W Janeaux St,59457,"117 W Janeaux St, Lewistown, MT 59457",47.0563,-109.4203,zip_centroid,zip_centroid
+2999,Safeway,safeway,1735 W Main St,59715,"1735 W Main St, Bozeman, MT 59715",45.6693,-111.0431,zip_centroid,zip_centroid
+6,Albertsons,albertsons,200 S 23rd Ave,59718,"200 S 23rd Ave, Bozeman, MT 59718",45.6681,-111.2404,zip_centroid,zip_centroid
+9,Albertsons,albertsons,6999 Jackrabbit Ln,59714,"6999 Jackrabbit Ln, Belgrade, MT 59714",45.7801,-111.1439,zip_centroid,zip_centroid
+39,Albertsons,albertsons,519 S Haynes Ave,59301,"519 S Haynes Ave, Miles City, MT 59301",46.4075,-105.8332,zip_centroid,zip_centroid
+1486,Safeway,safeway,611 N Montana Ave,59601,"611 N Montana Ave, Helena, MT 59601",46.6131,-112.0213,zip_centroid,zip_centroid
+4008,Albertsons,albertsons,3151 N Montana Ave,59602,"3151 N Montana Ave, Helena, MT 59602",46.7074,-111.958,zip_centroid,zip_centroid
+37,Albertsons,albertsons,2250 10th Ave S,59405,"2250 10th Ave S, Great Falls, MT 59405",47.495,-111.2502,zip_centroid,zip_centroid
+35,Albertsons,albertsons,1414 3rd St NW,59404,"1414 3rd St NW, Great Falls, MT 59404",47.5098,-111.3405,zip_centroid,zip_centroid
+2013,Albertsons,albertsons,30 S 3rd St E,59538,"30 S 3rd St E, Malta, MT 59538",48.3692,-107.8408,zip_centroid,zip_centroid
+3435,Albertsons,albertsons,1005 W Coulter Ave,82435,"1005 W Coulter Ave, Powell, WY 82435",44.7561,-108.7773,zip_centroid,zip_centroid
+3279,Safeway,safeway,2500 Massachusetts Ave,59701,"2500 Massachusetts Ave, Butte, MT 59701",45.9979,-112.5988,zip_centroid,zip_centroid
+614,Albertsons,albertsons,130 5th Ave N,59474,"130 5th Ave N, Shelby, MT 59474",48.5037,-111.8391,zip_centroid,zip_centroid
+33,Albertsons,albertsons,501 W Main St,59427,"501 W Main St, Cut Bank, MT 59427",48.6603,-112.3654,zip_centroid,zip_centroid
+1158,Safeway,safeway,201 N Main St,59722,"201 N Main St, Deer Lodge, MT 59722",46.3881,-112.7476,zip_centroid,zip_centroid
+259,Safeway,safeway,310 W Front St,59701,"310 W Front St, Butte, MT 59701",45.9979,-112.5988,zip_centroid,zip_centroid
+4022,Albertsons,albertsons,1300 E Park Ave,59711,"1300 E Park Ave, Anaconda, MT 59711",46.1299,-112.9739,zip_centroid,zip_centroid
+1646,Safeway,safeway,146 South Shore Route,59860,"146 South Shore Route, Polson, MT 59860",47.6876,-114.1404,zip_centroid,zip_centroid
+24,Albertsons,albertsons,1003 E Broadway St,59802,"1003 E Broadway St, Missoula, MT 59802",46.9006,-114.0027,zip_centroid,zip_centroid
+832,Albertsons,albertsons,117 Main St S,59526,"117 Main St S, Harlem, MT 59526",48.5398,-108.7693,zip_centroid,zip_centroid
+43,Albertsons,albertsons,2230 N Reserve St,59808,"2230 N Reserve St, Missoula, MT 59808",46.9776,-114.0619,zip_centroid,zip_centroid
+20,Albertsons,albertsons,2205 Oxford St,59801,"2205 Oxford St, Missoula, MT 59801",46.8563,-114.0252,zip_centroid,zip_centroid
+1010,Albertsons,albertsons,3800 Russell St,59801,"3800 Russell St, Missoula, MT 59801",46.8563,-114.0252,zip_centroid,zip_centroid
+18,Albertsons,albertsons,900 W Idaho St,59901,"900 W Idaho St, Kalispell, MT 59901",48.2028,-114.3039,zip_centroid,zip_centroid
+2106,Safeway,safeway,6580 Hwy 93 S,59937,"6580 Hwy 93 S, Whitefish, MT 59937",48.404,-114.3509,zip_centroid,zip_centroid
+1581,Safeway,safeway,570 N Montana St,59725,"570 N Montana St, Dillon, MT 59725",45.2339,-112.6405,zip_centroid,zip_centroid
+4040,Albertsons,albertsons,1313 N 1st St,59840,"1313 N 1st St, Hamilton, MT 59840",46.2395,-114.1679,zip_centroid,zip_centroid
+3269,Safeway,safeway,101 E Main St,59840,"101 E Main St, Hamilton, MT 59840",46.2395,-114.1679,zip_centroid,zip_centroid
+2954,Safeway,safeway,6519 S Main St,83805,"6519 S Main St, Bonners Ferry, ID 83805",48.7306,-116.3322,zip_centroid,zip_centroid
+350,Safeway,safeway,702 N 5th Ave,83864,"702 N 5th Ave, Sandpoint, ID 83864",48.312,-116.5332,zip_centroid,zip_centroid
+254,Safeway,safeway,161 W Prairie Ave,83835,"161 W Prairie Ave, Hayden, ID 83835",47.7989,-116.7423,zip_centroid,zip_centroid
+3368,Jewel-Osco,jewelosco,550 N State St,60654,"550 N State St, Chicago, IL 60654",41.8923,-87.6373,zip_centroid,zip_centroid
+3376,Jewel-Osco,jewelosco,370 N Des Plaines St,60661,"370 N Des Plaines St, Chicago, IL 60661",41.8814,-87.643,zip_centroid,zip_centroid
+3234,Jewel-Osco,jewelosco,102 W Division St,60610,"102 W Division St, Chicago, IL 60610",41.9033,-87.6336,zip_centroid,zip_centroid
+3345,Jewel-Osco,jewelosco,1224 S Wabash Ave,60605,"1224 S Wabash Ave, Chicago, IL 60605",41.8713,-87.6277,zip_centroid,zip_centroid
+3546,Jewel-Osco,jewelosco,424 W Division St,60610,"424 W Division St, Chicago, IL 60610",41.9033,-87.6336,zip_centroid,zip_centroid
+4500,Jewel-Osco,jewelosco,1340 S Canal St,60607,"1340 S Canal St, Chicago, IL 60607",41.8721,-87.6578,zip_centroid,zip_centroid
+1241,Jewel-Osco,jewelosco,1341 N Paulina St,60622,"1341 N Paulina St, Chicago, IL 60622",41.9019,-87.6779,zip_centroid,zip_centroid
+3344,Jewel-Osco,jewelosco,1220 S Ashland Ave,60608,"1220 S Ashland Ave, Chicago, IL 60608",41.8515,-87.6694,zip_centroid,zip_centroid
+4043,Jewel-Osco,jewelosco,443 E 34th St,60616,"443 E 34th St, Chicago, IL 60616",41.8426,-87.6306,zip_centroid,zip_centroid
+202,Jewel-Osco,jewelosco,2550 N Clybourn Ave,60614,"2550 N Clybourn Ave, Chicago, IL 60614",41.9229,-87.6483,zip_centroid,zip_centroid
+3441,Jewel-Osco,jewelosco,2940 N Ashland Ave,60657,"2940 N Ashland Ave, Chicago, IL 60657",41.9399,-87.6528,zip_centroid,zip_centroid
+3514,Jewel-Osco,jewelosco,3531 N Broadway St,60657,"3531 N Broadway St, Chicago, IL 60657",41.9399,-87.6528,zip_centroid,zip_centroid
+3632,Jewel-Osco,jewelosco,3630 N Southport Ave,60613,"3630 N Southport Ave, Chicago, IL 60613",41.9543,-87.6575,zip_centroid,zip_centroid
+2602,Jewel-Osco,jewelosco,3644 S Archer Ave,60609,"3644 S Archer Ave, Chicago, IL 60609",41.8097,-87.6533,zip_centroid,zip_centroid
+901,Jewel-Osco,jewelosco,3400 N Western Ave,60618,"3400 N Western Ave, Chicago, IL 60618",41.9464,-87.7042,zip_centroid,zip_centroid
+3455,Jewel-Osco,jewelosco,4355 N Sheridan Rd,60613,"4355 N Sheridan Rd, Chicago, IL 60613",41.9543,-87.6575,zip_centroid,zip_centroid
+3454,Jewel-Osco,jewelosco,4250 N Lincoln Ave,60618,"4250 N Lincoln Ave, Chicago, IL 60618",41.9464,-87.7042,zip_centroid,zip_centroid
+3470,Jewel-Osco,jewelosco,3570 N Elston Ave,60618,"3570 N Elston Ave, Chicago, IL 60618",41.9464,-87.7042,zip_centroid,zip_centroid
+3443,Jewel-Osco,jewelosco,5343 N Broadway,60640,"5343 N Broadway, Chicago, IL 60640",41.9719,-87.6624,zip_centroid,zip_centroid
+3407,Jewel-Osco,jewelosco,5516 N Clark St,60640,"5516 N Clark St, Chicago, IL 60640",41.9719,-87.6624,zip_centroid,zip_centroid
+3082,Jewel-Osco,jewelosco,6014 S Cottage Grove,60637,"6014 S Cottage Grove, Chicago, IL 60637",41.7813,-87.6051,zip_centroid,zip_centroid
+3262,Jewel-Osco,jewelosco,4660 W Irving Park Rd,60641,"4660 W Irving Park Rd, Chicago, IL 60641",41.9453,-87.7474,zip_centroid,zip_centroid
+3442,Jewel-Osco,jewelosco,4042 W Foster Ave,60630,"4042 W Foster Ave, Chicago, IL 60630",41.9699,-87.7603,zip_centroid,zip_centroid
+3170,Jewel-Osco,jewelosco,5320 S Pulaski Rd,60632,"5320 S Pulaski Rd, Chicago, IL 60632",41.8093,-87.7052,zip_centroid,zip_centroid
+288,Jewel-Osco,jewelosco,438 W Madison St,60302,"438 W Madison St, Oak Park, IL 60302",41.8925,-87.7895,zip_centroid,zip_centroid
+3721,Jewel-Osco,jewelosco,6107 S Archer Ave,60638,"6107 S Archer Ave, Chicago, IL 60638",41.7814,-87.7705,zip_centroid,zip_centroid
+3236,Jewel-Osco,jewelosco,7036 Roosevelt Rd,60304,"7036 Roosevelt Rd, Oak Park, IL 60304",41.8725,-87.7877,zip_centroid,zip_centroid
+1403,Jewel-Osco,jewelosco,7122 40th St,60402,"7122 40th St, Stickney, IL 60402",41.8347,-87.7914,zip_centroid,zip_centroid
+3223,Jewel-Osco,jewelosco,7525 W Lake St,60305,"7525 W Lake St, River Forest, IL 60305",41.8951,-87.8159,zip_centroid,zip_centroid
+230,Jewel-Osco,jewelosco,7530 S Stony Island Ave,60649,"7530 S Stony Island Ave, Chicago, IL 60649",41.762,-87.5703,zip_centroid,zip_centroid
+3181,Jewel-Osco,jewelosco,87 W 87th St,60620,"87 W 87th St, Chicago, IL 60620",41.7411,-87.6543,zip_centroid,zip_centroid
+3176,Jewel-Osco,jewelosco,9400 S Ashland Ave,60620,"9400 S Ashland Ave, Chicago, IL 60620",41.7411,-87.6543,zip_centroid,zip_centroid
+4060,Jewel-Osco,jewelosco,7910 S Cicero Ave,60459,"7910 S Cicero Ave, Burbank, IL 60459",41.7447,-87.7699,zip_centroid,zip_centroid
+92,Jewel-Osco,jewelosco,1655 E 95th St,60617,"1655 E 95th St, Chicago, IL 60617",41.7257,-87.556,zip_centroid,zip_centroid
+607,Jewel-Osco,jewelosco,9424 S Pulaski Rd,60453,"9424 S Pulaski Rd, Oak Lawn, IL 60453",41.7143,-87.7516,zip_centroid,zip_centroid
+1214,Jewel-Osco,jewelosco,3128 W 103rd St,60655,"3128 W 103rd St, Chicago, IL 60655",41.6948,-87.7038,zip_centroid,zip_centroid
+157,Jewel-Osco,jewelosco,4650 W 103rd St,60453,"4650 W 103rd St, Oak Lawn, IL 60453",41.7143,-87.7516,zip_centroid,zip_centroid
+86,Jewel-Osco,jewelosco,8801 S Ridgeland Ave,60453,"8801 S Ridgeland Ave, Oak Lawn, IL 60453",41.7143,-87.7516,zip_centroid,zip_centroid
+3349,Jewel-Osco,jewelosco,2520 N Narragansett Ave,60639,"2520 N Narragansett Ave, Chicago, IL 60639",41.9202,-87.7535,zip_centroid,zip_centroid
+3538,Jewel-Osco,jewelosco,1763 W Howard St,60626,"1763 W Howard St, Chicago, IL 60626",42.0095,-87.6689,zip_centroid,zip_centroid
+3487,Jewel-Osco,jewelosco,2485 Howard St,60202,"2485 Howard St, Evanston, IL 60202",42.0302,-87.6865,zip_centroid,zip_centroid
+1282,Jewel-Osco,jewelosco,4729 N Central Ave,60630,"4729 N Central Ave, Chicago, IL 60630",41.9699,-87.7603,zip_centroid,zip_centroid
+3428,Jewel-Osco,jewelosco,1128 Chicago Ave,60202,"1128 Chicago Ave, Evanston, IL 60202",42.0302,-87.6865,zip_centroid,zip_centroid
+187,Jewel-Osco,jewelosco,11730 S Marshfield Ave,60643,"11730 S Marshfield Ave, Chicago, IL 60643",41.6996,-87.6628,zip_centroid,zip_centroid
+2504,Jewel-Osco,jewelosco,3243 W 115th St,60803,"3243 W 115th St, Merrionette Park, IL 60803",41.6721,-87.7357,zip_centroid,zip_centroid
+63,Jewel-Osco,jewelosco,763 E 162nd St,60473,"763 E 162nd St, South Holland, IL 60473",41.5979,-87.5938,zip_centroid,zip_centroid
+3098,Jewel-Osco,jewelosco,12001 S Pulaski Rd,60803,"12001 S Pulaski Rd, Alsip, IL 60803",41.6721,-87.7357,zip_centroid,zip_centroid
+3188,Jewel-Osco,jewelosco,17705 S Halsted St,60430,"17705 S Halsted St, Homewood, IL 60430",41.5556,-87.6616,zip_centroid,zip_centroid
+3224,Jewel-Osco,jewelosco,6430 W Irving Park Rd,60634,"6430 W Irving Park Rd, Chicago, IL 60634",41.9463,-87.8061,zip_centroid,zip_centroid
+3484,Jewel-Osco,jewelosco,5667 W Touhy Ave,60714,"5667 W Touhy Ave, Niles, IL 60714",42.0312,-87.8112,zip_centroid,zip_centroid
+1296,Jewel-Osco,jewelosco,7342 W Foster Ave,60656,"7342 W Foster Ave, Chicago, IL 60656",41.9735,-87.8658,zip_centroid,zip_centroid
+4029,Jewel-Osco,jewelosco,9528 S Roberts Rd,60457,"9528 S Roberts Rd, Hickory Hills, IL 60457",41.7262,-87.8289,zip_centroid,zip_centroid
+3290,Jewel-Osco,jewelosco,800 W North Ave,60160,"800 W North Ave, Melrose Park, IL 60160",41.9003,-87.8581,zip_centroid,zip_centroid
+2265,Jewel-Osco,jewelosco,507 E Woodlawn Ave,60526,"507 E Woodlawn Ave, La Grange Park, IL 60526",41.8318,-87.874,zip_centroid,zip_centroid
+3456,Jewel-Osco,jewelosco,411 N Green Bay Rd,60091,"411 N Green Bay Rd, Wilmette, IL 60091",42.0765,-87.7246,zip_centroid,zip_centroid
+3465,Jewel-Osco,jewelosco,9449 N Skokie Blvd,60077,"9449 N Skokie Blvd, Skokie, IL 60077",42.0345,-87.7541,zip_centroid,zip_centroid
+3471,Jewel-Osco,jewelosco,1517 Sheridan Rd,60091,"1517 Sheridan Rd, Wilmette, IL 60091",42.0765,-87.7246,zip_centroid,zip_centroid
+2363,Jewel-Osco,jewelosco,5616 W 159th St,60452,"5616 W 159th St, Oak Forest, IL 60452",41.6077,-87.7542,zip_centroid,zip_centroid
+3053,Jewel-Osco,jewelosco,12803 S Harlem Ave,60463,"12803 S Harlem Ave, Palos Heights, IL 60463",41.6621,-87.7927,zip_centroid,zip_centroid
+659,Jewel-Osco,jewelosco,3153 W 183rd,60430,"3153 W 183rd, Homewood, IL 60430",41.5556,-87.6616,zip_centroid,zip_centroid
+3477,Jewel-Osco,jewelosco,4734 N Cumberland Ave,60656,"4734 N Cumberland Ave, Chicago, IL 60656",41.9735,-87.8658,zip_centroid,zip_centroid
+3446,Jewel-Osco,jewelosco,7900 Milwaukee Ave,60714,"7900 Milwaukee Ave, Niles, IL 60714",42.0312,-87.8112,zip_centroid,zip_centroid
+3481,Jewel-Osco,jewelosco,481 Busse Hwy,60068,"481 Busse Hwy, Park Ridge, IL 60068",42.0122,-87.8417,zip_centroid,zip_centroid
+3429,Jewel-Osco,jewelosco,8730 W Dempster,60714,"8730 W Dempster, Niles, IL 60714",42.0312,-87.8112,zip_centroid,zip_centroid
+3425,Jewel-Osco,jewelosco,1500 S Lee St,60018,"1500 S Lee St, Des Plaines, IL 60018",42.0155,-87.8687,zip_centroid,zip_centroid
+4057,Jewel-Osco,jewelosco,10203 W Grand Ave,60131,"10203 W Grand Ave, Franklin Park, IL 60131",41.9339,-87.8734,zip_centroid,zip_centroid
+1,Jewel-Osco,jewelosco,1340 Patriot Blvd,60026,"1340 Patriot Blvd, Glenview, IL 60026",42.0698,-87.7878,zip_centroid,zip_centroid
+3165,Jewel-Osco,jewelosco,17117 S Harlem Ave,60477,"17117 S Harlem Ave, Tinley Park, IL 60477",41.5825,-87.805,zip_centroid,zip_centroid
+3167,Jewel-Osco,jewelosco,3220 Chicago Rd,60411,"3220 Chicago Rd, South Chicago Heights, IL 60411",41.5087,-87.5904,zip_centroid,zip_centroid
+754,Jewel-Osco,jewelosco,5545 S Brainard Ave,60525,"5545 S Brainard Ave, Countryside, IL 60525",41.7842,-87.8689,zip_centroid,zip_centroid
+4228,Jewel-Osco,jewelosco,2128 S Mannheim Rd,60154,"2128 S Mannheim Rd, Westchester, IL 60154",41.8524,-87.8845,zip_centroid,zip_centroid
+2160,Jewel-Osco,jewelosco,9652 W 131st St,60464,"9652 W 131st St, Palos Park, IL 60464",41.6624,-87.8521,zip_centroid,zip_centroid
+3051,Jewel-Osco,jewelosco,9350 W 159th St,60462,"9350 W 159th St, Orland Park, IL 60462",41.6194,-87.8423,zip_centroid,zip_centroid
+3473,Jewel-Osco,jewelosco,819 S Elmhurst Rd,60016,"819 S Elmhurst Rd, Des Plaines, IL 60016",42.0467,-87.8859,zip_centroid,zip_centroid
+3495,Jewel-Osco,jewelosco,1127 S York Rd,60106,"1127 S York Rd, Bensenville, IL 60106",41.9501,-87.945,zip_centroid,zip_centroid
+3341,Jewel-Osco,jewelosco,343 W Irving Park Rd,60191,"343 W Irving Park Rd, Wood Dale, IL 60191",41.9602,-87.981,zip_centroid,zip_centroid
+3220,Jewel-Osco,jewelosco,20 W Biesterfield,60007,"20 W Biesterfield, Elk Grove Village, IL 60007",42.0076,-87.9931,zip_centroid,zip_centroid
+3294,Jewel-Osco,jewelosco,140 W Lake St,60101,"140 W Lake St, Addison, IL 60101",41.9335,-88.0054,zip_centroid,zip_centroid
+3346,Jewel-Osco,jewelosco,153 Schiller St,60126,"153 Schiller St, Elmhurst, IL 60126",41.8927,-87.941,zip_centroid,zip_centroid
+3461,Jewel-Osco,jewelosco,1860 S Arlington Heights Rd,60005,"1860 S Arlington Heights Rd, Arlington Heights, IL 60005",42.0639,-87.9856,zip_centroid,zip_centroid
+3476,Jewel-Osco,jewelosco,333 E Euclid Ave,60056,"333 E Euclid Ave, Mount Prospect, IL 60056",42.0624,-87.9377,zip_centroid,zip_centroid
+3284,Jewel-Osco,jewelosco,33 E St Charles Rd,60181,"33 E St Charles Rd, Villa Park, IL 60181",41.8799,-87.9782,zip_centroid,zip_centroid
+3426,Jewel-Osco,jewelosco,2502 N Waukegan Rd,60025,"2502 N Waukegan Rd, Glenview, IL 60025",42.0758,-87.8223,zip_centroid,zip_centroid
+2219,Jewel-Osco,jewelosco,2775 Pfingsten Rd,60026,"2775 Pfingsten Rd, Glenview, IL 60026",42.0698,-87.7878,zip_centroid,zip_centroid
+1156,Jewel-Osco,jewelosco,446 S Washington Ave,60901,"446 S Washington Ave, Kankakee, IL 60901",41.1166,-87.8696,zip_centroid,zip_centroid
+2488,Jewel-Osco,jewelosco,655 Main St NW,60914,"655 Main St NW, Bourbonnais, IL 60914",41.1661,-87.879,zip_centroid,zip_centroid
+3745,Jewel-Osco,jewelosco,2707 E Division St,60416,"2707 E Division St, Diamond, IL 60416",41.2908,-88.2823,zip_centroid,zip_centroid
+3776,Jewel-Osco,jewelosco,2021 E Laraway Rd,60451,"2021 E Laraway Rd, New Lenox, IL 60451",41.5067,-87.9631,zip_centroid,zip_centroid
+52,Jewel-Osco,jewelosco,21164 S La Grange Rd,60423,"21164 S La Grange Rd, Frankfort, IL 60423",41.5094,-87.8248,zip_centroid,zip_centroid
+3178,Jewel-Osco,jewelosco,475 N Nelson Rd,60451,"475 N Nelson Rd, New Lenox, IL 60451",41.5067,-87.9631,zip_centroid,zip_centroid
+3730,Jewel-Osco,jewelosco,2051 Ridge Rd,60447,"2051 Ridge Rd, Minooka, IL 60447",41.4615,-88.2786,zip_centroid,zip_centroid
+1074,Jewel-Osco,jewelosco,1401 W Jefferson St,60435,"1401 W Jefferson St, Joliet, IL 60435",41.5454,-88.1299,zip_centroid,zip_centroid
+3192,Jewel-Osco,jewelosco,17930 Wolf Rd,60467,"17930 Wolf Rd, Orland Park, IL 60467",41.6018,-87.8899,zip_centroid,zip_centroid
+3084,Jewel-Osco,jewelosco,199 Brookforest Ave,60404,"199 Brookforest Ave, Shorewood, IL 60404",41.5076,-88.2169,zip_centroid,zip_centroid
+3741,Jewel-Osco,jewelosco,1414 N Division St,60450,"1414 N Division St, Morris, IL 60450",41.3672,-88.4178,zip_centroid,zip_centroid
+224,Jewel-Osco,jewelosco,1537 N Larkin,60435,"1537 N Larkin, Joliet, IL 60435",41.5454,-88.1299,zip_centroid,zip_centroid
+3720,Jewel-Osco,jewelosco,16625 W 159th St,60441,"16625 W 159th St, Lockport, IL 60441",41.593,-88.0507,zip_centroid,zip_centroid
+80,Jewel-Osco,jewelosco,2480 Route 59,60586,"2480 Route 59, Plainfield, IL 60586",41.5642,-88.2178,zip_centroid,zip_centroid
+1303,Jewel-Osco,jewelosco,14200 S Bell Rd,60491,"14200 S Bell Rd, Homer Glen, IL 60491",41.6028,-87.9599,zip_centroid,zip_centroid
+3381,Jewel-Osco,jewelosco,220 W Peace Rd,60178,"220 W Peace Rd, Sycamore, IL 60178",41.9911,-88.6928,zip_centroid,zip_centroid
+3503,Jewel-Osco,jewelosco,145 S Eastwood Dr,60098,"145 S Eastwood Dr, Woodstock, IL 60098",42.3198,-88.4477,zip_centroid,zip_centroid
+3272,Jewel-Osco,jewelosco,1320 Sycamore Rd,60115,"1320 Sycamore Rd, Dekalb, IL 60115",41.9008,-88.7548,zip_centroid,zip_centroid
+3198,Jewel-Osco,jewelosco,10090 HWY 47,60142,"10090 HWY 47, Huntley, IL 60142",42.1756,-88.4268,zip_centroid,zip_centroid
+3394,Jewel-Osco,jewelosco,13200 Village Green Dr,60142,"13200 Village Green Dr, Huntley, IL 60142",42.1756,-88.4268,zip_centroid,zip_centroid
+1256,Jewel-Osco,jewelosco,103 S Randall Rd,60102,"103 S Randall Rd, Algonquin, IL 60102",42.1641,-88.3064,zip_centroid,zip_centroid
+2517,Jewel-Osco,jewelosco,6140 Northwest Hwy,60014,"6140 Northwest Hwy, Crystal Lake, IL 60014",42.2308,-88.3324,zip_centroid,zip_centroid
+1518,Jewel-Osco,jewelosco,4222 W Elm St,60050,"4222 W Elm St, McHenry, IL 60050",42.3311,-88.2955,zip_centroid,zip_centroid
+1306,Jewel-Osco,jewelosco,1250 W Main St,60118,"1250 W Main St, West Dundee, IL 60118",42.0962,-88.2902,zip_centroid,zip_centroid
+2310,Jewel-Osco,jewelosco,1501 E Algonquin Rd,60102,"1501 E Algonquin Rd, Algonquin, IL 60102",42.1641,-88.3064,zip_centroid,zip_centroid
+3496,Jewel-Osco,jewelosco,696 Northwest Hwy,60013,"696 Northwest Hwy, Cary, IL 60013",42.2196,-88.2426,zip_centroid,zip_centroid
+3347,Jewel-Osco,jewelosco,800 N Main St,60119,"800 N Main St, Elburn, IL 60119",41.8824,-88.4611,zip_centroid,zip_centroid
+2313,Jewel-Osco,jewelosco,1660 Larkin Ave,60123,"1660 Larkin Ave, Elgin, IL 60123",42.0376,-88.3186,zip_centroid,zip_centroid
+3343,Jewel-Osco,jewelosco,375 Randall Rd,60177,"375 Randall Rd, South Elgin, IL 60177",41.9969,-88.2986,zip_centroid,zip_centroid
+2507,Jewel-Osco,jewelosco,800 NW Hwy 14,60021,"800 NW Hwy 14, Fox River Grove, IL 60021",42.1936,-88.2205,zip_centroid,zip_centroid
+3415,Jewel-Osco,jewelosco,2401 Route 12,60081,"2401 Route 12, Spring Grove, IL 60081",42.4413,-88.2237,zip_centroid,zip_centroid
+3291,Jewel-Osco,jewelosco,1040 Summit Ave,60120,"1040 Summit Ave, Elgin, IL 60120",42.0384,-88.2606,zip_centroid,zip_centroid
+3453,Jewel-Osco,jewelosco,1350 US Route 12,60020,"1350 US Route 12, Fox Lake, IL 60020",42.3937,-88.1648,zip_centroid,zip_centroid
+3331,Jewel-Osco,jewelosco,2073 Prairie St,60174,"2073 Prairie St, St Charles, IL 60174",41.9194,-88.307,zip_centroid,zip_centroid
+3515,Jewel-Osco,jewelosco,547 W Liberty St,60084,"547 W Liberty St, Wauconda, IL 60084",42.2636,-88.1333,zip_centroid,zip_centroid
+122,Jewel-Osco,jewelosco,2010 1st St A,61265,"2010 1st St A, Moline, IL 61265",41.4906,-90.498,zip_centroid,zip_centroid
+3770,Jewel-Osco,jewelosco,107 Avenue Of The Cities,61244,"107 Avenue Of The Cities, East Moline, IL 61244",41.5118,-90.4321,zip_centroid,zip_centroid
+3088,Jewel-Osco,jewelosco,1312 John Deere Expy,61282,"1312 John Deere Expy, Silvis, IL 61282",41.5007,-90.4126,zip_centroid,zip_centroid
+3073,Jewel-Osco,jewelosco,901 S Cottage Ave,61761,"901 S Cottage Ave, Normal, IL 61761",40.5124,-88.9883,zip_centroid,zip_centroid
+3775,Jewel-Osco,jewelosco,2103 N Veterans Pkwy,61704,"2103 N Veterans Pkwy, Bloomington, IL 61704",40.4705,-88.9433,zip_centroid,zip_centroid
+116,Jewel-Osco,jewelosco,2203 E Oakland Ave,61701,"2203 E Oakland Ave, Bloomington, IL 61701",40.4783,-88.9893,zip_centroid,zip_centroid
+2702,Jewel-Osco,jewelosco,234 E Veterans Pkwy,60560,"234 E Veterans Pkwy, Yorkville, IL 60560",41.6387,-88.4438,zip_centroid,zip_centroid
+3374,Jewel-Osco,jewelosco,465 N Route 47,60554,"465 N Route 47, Sugar Grove, IL 60554",41.7741,-88.4397,zip_centroid,zip_centroid
+81,Jewel-Osco,jewelosco,3795 Orchard Rd,60543,"3795 Orchard Rd, Oswego, IL 60543",41.6849,-88.3453,zip_centroid,zip_centroid
+4252,Jewel-Osco,jewelosco,1952 W Galena Blvd,60506,"1952 W Galena Blvd, Aurora, IL 60506",41.7664,-88.3446,zip_centroid,zip_centroid
+4138,Jewel-Osco,jewelosco,2540 US-30,60543,"2540 US-30, Oswego, IL 60543",41.6849,-88.3453,zip_centroid,zip_centroid
+3219,Jewel-Osco,jewelosco,119 S Randall Rd,60510,"119 S Randall Rd, Batavia, IL 60510",41.8482,-88.3098,zip_centroid,zip_centroid
+1190,Jewel-Osco,jewelosco,13460 S Rt 59,60585,"13460 S Rt 59, Plainfield, IL 60585",41.6558,-88.2203,zip_centroid,zip_centroid
+3191,Jewel-Osco,jewelosco,20 S Weber Rd,60446,"20 S Weber Rd, Romeoville, IL 60446",41.6404,-88.0696,zip_centroid,zip_centroid
+3650,Tom Thumb,tomthumb,14999 Preston Rd,75254,"14999 Preston Rd, Dallas, TX 75254",32.9503,-96.819,zip_centroid,zip_centroid
+2643,Tom Thumb,tomthumb,14280 Marsh Ln,75001,"14280 Marsh Ln, Addison, TX 75001",32.96,-96.8385,zip_centroid,zip_centroid
+4105,Tom Thumb,tomthumb,4625 Frankford Rd,75287,"4625 Frankford Rd, Dallas, TX 75287",33.0005,-96.8314,zip_centroid,zip_centroid
+3582,Tom Thumb,tomthumb,18212 Preston Rd,75252,"18212 Preston Rd, Dallas, TX 75252",32.9968,-96.7921,zip_centroid,zip_centroid
+269,Albertsons,albertsons,2150 N Josey Ln,75006,"2150 N Josey Ln, Carrollton, TX 75006",32.9657,-96.8825,zip_centroid,zip_centroid
+3637,Tom Thumb,tomthumb,1380 W Campbell Rd,75080,"1380 W Campbell Rd, Richardson, TX 75080",32.966,-96.7452,zip_centroid,zip_centroid
+1540,Tom Thumb,tomthumb,3757 Forest Ln,75244,"3757 Forest Ln, Dallas, TX 75244",32.9322,-96.8353,zip_centroid,zip_centroid
+3597,Tom Thumb,tomthumb,11920 Preston Rd,75230,"11920 Preston Rd, Dallas, TX 75230",32.8999,-96.7897,zip_centroid,zip_centroid
+4566,Market Street,shopmarketstreet,1929 Preston Rd,75093,"1929 Preston Rd, Plano, TX 75093",33.0299,-96.7889,zip_centroid,zip_centroid
+2526,Tom Thumb,tomthumb,819 Arapaho Rd,75080,"819 Arapaho Rd, Richardson, TX 75080",32.966,-96.7452,zip_centroid,zip_centroid
+3522,Tom Thumb,tomthumb,522 Royal Ln,75230,"522 Royal Ln, Dallas, TX 75230",32.8999,-96.7897,zip_centroid,zip_centroid
+2590,Tom Thumb,tomthumb,4112 N Josey Ln,75007,"4112 N Josey Ln, Carrollton, TX 75007",33.0033,-96.882,zip_centroid,zip_centroid
+2570,Tom Thumb,tomthumb,5968 W Parker Rd,75093,"5968 W Parker Rd, Plano, TX 75093",33.0299,-96.7889,zip_centroid,zip_centroid
+3641,Tom Thumb,tomthumb,3411 Custer Pkwy,75080,"3411 Custer Pkwy, Richardson, TX 75080",32.966,-96.7452,zip_centroid,zip_centroid
+2544,Tom Thumb,tomthumb,10455 N Central Expwy,75231,"10455 N Central Expwy, Dallas, TX 75231",32.8756,-96.7495,zip_centroid,zip_centroid
+2554,Tom Thumb,tomthumb,3100 Independence Pkwy,75075,"3100 Independence Pkwy, Plano, TX 75075",33.025,-96.7397,zip_centroid,zip_centroid
+2503,Tom Thumb,tomthumb,4001 Villanova St,75225,"4001 Villanova St, Dallas, TX 75225",32.8628,-96.7918,zip_centroid,zip_centroid
+3608,Tom Thumb,tomthumb,7700 Northwest Hwy,75225,"7700 Northwest Hwy, Dallas, TX 75225",32.8628,-96.7918,zip_centroid,zip_centroid
+3560,Tom Thumb,tomthumb,8698 Skillman St,75243,"8698 Skillman St, Dallas, TX 75243",32.9103,-96.7285,zip_centroid,zip_centroid
+2595,Tom Thumb,tomthumb,3945 Legacy Dr,75023,"3945 Legacy Dr, Plano, TX 75023",33.055,-96.7365,zip_centroid,zip_centroid
+2990,Tom Thumb,tomthumb,7117 Inwood Rd,75209,"7117 Inwood Rd, Dallas, TX 75209",32.8456,-96.826,zip_centroid,zip_centroid
+2642,Tom Thumb,tomthumb,5809 E Lovers Ln,75206,"5809 E Lovers Ln, Dallas, TX 75206",32.831,-96.7692,zip_centroid,zip_centroid
+4260,Albertsons,albertsons,2165 E Buckingham Dr,75081,"2165 E Buckingham Dr, Richardson, TX 75081",32.9462,-96.7058,zip_centroid,zip_centroid
+263,Market Street,shopmarketstreet,985 W Bethany Dr,75013,"985 W Bethany Dr, Allen, TX 75013",33.1186,-96.6773,zip_centroid,zip_centroid
+1788,Tom Thumb,tomthumb,7801 Alma Dr,75025,"7801 Alma Dr, Plano, TX 75025",33.0784,-96.7291,zip_centroid,zip_centroid
+3853,Tom Thumb,tomthumb,3001 Hardin Blvd,75070,"3001 Hardin Blvd, McKinney, TX 75070",33.1976,-96.6153,zip_centroid,zip_centroid
+4234,Albertsons,albertsons,3001 S Central Expy,75070,"3001 S Central Expy, McKinney, TX 75070",33.1976,-96.6153,zip_centroid,zip_centroid
+4561,Market Street,shopmarketstreet,6100 W El Dorado Pkwy,75070,"6100 W El Dorado Pkwy, McKinney, TX 75070",33.1976,-96.6153,zip_centroid,zip_centroid
+296,Tom Thumb,tomthumb,6800 W Virginia Pkwy,75071,"6800 W Virginia Pkwy, McKinney, TX 75071",33.1976,-96.6153,zip_centroid,zip_centroid
+4239,Tom Thumb,tomthumb,921 Westgate Way,75098,"921 Westgate Way, Wylie, TX 75098",33.0041,-96.5394,zip_centroid,zip_centroid
+11,Tom Thumb,tomthumb,11401 Coit Rd,75035,"11401 Coit Rd, Frisco, TX 75035",33.1377,-96.7524,zip_centroid,zip_centroid
+2581,Tom Thumb,tomthumb,4848 Preston Rd,75034,"4848 Preston Rd, Frisco, TX 75034",33.1499,-96.8241,zip_centroid,zip_centroid
+1783,Tom Thumb,tomthumb,2645 Arapaho Rd,75044,"2645 Arapaho Rd, Garland, TX 75044",32.9522,-96.6654,zip_centroid,zip_centroid
+685,Market Street,shopmarketstreet,4268 Legacy Dr,75034,"4268 Legacy Dr, Frisco, TX 75034",33.1499,-96.8241,zip_centroid,zip_centroid
+2578,Tom Thumb,tomthumb,2535 Firewheel Pkwy,75040,"2535 Firewheel Pkwy, Garland, TX 75040",32.9227,-96.6248,zip_centroid,zip_centroid
+2964,Tom Thumb,tomthumb,3070 N Goliad St,75087,"3070 N Goliad St, Rockwall, TX 75087",32.9492,-96.4418,zip_centroid,zip_centroid
+2963,Tom Thumb,tomthumb,5550 FM 423,75036,"5550 FM 423, Frisco, TX 75036",33.1499,-96.8241,zip_centroid,zip_centroid
+1781,Tom Thumb,tomthumb,106 N Denton Tap Rd,75019,"106 N Denton Tap Rd, Coppell, TX 75019",32.9673,-96.9805,zip_centroid,zip_centroid
+1564,Market Street,shopmarketstreet,700 N Denton Tap Rd,75019,"700 N Denton Tap Rd, Coppell, TX 75019",32.9673,-96.9805,zip_centroid,zip_centroid
+1785,Tom Thumb,tomthumb,1075 W FM3040,75067,"1075 W FM3040, Lewisville, TX 75067",33.0198,-96.9925,zip_centroid,zip_centroid
+3621,Tom Thumb,tomthumb,4010 N Macarthur Blvd,75038,"4010 N Macarthur Blvd, Irving, TX 75038",32.8653,-96.9905,zip_centroid,zip_centroid
+3652,Tom Thumb,tomthumb,745 Cross Timbers Rd,75028,"745 Cross Timbers Rd, Flower Mound, TX 75028",33.0383,-97.0745,zip_centroid,zip_centroid
+3565,Market Street,shopmarketstreet,3800 Long Prairie Rd,75028,"3800 Long Prairie Rd, Flower Mound, TX 75028",33.0383,-97.0745,zip_centroid,zip_centroid
+3575,Tom Thumb,tomthumb,2301 Justin Rd,75028,"2301 Justin Rd, Flower Mound, TX 75028",33.0383,-97.0745,zip_centroid,zip_centroid
+4191,Albertsons,albertsons,4351 FM 2181,76210,"4351 FM 2181, Corinth, TX 76210",33.1428,-97.0727,zip_centroid,zip_centroid
+1854,Tom Thumb,tomthumb,4301 Cross Timbers Rd,75028,"4301 Cross Timbers Rd, Flower Mound, TX 75028",33.0383,-97.0745,zip_centroid,zip_centroid
+2562,Market Street,shopmarketstreet,11999 Dallas Pkwy,75033,"11999 Dallas Pkwy, Frisco, TX 75033",33.2559,-96.8853,zip_centroid,zip_centroid
+3625,Tom Thumb,tomthumb,302 S Park Blvd,76051,"302 S Park Blvd, Grapevine, TX 76051",32.9328,-97.0808,zip_centroid,zip_centroid
+70,Tom Thumb,tomthumb,4000 Glade Rd,76034,"4000 Glade Rd, Colleyville, TX 76034",32.8872,-97.146,zip_centroid,zip_centroid
+106,Albertsons,albertsons,1155 N Main St,76039,"1155 N Main St, Euless, TX 76039",32.8582,-97.0832,zip_centroid,zip_centroid
+2580,Tom Thumb,tomthumb,100 W Southlake Blvd,76092,"100 W Southlake Blvd, Southlake, TX 76092",32.9485,-97.1524,zip_centroid,zip_centroid
+1860,Market Street,shopmarketstreet,5605 Colleyville Blvd,76034,"5605 Colleyville Blvd, Colleyville, TX 76034",32.8872,-97.146,zip_centroid,zip_centroid
+36,Albertsons,albertsons,2200 W Shady Grove Rd,75060,"2200 W Shady Grove Rd, Irving, TX 75060",32.8023,-96.9597,zip_centroid,zip_centroid
+1789,Tom Thumb,tomthumb,101 Trophy Lake Dr,76262,"101 Trophy Lake Dr, Trophy Club, TX 76262",33.0211,-97.2127,zip_centroid,zip_centroid
+12,Tom Thumb,tomthumb,1046 Market Wy,76226,"1046 Market Wy, Argyle, TX 76226",33.1062,-97.16,zip_centroid,zip_centroid
+1780,Tom Thumb,tomthumb,1000 Keller Pkwy,76248,"1000 Keller Pkwy, Keller, TX 76248",32.9276,-97.2489,zip_centroid,zip_centroid
+2609,Tom Thumb,tomthumb,612 Grapevine Hwy,76054,"612 Grapevine Hwy, Hurst, TX 76054",32.8558,-97.1755,zip_centroid,zip_centroid
+1262,Albertsons,albertsons,1300 Airport Freeway,76022,"1300 Airport Freeway, Bedford, TX 76022",32.8297,-97.1454,zip_centroid,zip_centroid
+4267,Albertsons,albertsons,6249 Rufe Snow Dr,76148,"6249 Rufe Snow Dr, Watauga, TX 76148",32.8621,-97.2508,zip_centroid,zip_centroid
+4152,Albertsons,albertsons,2321 W University Dr,76201,"2321 W University Dr, Denton, TX 76201",33.2289,-97.1314,zip_centroid,zip_centroid
+4151,Albertsons,albertsons,4400 Western Center Blvd,76137,"4400 Western Center Blvd, Fort Worth, TX 76137",32.8664,-97.2891,zip_centroid,zip_centroid
+3099,Tom Thumb,tomthumb,551 Laurence Dr,75032,"551 Laurence Dr, Rockwall, TX 75032",32.886,-96.4095,zip_centroid,zip_centroid
+1925,Tom Thumb,tomthumb,8805 Lakeview Pkwy,75088,"8805 Lakeview Pkwy, Rowlett, TX 75088",32.9031,-96.5472,zip_centroid,zip_centroid
+26,Tom Thumb,tomthumb,435 S FM 548,75126,"435 S FM 548, Forney, TX 75126",32.7491,-96.4598,zip_centroid,zip_centroid
+4265,Albertsons,albertsons,5710 Broadway Blvd,75043,"5710 Broadway Blvd, Garland, TX 75043",32.8565,-96.5999,zip_centroid,zip_centroid
+4788,Tom Thumb,tomthumb,3400 Beltline Rd,75182,"3400 Beltline Rd, Sunnyvale, TX 75182",32.797,-96.5616,zip_centroid,zip_centroid
+1784,Tom Thumb,tomthumb,1501 Pioneer Rd,75149,"1501 Pioneer Rd, Mesquite, TX 75149",32.7678,-96.6082,zip_centroid,zip_centroid
+2561,Tom Thumb,tomthumb,925 Northwest Hwy,75041,"925 Northwest Hwy, Garland, TX 75041",32.8794,-96.6411,zip_centroid,zip_centroid
+4129,Albertsons,albertsons,2828 Motley Dr,75150,"2828 Motley Dr, Mesquite, TX 75150",32.8154,-96.6307,zip_centroid,zip_centroid
+4289,Albertsons,albertsons,320 Casa Linda Plaza,75218,"320 Casa Linda Plaza, Dallas, TX 75218",32.8463,-96.6972,zip_centroid,zip_centroid
+3570,Tom Thumb,tomthumb,7331 Gaston Ave,75214,"7331 Gaston Ave, Dallas, TX 75214",32.8248,-96.7498,zip_centroid,zip_centroid
+2534,Tom Thumb,tomthumb,6333 E Mockingbird Ln,75214,"6333 E Mockingbird Ln, Dallas, TX 75214",32.8248,-96.7498,zip_centroid,zip_centroid
+3658,Tom Thumb,tomthumb,2755 N Collins St,76006,"2755 N Collins St, Arlington, TX 76006",32.7785,-97.0834,zip_centroid,zip_centroid
+4231,Albertsons,albertsons,215 N Carrier Pkwy,75050,"215 N Carrier Pkwy, Grand Prairie, TX 75050",32.7649,-97.0112,zip_centroid,zip_centroid
+2686,Tom Thumb,tomthumb,1701 Randol Mill Rd,76012,"1701 Randol Mill Rd, Arlington, TX 76012",32.754,-97.1348,zip_centroid,zip_centroid
+3569,Tom Thumb,tomthumb,3878 Oaklawn Ave #18,75219,"3878 Oaklawn Ave #18, Dallas, TX 75219",32.8132,-96.8142,zip_centroid,zip_centroid
+1973,Tom Thumb,tomthumb,7000 Snider Plaza,75205,"7000 Snider Plaza, Dallas, TX 75205",32.826,-96.7843,zip_centroid,zip_centroid
+3296,Tom Thumb,tomthumb,2380 Field St,75201,"2380 Field St, Dallas, TX 75201",32.7904,-96.8044,zip_centroid,zip_centroid
+3311,Tom Thumb,tomthumb,2727 Live Oak St,75204,"2727 Live Oak St, Dallas, TX 75204",32.8038,-96.7851,zip_centroid,zip_centroid
+1786,Tom Thumb,tomthumb,4215 S Carrier Pkwy,75052,"4215 S Carrier Pkwy, Grand Prairie, TX 75052",32.6605,-97.0311,zip_centroid,zip_centroid
+3617,Tom Thumb,tomthumb,2611 W Park Row Dr,76013,"2611 W Park Row Dr, Arlington, TX 76013",32.7199,-97.1442,zip_centroid,zip_centroid
+3614,Tom Thumb,tomthumb,315 S Hampton Rd,75208,"315 S Hampton Rd, Dallas, TX 75208",32.7492,-96.8389,zip_centroid,zip_centroid
+3563,Tom Thumb,tomthumb,633 W Wheatland Rd,75116,"633 W Wheatland Rd, Duncanville, TX 75116",32.6587,-96.9114,zip_centroid,zip_centroid
+4163,Albertsons,albertsons,5950 S Cooper St,76017,"5950 S Cooper St, Arlington, TX 76017",32.6555,-97.1599,zip_centroid,zip_centroid
+4272,Albertsons,albertsons,850 E Loop 820,76112,"850 E Loop 820, Fort Worth, TX 76112",32.7493,-97.2181,zip_centroid,zip_centroid
+4142,Albertsons,albertsons,301 SW Plaza Shopping Center,76016,"301 SW Plaza Shopping Center, Arlington, TX 76016",32.6889,-97.1905,zip_centroid,zip_centroid
+4133,Albertsons,albertsons,427 E FM 1382,75104,"427 E FM 1382, Cedar Hill, TX 75104",32.5885,-96.9438,zip_centroid,zip_centroid
+3623,Tom Thumb,tomthumb,210 E Pleasant Run Rd,75115,"210 E Pleasant Run Rd, Desoto, TX 75115",32.6041,-96.8653,zip_centroid,zip_centroid
+696,Market Street,shopmarketstreet,3145 E Broad St,76063,"3145 E Broad St, Mansfield, TX 76063",32.5773,-97.1416,zip_centroid,zip_centroid
+3042,Albertsons,albertsons,6220 US Hwy 287,76001,"6220 US Hwy 287, Arlington, TX 76001",32.6289,-97.1517,zip_centroid,zip_centroid
+1972,Tom Thumb,tomthumb,980 Hwy N 287,76063,"980 Hwy N 287, Mansfield, TX 76063",32.5773,-97.1416,zip_centroid,zip_centroid
+4789,Tom Thumb,tomthumb,4221 FM 1387,76065,"4221 FM 1387, Midlothian, TX 76065",32.4757,-96.9936,zip_centroid,zip_centroid
+4279,Albertsons,albertsons,833 NE Alsbury Blvd,76028,"833 NE Alsbury Blvd, Burleson, TX 76028",32.5316,-97.309,zip_centroid,zip_centroid
+104,Tom Thumb,tomthumb,1940 N Hwy 77,75165,"1940 N Hwy 77, Waxahachie, TX 75165",32.3808,-96.8374,zip_centroid,zip_centroid
+4277,Albertsons,albertsons,3525 Sycamore School Rd,76133,"3525 Sycamore School Rd, Fort Worth, TX 76133",32.6526,-97.3758,zip_centroid,zip_centroid
+232,Albertsons,albertsons,3563 Alton Rd,76109,"3563 Alton Rd, Fort Worth, TX 76109",32.7002,-97.3789,zip_centroid,zip_centroid
+3312,Tom Thumb,tomthumb,2400 W 7th St,76107,"2400 W 7th St, Fort Worth, TX 76107",32.7392,-97.3852,zip_centroid,zip_centroid
+2574,Tom Thumb,tomthumb,3100 S Hulen St,76109,"3100 S Hulen St, Fort Worth, TX 76109",32.7002,-97.3789,zip_centroid,zip_centroid
+4124,Albertsons,albertsons,7400 Oakmont Blvd,76132,"7400 Oakmont Blvd, Fort Worth, TX 76132",32.6711,-97.4056,zip_centroid,zip_centroid
+3622,Tom Thumb,tomthumb,6377 Camp Bowie Blvd,76116,"6377 Camp Bowie Blvd, Fort Worth, TX 76116",32.723,-97.4483,zip_centroid,zip_centroid
+4290,Albertsons,albertsons,480 Northwest Pkwy,76020,"480 Northwest Pkwy, Azle, TX 76020",32.9035,-97.5412,zip_centroid,zip_centroid
+4102,Albertsons,albertsons,1201 N Saginaw Blvd,76179,"1201 N Saginaw Blvd, Saginaw, TX 76179",32.9074,-97.4257,zip_centroid,zip_centroid
+4150,Albertsons,albertsons,6308 Lake Worth Blvd,76135,"6308 Lake Worth Blvd, Lake Worth, TX 76135",32.8248,-97.4519,zip_centroid,zip_centroid
+4223,Albertsons,albertsons,9300 Clifford St,76108,"9300 Clifford St, Fort Worth, TX 76108",32.7822,-97.4969,zip_centroid,zip_centroid
+4286,Albertsons,albertsons,6700 W Freeway,76116,"6700 W Freeway, Fort Worth, TX 76116",32.723,-97.4483,zip_centroid,zip_centroid
+4176,Albertsons,albertsons,225 E Spring St,76086,"225 E Spring St, Weatherford, TX 76086",32.7549,-97.7899,zip_centroid,zip_centroid
+4294,Albertsons,albertsons,210 W Katherine P Raines,76033,"210 W Katherine P Raines, Cleburne, TX 76033",32.3509,-97.4103,zip_centroid,zip_centroid
+361,Tom Thumb,tomthumb,1413 W Chapman Dr,76266,"1413 W Chapman Dr, Sanger, TX 76266",33.3563,-97.1814,zip_centroid,zip_centroid
+1545,United Supermarkets,shopunitedsupermarkets,1095 Judge Ely Blvd,79601,"1095 Judge Ely Blvd, Abilene, TX 79601",32.4682,-99.7182,zip_centroid,zip_centroid
+3547,United Supermarkets,shopunitedsupermarkets,920 N Willis St,79603,"920 N Willis St, Abilene, TX 79603",32.4679,-99.7619,zip_centroid,zip_centroid
+4548,United Supermarkets,shopunitedsupermarkets,3301 S 14th St,79605,"3301 S 14th St, Abilene, TX 79605",32.432,-99.7724,zip_centroid,zip_centroid
+679,Market Street,shopmarketstreet,4450 Buffalo Gap Rd,79606,"4450 Buffalo Gap Rd, Abilene, TX 79606",32.392,-99.7746,zip_centroid,zip_centroid
+167,United Supermarkets,shopunitedsupermarkets,521 S Access Rd W,79510,"521 S Access Rd W, Clyde, TX 79510",32.3803,-99.5184,zip_centroid,zip_centroid
+152,United Supermarkets,shopunitedsupermarkets,1207 W Walker St,76424,"1207 W Walker St, Breckenridge, TX 76424",32.7532,-98.9099,zip_centroid,zip_centroid
+554,United Supermarkets,shopunitedsupermarkets,300 E Commerce St,76801,"300 E Commerce St, Brownwood, TX 76801",31.7754,-98.9915,zip_centroid,zip_centroid
+4549,United Supermarkets,shopunitedsupermarkets,3500 College Ave,79549,"3500 College Ave, Snyder, TX 79549",32.7451,-100.9175,zip_centroid,zip_centroid
+620,United Supermarkets,shopunitedsupermarkets,1229 Hwy 16 S,76450,"1229 Hwy 16 S, Graham, TX 76450",33.0993,-98.5832,zip_centroid,zip_centroid
+146,United Supermarkets,shopunitedsupermarkets,202 N Main St,76380,"202 N Main St, Seymour, TX 76380",33.5914,-99.2587,zip_centroid,zip_centroid
+78,Market Street,shopmarketstreet,3121 Sunset Dr,76904,"3121 Sunset Dr, San Angelo, TX 76904",31.4194,-100.48,zip_centroid,zip_centroid
+612,United Supermarkets,shopunitedsupermarkets,123 N Broadway St,79356,"123 N Broadway St, Post, TX 79356",33.2017,-101.3922,zip_centroid,zip_centroid
+634,United Supermarkets,shopunitedsupermarkets,2720 Southwest Prkwy,76308,"2720 Southwest Prkwy, Wichita Falls, TX 76308",33.8633,-98.534,zip_centroid,zip_centroid
+417,Market Street,shopmarketstreet,4590 Kell Blvd,76309,"4590 Kell Blvd, Wichita Falls, TX 76309",33.8931,-98.5343,zip_centroid,zip_centroid
+1313,United Supermarkets,shopunitedsupermarkets,2900 Wilbarger Ave,76384,"2900 Wilbarger Ave, Vernon, TX 76384",34.1491,-99.303,zip_centroid,zip_centroid
+1216,United Supermarkets,shopunitedsupermarkets,4516 Old Jacksboro Hwy,76302,"4516 Old Jacksboro Hwy, Wichita Falls, TX 76302",33.8643,-98.494,zip_centroid,zip_centroid
+221,United Supermarkets,shopunitedsupermarkets,2522 Iowa Park Rd,76306,"2522 Iowa Park Rd, Wichita Falls, TX 76306",33.9519,-98.5145,zip_centroid,zip_centroid
+3214,United Supermarkets,shopunitedsupermarkets,1000 W 11th St,79252,"1000 W 11th St, Quanah, TX 79252",34.2955,-99.7494,zip_centroid,zip_centroid
+4515,United Supermarkets,shopunitedsupermarkets,311 S Ave D,76354,"311 S Ave D, Burkburnett, TX 76354",34.086,-98.5708,zip_centroid,zip_centroid
+2540,United Supermarkets,shopunitedsupermarkets,2302 Lubbock Hwy,79331,"2302 Lubbock Hwy, Lamesa, TX 79331",32.7367,-101.9569,zip_centroid,zip_centroid
+2211,United Supermarkets,shopunitedsupermarkets,615 S Hwy 84,79364,"615 S Hwy 84, Slaton, TX 79364",33.4373,-101.6435,zip_centroid,zip_centroid
+672,United Supermarkets,shopunitedsupermarkets,1002 Andrews Hwy,79701,"1002 Andrews Hwy, Midland, TX 79701",31.9896,-102.0626,zip_centroid,zip_centroid
+3674,Market Street,shopmarketstreet,4706 N Midkiff Rd,79705,"4706 N Midkiff Rd, Midland, TX 79705",32.0295,-102.0915,zip_centroid,zip_centroid
+671,United Supermarkets,shopunitedsupermarkets,3317 N Midland Dr,79707,"3317 N Midland Dr, Midland, TX 79707",32.0199,-102.1476,zip_centroid,zip_centroid
+675,Market Street,shopmarketstreet,4950 E 42nd St,79762,"4950 E 42nd St, Odessa, TX 79762",31.889,-102.3548,zip_centroid,zip_centroid
+2667,Safeway,safeway,700 S Greeley Hwy,82007,"700 S Greeley Hwy, Cheyenne, WY 82007",41.1084,-104.8107,zip_centroid,zip_centroid
+66,Albertsons,albertsons,5800 Yellowstone Rd,82009,"5800 Yellowstone Rd, Cheyenne, WY 82009",41.1836,-104.8023,zip_centroid,zip_centroid
+65,Albertsons,albertsons,3355 E Pershing Blvd,82001,"3355 E Pershing Blvd, Cheyenne, WY 82001",41.1437,-104.7962,zip_centroid,zip_centroid
+2466,Safeway,safeway,554 N 3rd St,82072,"554 N 3rd St, Laramie, WY 82072",41.4247,-105.4781,zip_centroid,zip_centroid
+2462,Safeway,safeway,1307 16th St,82201,"1307 16th St, Wheatland, WY 82201",42.0495,-104.9679,zip_centroid,zip_centroid
+467,Safeway,safeway,1900 E Richards St,82633,"1900 E Richards St, Douglas, WY 82633",42.7626,-105.3855,zip_centroid,zip_centroid
+62,Albertsons,albertsons,2625 E 2nd St,82609,"2625 E 2nd St, Casper, WY 82609",42.8406,-106.2806,zip_centroid,zip_centroid
+60,Albertsons,albertsons,1076 CY Ave,82604,"1076 CY Ave, Casper, WY 82604",42.8261,-106.3896,zip_centroid,zip_centroid
+876,Safeway,safeway,731 S Lemay Ave,80524,"731 S Lemay Ave, Fort Collins, CO 80524",40.5986,-105.0581,zip_centroid,zip_centroid
+2913,Safeway,safeway,2160 W Drake Rd Unit 6,80526,"2160 W Drake Rd Unit 6, Fort Collins, CO 80526",40.5473,-105.1076,zip_centroid,zip_centroid
+1552,Safeway,safeway,1426 E Harmony Rd,80525,"1426 E Harmony Rd, Fort Collins, CO 80525",40.5384,-105.0547,zip_centroid,zip_centroid
+1791,Safeway,safeway,1535 Main St,80550,"1535 Main St, Windsor, CO 80550",40.4837,-104.8994,zip_centroid,zip_centroid
+2918,Safeway,safeway,3526 W 10th St,80634,"3526 W 10th St, Greeley, CO 80634",40.4109,-104.7541,zip_centroid,zip_centroid
+2666,Safeway,safeway,4548 Centerplace Dr,80634,"4548 Centerplace Dr, Greeley, CO 80634",40.4109,-104.7541,zip_centroid,zip_centroid
+804,Safeway,safeway,1451 W Eisenhower Blvd,80537,"1451 W Eisenhower Blvd, Loveland, CO 80537",40.3849,-105.0916,zip_centroid,zip_centroid
+914,Safeway,safeway,2321 W Eisenhower Blvd,80537,"2321 W Eisenhower Blvd, Loveland, CO 80537",40.3849,-105.0916,zip_centroid,zip_centroid
+920,Safeway,safeway,451 E Wonderview Ave,80517,"451 E Wonderview Ave, Estes Park, CO 80517",40.3658,-105.5142,zip_centroid,zip_centroid
+2910,Safeway,safeway,1632 Hover Rd,80501,"1632 Hover Rd, Longmont, CO 80501",40.1779,-105.1009,zip_centroid,zip_centroid
+1116,Safeway,safeway,1050 Ken Pratt Blvd,80501,"1050 Ken Pratt Blvd, Longmont, CO 80501",40.1779,-105.1009,zip_centroid,zip_centroid
+1828,Safeway,safeway,8134 Colorado Blvd,80504,"8134 Colorado Blvd, Firestone, CO 80504",40.1306,-104.9504,zip_centroid,zip_centroid
+3342,Albertsons,albertsons,1323 Dewar Dr,82901,"1323 Dewar Dr, Rock Springs, WY 82901",41.606,-109.23,zip_centroid,zip_centroid
+2761,Safeway,safeway,1165 W Main St,82520,"1165 W Main St, Lander, WY 82520",42.9208,-108.5913,zip_centroid,zip_centroid
+637,Safeway,safeway,37500 US-40,80487,"37500 US-40, Steamboat Springs, CO 80487",40.6327,-106.9318,zip_centroid,zip_centroid
+67,Albertsons,albertsons,2610 S Douglas Hwy,82718,"2610 S Douglas Hwy, Gillette, WY 82718",43.9282,-105.5492,zip_centroid,zip_centroid
+64,Albertsons,albertsons,1865 Coffeen Ave,82801,"1865 Coffeen Ave, Sheridan, WY 82801",44.7849,-106.9648,zip_centroid,zip_centroid
+2061,Albertsons,albertsons,1825 17th St,82414,"1825 17th St, Cody, WY 82414",44.5231,-109.0756,zip_centroid,zip_centroid
+583,Safeway,safeway,1606 North Ave,57783,"1606 North Ave, Spearfish, SD 57783",44.4946,-103.865,zip_centroid,zip_centroid
+556,Safeway,safeway,601 Broadway,69361,"601 Broadway, Scottsbluff, NE 69361",41.872,-103.6619,zip_centroid,zip_centroid
+1554,Safeway,safeway,730 Mountain View Rd,57702,"730 Mountain View Rd, Rapid City, SD 57702",44.0036,-103.3589,zip_centroid,zip_centroid
+581,Safeway,safeway,2120 Mt Rushmore Rd,57701,"2120 Mt Rushmore Rd, Rapid City, SD 57701",44.1415,-103.2052,zip_centroid,zip_centroid
+183,Albertsons,albertsons,105 Buffalo Way,83001,"105 Buffalo Way, Jackson, WY 83001",43.4528,-110.7393,zip_centroid,zip_centroid
+2625,Safeway,safeway,681 Horizon Dr,81506,"681 Horizon Dr, Grand Junction, CO 81506",39.1032,-108.5491,zip_centroid,zip_centroid
+1533,Safeway,safeway,2901 F Rd,81504,"2901 F Rd, Grand Junction, CO 81504",39.0791,-108.4916,zip_centroid,zip_centroid
+897,Safeway,safeway,2512 Broadway,81507,"2512 Broadway, Grand Junction, CO 81507",39.0157,-108.6129,zip_centroid,zip_centroid
+631,Safeway,safeway,2131 N Frontage Rd W,81657,"2131 N Frontage Rd W, Vail, CO 81657",39.6512,-106.3234,zip_centroid,zip_centroid
+1863,Safeway,safeway,1550 Hwy 92,81416,"1550 Hwy 92, Delta, CO 81416",38.7349,-108.0604,zip_centroid,zip_centroid
+1568,Safeway,safeway,40 County Rd 804,80442,"40 County Rd 804, Fraser, CO 80442",39.945,-105.8172,zip_centroid,zip_centroid
+836,Safeway,safeway,1008 Summit Blvd,80443,"1008 Summit Blvd, Frisco, CO 80443",39.5589,-106.1332,zip_centroid,zip_centroid
+159,Albertsons,albertsons,330 E Benton St,83201,"330 E Benton St, Pocatello, ID 83201",42.8876,-112.4381,zip_centroid,zip_centroid
+138,Albertsons,albertsons,590 E 17th St,83404,"590 E 17th St, Idaho Falls, ID 83404",43.475,-112.0124,zip_centroid,zip_centroid
+145,Albertsons,albertsons,1705 W Broadway St,83402,"1705 W Broadway St, Idaho Falls, ID 83402",43.4934,-112.0578,zip_centroid,zip_centroid
+3174,Albertsons,albertsons,1901 S 25th E,83406,"1901 S 25th E, Ammon, ID 83406",43.4732,-111.9661,zip_centroid,zip_centroid
+171,Albertsons,albertsons,490 N 2nd E,83440,"490 N 2nd E, Rexburg, ID 83440",43.81,-111.789,zip_centroid,zip_centroid
+130,Albertsons,albertsons,911 N Main St,83333,"911 N Main St, Hailey, ID 83333",43.5239,-114.3064,zip_centroid,zip_centroid
+4139,Albertsons,albertsons,1221 Addison Ave E,83301,"1221 Addison Ave E, Twin Falls, ID 83301",42.5565,-114.4693,zip_centroid,zip_centroid
+165,Albertsons,albertsons,528 N Main St,83647,"528 N Main St, Mountain Home, ID 83647",43.1392,-115.6963,zip_centroid,zip_centroid
+184,Albertsons,albertsons,6560 S Federal Way,83716,"6560 S Federal Way, Boise, ID 83716",43.5345,-115.9711,zip_centroid,zip_centroid
+169,Albertsons,albertsons,909 E Parkcenter Blvd,83706,"909 E Parkcenter Blvd, Boise, ID 83706",43.5885,-116.191,zip_centroid,zip_centroid
+199,Albertsons,albertsons,1219 S Broadway Ave,83706,"1219 S Broadway Ave, Boise, ID 83706",43.5885,-116.191,zip_centroid,zip_centroid
+193,Albertsons,albertsons,1653 S Vista Ave,83705,"1653 S Vista Ave, Boise, ID 83705",43.5851,-116.2191,zip_centroid,zip_centroid
+101,Albertsons,albertsons,1650 W State St,83702,"1650 W State St, Boise, ID 83702",43.6322,-116.2052,zip_centroid,zip_centroid
+162,Albertsons,albertsons,5100 W Overland Rd,83705,"5100 W Overland Rd, Boise, ID 83705",43.5851,-116.2191,zip_centroid,zip_centroid
+189,Albertsons,albertsons,3614 W State St,83703,"3614 W State St, Boise, ID 83703",43.6601,-116.2524,zip_centroid,zip_centroid
+154,Albertsons,albertsons,1520 N Cole Rd,83704,"1520 N Cole Rd, Boise, ID 83704",43.633,-116.2951,zip_centroid,zip_centroid
+156,Albertsons,albertsons,7100 W State St,83714,"7100 W State St, Boise, ID 83714",43.7318,-116.2797,zip_centroid,zip_centroid
+3339,Albertsons,albertsons,10565 W Lake Hazel Rd,83709,"10565 W Lake Hazel Rd, Boise, ID 83709",43.5741,-116.2941,zip_centroid,zip_centroid
+160,Albertsons,albertsons,10500 W Overland Rd,83709,"10500 W Overland Rd, Boise, ID 83709",43.5741,-116.2941,zip_centroid,zip_centroid
+161,Albertsons,albertsons,10700 W Ustick Rd,83713,"10700 W Ustick Rd, Boise, ID 83713",43.634,-116.3419,zip_centroid,zip_centroid
+3337,Albertsons,albertsons,700 E Avalon St,83634,"700 E Avalon St, Kuna, ID 83634",43.487,-116.3819,zip_centroid,zip_centroid
+3065,Albertsons,albertsons,4657 S Eagle Rd,83642,"4657 S Eagle Rd, Meridian, ID 83642",43.615,-116.3975,zip_centroid,zip_centroid
+3195,Albertsons Market Street,albertsons,3499 E Fairview Ave,83642,"3499 E Fairview Ave, Meridian, ID 83642",43.615,-116.3975,zip_centroid,zip_centroid
+177,Albertsons,albertsons,4700 N Eagle Rd,83713,"4700 N Eagle Rd, Boise, ID 83713",43.634,-116.3419,zip_centroid,zip_centroid
+238,Albertsons,albertsons,1024 21st St,83501,"1024 21st St, Lewiston, ID 83501",46.3646,-116.8609,zip_centroid,zip_centroid
+383,Safeway,safeway,1320 S Blaine St,83843,"1320 S Blaine St, Moscow, ID 83843",46.7309,-116.9897,zip_centroid,zip_centroid
+3360,Albertsons,albertsons,132 E Lake St,83638,"132 E Lake St, McCall, ID 83638",44.8918,-116.0789,zip_centroid,zip_centroid
+3295,Safeway,safeway,1001 N 4th St,83814,"1001 N 4th St, Coeur D'Alene, ID 83814",47.6928,-116.785,zip_centroid,zip_centroid
+243,Safeway,safeway,220 Ironwood Dr,83814,"220 Ironwood Dr, Coeur d'Alene, ID 83814",47.6928,-116.785,zip_centroid,zip_centroid
+1470,Safeway,safeway,121 W Neider Ave,83815,"121 W Neider Ave, Coeur d'Alene, ID 83815",47.7248,-116.789,zip_centroid,zip_centroid
+168,Albertsons,albertsons,405 S Main St,83661,"405 S Main St, Payette, ID 83661",44.0782,-116.9203,zip_centroid,zip_centroid
+126,Albertsons,albertsons,640 Hwy 16,83617,"640 Hwy 16, Emmett, ID 83617",43.9089,-116.4927,zip_centroid,zip_centroid
+3194,Albertsons,albertsons,210 N Highbrook Way,83669,"210 N Highbrook Way, Star, ID 83669",43.7013,-116.4967,zip_centroid,zip_centroid
+103,Albertsons,albertsons,415 Cleveland Blvd,83605,"415 Cleveland Blvd, Caldwell, ID 83605",43.6627,-116.7,zip_centroid,zip_centroid
+182,Albertsons,albertsons,250 S Eagle Rd,83616,"250 S Eagle Rd, Eagle, ID 83616",43.7069,-116.362,zip_centroid,zip_centroid
+166,Albertsons,albertsons,2500 Blaine St,83605,"2500 Blaine St, Caldwell, ID 83605",43.6627,-116.7,zip_centroid,zip_centroid
+3366,Albertsons,albertsons,20 E Wyoming Ave,83628,"20 E Wyoming Ave, Homedale, ID 83628",43.6138,-116.9472,zip_centroid,zip_centroid
+180,Albertsons,albertsons,3301 W Cherry Ln,83642,"3301 W Cherry Ln, Meridian, ID 83642",43.615,-116.3975,zip_centroid,zip_centroid
+1602,Albertsons,albertsons,715 12th Ave S,83651,"715 12th Ave S, Nampa, ID 83651",43.5834,-116.5848,zip_centroid,zip_centroid
+176,Albertsons,albertsons,2400 12th Ave Rd,83686,"2400 12th Ave Rd, Nampa, ID 83686",43.5441,-116.566,zip_centroid,zip_centroid
+164,Albertsons,albertsons,20 E Fairview Ave,83642,"20 E Fairview Ave, Meridian, ID 83642",43.615,-116.3975,zip_centroid,zip_centroid
+720,Carrs,carrsqc,2920 Seward Hwy,99503,"2920 Seward Hwy, Anchorage, AK 99503",61.19,-149.8938,zip_centroid,zip_centroid
+1809,Carrs,carrsqc,5600 Debarr Rd,99504,"5600 Debarr Rd, Anchorage, AK 99504",61.2037,-149.7447,zip_centroid,zip_centroid
+1805,Carrs,carrsqc,1650 W Northern Lights Blvd,99517,"1650 W Northern Lights Blvd, Anchorage, AK 99517",61.1901,-149.9361,zip_centroid,zip_centroid
+1817,Carrs,carrsqc,7731 E Northern Lights Blvd,99504,"7731 E Northern Lights Blvd, Anchorage, AK 99504",61.2037,-149.7447,zip_centroid,zip_centroid
+2628,Carrs,carrsqc,1725 Abbott Rd,99507,"1725 Abbott Rd, Anchorage, AK 99507",61.1535,-149.8289,zip_centroid,zip_centroid
+1812,Carrs,carrsqc,4000 W Dimond Blvd,99502,"4000 W Dimond Blvd, Anchorage, AK 99502",61.1661,-149.96,zip_centroid,zip_centroid
+1813,Carrs,carrsqc,1501 Huffman Rd,99515,"1501 Huffman Rd, Anchorage, AK 99515",61.1194,-149.8974,zip_centroid,zip_centroid
+1807,Carrs,carrsqc,11409 Business Park Blvd,99577,"11409 Business Park Blvd, Eagle River, AK 99577",61.3114,-149.5085,zip_centroid,zip_centroid
+1811,Carrs,carrsqc,595 E Parks Hwy,99654,"595 E Parks Hwy, Wasilla, AK 99654",61.5923,-149.3959,zip_centroid,zip_centroid
+1839,Eagle,carrsqc,147 Hightower Rd,99587,"147 Hightower Rd, Girdwood, AK 99587",60.9577,-149.1406,zip_centroid,zip_centroid
+1739,Carrs,carrsqc,664 E Palmer-Wasilla Hwy,99645,"664 E Palmer-Wasilla Hwy, Palmer, AK 99645",61.6303,-148.9872,zip_centroid,zip_centroid
+1808,Safeway,safeway,10576 Kenai Spur Hwy,99611,"10576 Kenai Spur Hwy, Kenai, AK 99611",60.6145,-151.2546,zip_centroid,zip_centroid
+548,Safeway,safeway,44428 Sterling Hwy,99669,"44428 Sterling Hwy, Soldotna, AK 99669",60.4818,-151.1358,zip_centroid,zip_centroid
+2728,Safeway,safeway,1907 Seward Hwy,99664,"1907 Seward Hwy, Seward, AK 99664",60.1329,-149.3985,zip_centroid,zip_centroid
+1833,Safeway,safeway,1313 Meals St,99686,"1313 Meals St, Valdez, AK 99686",61.101,-146.9,zip_centroid,zip_centroid
+1832,Safeway,safeway,90 Sterling Hwy,99603,"90 Sterling Hwy, Homer, AK 99603",59.5374,-151.2356,zip_centroid,zip_centroid
+3410,Safeway,safeway,30 College Rd,99701,"30 College Rd, Fairbanks, AK 99701",64.8378,-147.7164,zip_centroid,zip_centroid
+2754,Safeway,safeway,3627 Airport Way,99709,"3627 Airport Way, Fairbanks, AK 99709",64.8544,-147.8469,zip_centroid,zip_centroid
+1821,Safeway,safeway,301 N Santa Claus Ln,99705,"301 N Santa Claus Ln, North Pole, AK 99705",64.7805,-147.3694,zip_centroid,zip_centroid

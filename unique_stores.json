@@ -1,0 +1,14 @@
+[
+  {
+    "retailer": "walmart",
+    "retailer_address": null,
+    "zip_code": "90036",
+    "retailer_key": null
+  },
+  {
+    "retailer": "target",
+    "retailer_address": null,
+    "zip_code": "33612",
+    "retailer_key": null
+  }
+]

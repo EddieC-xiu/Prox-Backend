@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prox — Grocery Price Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #222;
+    --accent: #c8f135;
+    --accent-dim: #a8d420;
+    --text: #f0f0f0;
+    --text-dim: #888;
+    --red: #ff4444;
+    --green: #c8f135;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .logo { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--accent); letter-spacing: -1px; }
+  .tagline { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
+
+  .api-status { margin-left: auto; display: flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-dim); }
+  .status-dot.online { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px; }
+
+  .tabs { display: flex; gap: 2px; margin-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .tab { padding: 12px 24px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .search-bar { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; align-items: flex-end; }
+  .input-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 120px; }
+  .input-group label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); }
+
+  input, select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; border-radius: 4px; outline: none; transition: border-color 0.2s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  input::placeholder { color: var(--text-dim); }
+
+  .btn { background: var(--accent); color: #000; border: none; padding: 12px 28px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 4px; align-self: flex-end; transition: all 0.2s; white-space: nowrap; }
+  .btn:hover { background: var(--accent-dim); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .loading { display: none; align-items: center; gap: 12px; color: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 12px; padding: 20px 0; }
+  .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .results-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; }
+  .results-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+  .results-count { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
+
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; cursor: pointer; transition: all 0.2s; }
+  .product-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .product-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; line-height: 1.4; }
+  .product-brand { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .product-meta { display: flex; justify-content: space-between; align-items: center; }
+  .price-range { font-family: 'DM Mono', monospace; font-size: 13px; }
+  .price-min { color: var(--accent); }
+  .price-sep { color: var(--text-dim); margin: 0 4px; }
+  .price-max { color: var(--text-dim); }
+  .retailer-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); background: var(--bg); padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); }
+
+  .compare-header { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 20px; }
+  .compare-product-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .compare-stats { display: flex; gap: 32px; margin-top: 16px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); }
+  .stat-value { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; }
+  .stat-value.accent { color: var(--accent); }
+
+  .size-tabs { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; align-items: center; }
+  .size-tab { font-family: 'DM Mono', monospace; font-size: 11px; padding: 5px 12px; border-radius: 3px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); transition: all 0.15s; }
+  .size-tab:hover { border-color: var(--accent); color: var(--text); }
+  .size-tab.active { border-color: var(--accent); background: rgba(200,241,53,0.15); color: var(--accent); }
+  .size-tab-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; align-self: center; }
+
+  .retailer-table { width: 100%; border-collapse: collapse; }
+  .retailer-table th { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .retailer-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .retailer-table tr:last-child td { border-bottom: none; }
+  .retailer-table tr:hover td { background: var(--surface); }
+
+  .quality-badge { font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 3px; letter-spacing: 1px; text-transform: uppercase; }
+  .quality-great    { background: rgba(200,241,53,0.15); color: var(--accent); }
+  .quality-good     { background: rgba(200,241,53,0.08); color: #8db520; }
+  .quality-fair     { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+  .quality-expensive{ background: rgba(255,68,68,0.1); color: var(--red); }
+
+  .price-cell { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; }
+  .savings-cell { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-dim); }
+  .savings-cell.positive { color: var(--accent); }
+  .savings-cell.negative { color: var(--red); }
+
+  .deals-list { display: flex; flex-direction: column; gap: 12px; }
+  .deal-row { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 24px; cursor: pointer; transition: all 0.2s; }
+  .deal-row:hover { border-color: var(--accent); }
+  .deal-name { font-size: 15px; font-weight: 500; }
+  .deal-brand { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 4px; text-transform: uppercase; }
+  .deal-savings { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--accent); text-align: right; }
+  .deal-savings-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+  .deal-prices { font-family: 'DM Mono', monospace; font-size: 12px; text-align: right; }
+  .deal-retailers { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); text-align: right; }
+
+  .error { background: rgba(255,68,68,0.1); border: 1px solid rgba(255,68,68,0.3); color: var(--red); padding: 16px; border-radius: 6px; font-family: 'DM Mono', monospace; font-size: 12px; }
+  .empty { color: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 13px; padding: 40px 0; text-align: center; }
+
+  .filters { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: flex-end; }
+  .filter-group { display: flex; flex-direction: column; gap: 6px; }
+  .filter-group label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); }
+  .rank-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); width: 24px; }
+
+  .location-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); background: rgba(200,241,53,0.1); border: 1px solid rgba(200,241,53,0.2); padding: 2px 8px; border-radius: 20px; margin-left: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">prox</div>
+    <div class="tagline">Grocery Price Intelligence</div>
+  </div>
+  <div class="api-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">checking api...</span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('search')">Search</button>
+    <button class="tab" onclick="switchTab('compare')">Compare</button>
+    <button class="tab" onclick="switchTab('deals')">Best Deals</button>
+  </div>
+
+  <!-- SEARCH TAB -->
+  <div class="tab-panel active" id="tab-search">
+    <div class="search-bar">
+      <div class="input-group" style="flex:3;min-width:200px">
+        <label>Product</label>
+        <input type="text" id="searchQ" placeholder="e.g. cheerios, eggo waffles, pasta sauce..." onkeydown="if(event.key==='Enter')doSearch()">
+      </div>
+      <div class="input-group" style="flex:0 0 70px">
+        <label>Limit</label>
+        <select id="searchLimit">
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="input-group" style="flex:0 0 110px">
+        <label>ZIP Code</label>
+        <input type="text" id="searchZip" placeholder="e.g. 92377" maxlength="5">
+      </div>
+      <div class="input-group" style="flex:0 0 100px">
+        <label>Radius</label>
+        <select id="searchRadius">
+          <option value="25">25 mi</option>
+          <option value="50">50 mi</option>
+          <option value="100">100 mi</option>
+          <option value="250">250 mi</option>
+        </select>
+      </div>
+      <button class="btn" onclick="doSearch()">Search</button>
+    </div>
+    <div class="loading" id="searchLoading"><div class="spinner"></div>Searching...</div>
+    <div id="searchResults"></div>
+  </div>
+
+  <!-- COMPARE TAB -->
+  <div class="tab-panel" id="tab-compare">
+    <div class="search-bar">
+      <div class="input-group" style="flex:3;min-width:200px">
+        <label>Product Name</label>
+        <input type="text" id="compareProduct" placeholder="e.g. eggo homestyle frozen waffles" onkeydown="if(event.key==='Enter')doCompare()">
+      </div>
+      <div class="input-group" style="flex:1;min-width:120px">
+        <label>Brand (optional)</label>
+        <input type="text" id="compareBrand" placeholder="e.g. kellogg's" onkeydown="if(event.key==='Enter')doCompare()">
+      </div>
+      <div class="input-group" style="flex:0 0 110px">
+        <label>ZIP Code</label>
+        <input type="text" id="compareZip" placeholder="e.g. 92377" maxlength="5">
+      </div>
+      <div class="input-group" style="flex:0 0 100px">
+        <label>Radius</label>
+        <select id="compareRadius">
+          <option value="25">25 mi</option>
+          <option value="50">50 mi</option>
+          <option value="100">100 mi</option>
+          <option value="250">250 mi</option>
+        </select>
+      </div>
+      <button class="btn" onclick="doCompare()">Compare</button>
+    </div>
+    <div class="loading" id="compareLoading"><div class="spinner"></div>Loading...</div>
+    <div id="compareResults"></div>
+  </div>
+
+  <!-- BEST DEALS TAB -->
+  <div class="tab-panel" id="tab-deals">
+    <div class="filters">
+      <div class="filter-group">
+        <label>Min Savings %</label>
+        <select id="dealsMinSavings">
+          <option value="10">10%+</option>
+          <option value="15" selected>15%+</option>
+          <option value="20">20%+</option>
+          <option value="30">30%+</option>
+          <option value="40">40%+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Min Retailers</label>
+        <select id="dealsMinRetailers">
+          <option value="2" selected>2+</option>
+          <option value="3">3+</option>
+          <option value="5">5+</option>
+          <option value="10">10+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Limit</label>
+        <select id="dealsLimit">
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <button class="btn" onclick="doDeals()">Load Deals</button>
+    </div>
+    <div class="loading" id="dealsLoading"><div class="spinner"></div>Loading deals...</div>
+    <div id="dealsResults"></div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8000';
+
+async function checkHealth() {
+  try {
+    const r = await fetch(`${API}/health`);
+    const dot = document.getElementById('statusDot');
+    const txt = document.getElementById('statusText');
+    if (r.ok) { dot.className = 'status-dot online'; txt.textContent = 'api online'; }
+    else { txt.textContent = 'api error'; }
+  } catch { document.getElementById('statusText').textContent = 'api offline'; }
+}
+checkHealth();
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', ['search','compare','deals'][i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+}
+
+function loading(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
+function fmt(n) { return Number(n).toFixed(2); }
+
+// ── SEARCH ───────────────────────────────────────────────────────────────────
+async function doSearch() {
+  const q = document.getElementById('searchQ').value.trim();
+  if (!q) return;
+  const limit  = document.getElementById('searchLimit').value;
+  const zip    = document.getElementById('searchZip').value.trim();
+  const radius = document.getElementById('searchRadius').value;
+  loading('searchLoading', true);
+  document.getElementById('searchResults').innerHTML = '';
+  try {
+    let url = `${API}/search?q=${encodeURIComponent(q)}&limit=${limit}`;
+    if (zip) url += `&zip_code=${zip}&radius_miles=${radius}`;
+    const r = await fetch(url);
+    const data = await r.json();
+    loading('searchLoading', false);
+    if (!r.ok) { showError('searchResults', data.detail); return; }
+    renderSearch(data, zip, radius);
+  } catch(e) {
+    loading('searchLoading', false);
+    showError('searchResults', 'Could not reach API — is the server running?');
+  }
+}
+
+function renderSearch(data, zip, radius) {
+  const el = document.getElementById('searchResults');
+  if (!data.results.length) {
+    el.innerHTML = '<div class="empty">No products found. Try a different search term.</div>';
+    return;
+  }
+  const locationTag = zip ? `<span class="location-tag">📍 ${zip} · ${radius}mi</span>` : '';
+  el.innerHTML = `
+    <div class="results-header">
+      <div class="results-title">Results ${locationTag}</div>
+      <div class="results-count">${data.count} products for "${data.query}"</div>
+    </div>
+    <div class="product-grid">
+      ${data.results.map(p => `
+        <div class="product-card" onclick="loadCompare('${p.canonical_product_name}', '${p.brand || ''}')">
+          <div class="product-name">${p.canonical_product_name}</div>
+          ${p.brand ? `<div class="product-brand">${p.brand}</div>` : ''}
+          <div class="product-meta">
+            <div class="price-range">
+              <span class="price-min">$${fmt(p.min_price)}</span>
+              <span class="price-sep">—</span>
+              <span class="price-max">$${fmt(p.max_price)}</span>
+            </div>
+            <div class="retailer-badge">${p.retailer_count} retailers</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px">
+      Click any product to compare prices across retailers →
+    </div>
+  `;
+}
+
+// ── COMPARE ──────────────────────────────────────────────────────────────────
+function loadCompare(product, brand) {
+  switchTab('compare');
+  document.getElementById('compareProduct').value = product;
+  document.getElementById('compareBrand').value = brand;
+  doCompare();
+}
+
+async function doCompare(sizeKey) {
+  const product = document.getElementById('compareProduct').value.trim();
+  const brand   = document.getElementById('compareBrand').value.trim();
+  const zip     = document.getElementById('compareZip').value.trim();
+  const radius  = document.getElementById('compareRadius').value;
+  if (!product) return;
+  loading('compareLoading', true);
+  document.getElementById('compareResults').innerHTML = '';
+  try {
+    let url = `${API}/compare?product=${encodeURIComponent(product)}`;
+    if (brand)   url += `&brand=${encodeURIComponent(brand)}`;
+    if (zip)     url += `&zip_code=${zip}&radius_miles=${radius}`;
+    if (sizeKey) url += `&size=${encodeURIComponent(sizeKey)}`;
+    const r = await fetch(url);
+    const data = await r.json();
+    loading('compareLoading', false);
+    if (!r.ok) { showError('compareResults', data.detail); return; }
+    renderCompare(data, zip, radius);
+  } catch(e) {
+    loading('compareLoading', false);
+    showError('compareResults', 'Could not reach API — is the server running?');
+  }
+}
+
+function renderCompare(data, zip, radius) {
+  const el = document.getElementById('compareResults');
+  const locationTag = zip ? `<span class="location-tag">📍 ${zip} · ${radius}mi</span>` : '';
+  const isPPU = data.compare_mode === 'price_per_oz';
+
+  // In PPU mode compute $/oz savings — avoids misleading % from bulk size vs small size
+  let savingsPct, bestPPU, worstPPU;
+  if (isPPU && data.retailers && data.retailers.length > 0) {
+    const ppus = data.retailers.map(r => r.price_per_oz).filter(p => p != null);
+    if (ppus.length >= 2) {
+      bestPPU    = Math.min(...ppus);
+      worstPPU   = Math.max(...ppus);
+      savingsPct = (((worstPPU - bestPPU) / worstPPU) * 100).toFixed(1);
+    } else {
+      savingsPct = data.savings_pct_vs_max ? data.savings_pct_vs_max.toFixed(1) : '0.0';
+    }
+  } else {
+    savingsPct = data.savings_pct_vs_max ? data.savings_pct_vs_max.toFixed(1) : '0.0';
+  }
+
+  // Size tabs — show if multiple sizes available (in PPU mode none are selected, show all)
+  const sizeTabs = data.available_sizes && data.available_sizes.length > 1 ? `
+    <div class="size-tabs">
+      <span class="size-tab-label">Size:</span>
+      ${data.available_sizes.map(s => {
+        const isPPU = s.size_key === 'ppu';
+        const label = isPPU ? 'Compare by $/oz' : `${s.size} · ${s.retailer_count} retailers`;
+        const extraStyle = isPPU ? 'border-style:dashed;margin-left:8px;' : '';
+        return `<button class="size-tab ${s.is_selected ? 'active' : ''}"
+          style="${extraStyle}"
+          onclick="doCompare('${s.size_key}')">
+          ${label}
+        </button>`;
+      }).join('')}
+    </div>
+  ` : '';
+
+  // Column header depends on mode
+  const vsAvgHeader = data.compare_mode === 'price_per_oz' ? '$/oz' : 'vs Avg';
+
+  el.innerHTML = `
+    <div class="compare-header">
+      <div class="compare-product-name">${data.product} ${locationTag}</div>
+      ${data.brand ? `<div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-top:2px">${data.brand}</div>` : ''}
+      ${data.compare_summary ? `<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;line-height:1.6">${data.compare_summary}</div>` : ''}
+      ${sizeTabs}
+      <div class="compare-stats">
+        <div class="stat">
+          <div class="stat-label">${isPPU ? 'Best $/oz' : 'Best Price'}</div>
+          <div class="stat-value accent">${isPPU && bestPPU ? '$'+bestPPU.toFixed(4)+'/oz' : '$'+fmt(data.min_price)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">${isPPU ? 'Worst $/oz' : 'Avg Price'}</div>
+          <div class="stat-value" style="color:var(--text-dim)">${isPPU && worstPPU ? '$'+worstPPU.toFixed(4)+'/oz' : '$'+fmt(data.avg_price)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">${isPPU ? '$/oz Savings' : 'Max Savings'}</div>
+          <div class="stat-value accent">${savingsPct}%</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Retailers</div>
+          <div class="stat-value">${data.retailer_count}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Best At</div>
+          <div class="stat-value" style="font-size:14px">${data.best_retailer || '—'}</div>
+        </div>
+      </div>
+    </div>
+    <table class="retailer-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Retailer</th>
+          <th>Price</th>
+          <th>${vsAvgHeader}</th>
+          <th>Rating</th>
+          <th>Why</th>
+          <th>ZIP</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.retailers.map((r, i) => `
+          <tr>
+            <td class="rank-num">${i + 1}</td>
+            <td>
+              ${r.retailer}
+              ${data.compare_mode === 'price_per_oz' && r.size ? `<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px">${r.size}</div>` : ''}
+            </td>
+            <td class="price-cell">$${fmt(r.price)}</td>
+            <td class="savings-cell ${r.vs_avg_pct < 0 ? 'positive' : r.vs_avg_pct > 0 ? 'negative' : ''}">
+              ${data.compare_mode === 'price_per_oz' && r.price_per_oz
+                ? `$${r.price_per_oz.toFixed(4)}/oz`
+                : `${r.vs_avg > 0 ? '+' : ''}$${fmt(r.vs_avg)} (${r.vs_avg_pct > 0 ? '+' : ''}${r.vs_avg_pct}%)`
+              }
+            </td>
+            <td><span class="quality-badge quality-${r.deal_quality}">${r.deal_quality}</span></td>
+            <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);max-width:220px;line-height:1.5">${r.deal_reason || '—'}</td>
+            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim)">${r.zip_code || '—'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+// ── BEST DEALS ────────────────────────────────────────────────────────────────
+async function doDeals() {
+  const minSavings   = document.getElementById('dealsMinSavings').value;
+  const minRetailers = document.getElementById('dealsMinRetailers').value;
+  const limit        = document.getElementById('dealsLimit').value;
+  loading('dealsLoading', true);
+  document.getElementById('dealsResults').innerHTML = '';
+  try {
+    const url = `${API}/best-deals?min_savings=${minSavings}&min_retailers=${minRetailers}&limit=${limit}`;
+    const r = await fetch(url);
+    const data = await r.json();
+    loading('dealsLoading', false);
+    if (!r.ok) { showError('dealsResults', data.detail); return; }
+    renderDeals(data);
+  } catch(e) {
+    loading('dealsLoading', false);
+    showError('dealsResults', 'Could not reach API — is the server running?');
+  }
+}
+
+function renderDeals(data) {
+  const el = document.getElementById('dealsResults');
+  if (!data.deals.length) {
+    el.innerHTML = '<div class="empty">No deals found with current filters.</div>';
+    return;
+  }
+  el.innerHTML = `
+    <div class="results-header">
+      <div class="results-title">Best Deals</div>
+      <div class="results-count">${data.count} products</div>
+    </div>
+    <div class="deals-list">
+      ${data.deals.map((d, i) => {
+        const priceInfo = d.best_price_per_oz
+          ? `<span style="color:var(--accent)">$${d.best_price_per_oz.toFixed(4)}/oz</span><span style="color:var(--text-dim)"> best unit price</span>`
+          : `<span style="color:var(--accent)">$${fmt(d.min_price)}</span><span style="color:var(--text-dim)"> — $${fmt(d.max_price)}</span>`;
+        const priceLabel = d.best_price_per_oz ? 'best $/oz' : 'price range';
+        const savingsLabel = d.best_price_per_oz ? '$/oz savings' : 'savings';
+        return `
+        <div class="deal-row" onclick="loadCompare('${d.canonical_product_name.replace(/'/g,"\'")}', '${(d.brand || '').replace(/'/g,"\'")}')">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);min-width:20px">${i+1}</span>
+              <div>
+                <div class="deal-name">${d.canonical_product_name}</div>
+                ${d.brand ? `<div class="deal-brand">${d.brand}</div>` : ''}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="deal-retailers">${d.retailer_count} retailers</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">carrying this</div>
+          </div>
+          <div>
+            <div class="deal-prices">${priceInfo}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);text-align:right">${priceLabel}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="deal-savings">${d.savings_pct_vs_max.toFixed(1)}%</div>
+            <div class="deal-savings-label">${savingsLabel}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:16px">
+      Click any deal to see full retailer breakdown →
+    </div>
+  `;
+}
+
+function showError(id, msg) {
+  document.getElementById(id).innerHTML = `<div class="error">⚠ ${msg}</div>`;
+}
+
+doDeals();
+</script>
+</body>
+</html>
