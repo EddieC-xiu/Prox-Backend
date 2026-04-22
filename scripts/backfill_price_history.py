@@ -18,6 +18,7 @@ SOURCE_TABLE = "flyer_deals"
 FETCH_BATCH  = 500
 MAX_RETRIES  = 2
 DRY_RUN      = "--dry-run" in sys.argv
+MAX_PRICE    = 999999.0  # sanity cap — skip bulk/case pricing and data errors
 
 
 def build_match_key(brand, canonical, size_oz) -> str | None:
@@ -63,7 +64,6 @@ def main():
         batch = fetch_batch(client, offset)
 
         if batch is None:
-            # permanently failed fetch — skip ahead
             offset += FETCH_BATCH
             continue
 
@@ -85,15 +85,22 @@ def main():
                 total_skipped += 1
                 continue
 
+            # Price sanity check
+            price = float(row.get("product_price") or 0)
+            if price <= 0 or price > MAX_PRICE:
+                logger.debug(f"Skipping bad price ${price} for {canonical}")
+                total_skipped += 1
+                continue
+
             record = {
                 "match_key":              match_key,
                 "store_id":               row.get("store_id"),
                 "brand":                  brand,
                 "canonical_product_name": canonical,
                 "size_oz":                size_oz,
-                "product_price":          float(row["product_price"]),
+                "product_price":          price,
                 "observed_at":            now,
-                "observed_date":         datetime.now(timezone.utc).date().isoformat(),
+                "observed_date":          datetime.now(timezone.utc).date().isoformat(),
             }
 
             # Deduplicate within batch
