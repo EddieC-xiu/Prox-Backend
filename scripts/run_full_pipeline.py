@@ -29,7 +29,7 @@ def run(script, label):
     else:
         logger.info(f"{label} complete.")
 
-def run_until_converged(script, label, max_passes=10):
+def run_until_converged(script, label, max_passes=3):
     for i in range(max_passes):
         logger.info(f"{label} — pass {i+1}/{max_passes}")
         result = subprocess.run(
