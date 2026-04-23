@@ -29,3 +29,16 @@ jobs:
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
         run: |
           PYTHONUTF8=1 PYTHONPATH=. python scripts/run_full_pipeline.py
+          - name: Notify Slack on success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ Pipeline completed successfully!"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ Pipeline failed! Check GitHub Actions for details."}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
