@@ -48,6 +48,7 @@ def load_store_locations(client) -> dict[str, list[dict]]:
                 .eq("retailer_key", retailer)
                 .not_.is_("latitude", "null")
                 .not_.is_("longitude", "null")
+                .eq("show_on_map", True)
                 .range(offset, offset + 999)
                 .execute()
             )
@@ -77,6 +78,7 @@ def load_zip_centroids(client) -> dict[str, dict]:
             client.table("zip_centroids")
             .select("zip_code, latitude, longitude")
             .range(offset, offset + 999)
+
             .execute()
         )
         batch = res.data or []

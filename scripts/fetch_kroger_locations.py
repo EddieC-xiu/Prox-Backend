@@ -80,7 +80,7 @@ def fetch_kroger_for_state(state_abbr, bbox, retries=3):
     for url in OVERPASS_URLS:
         for attempt in range(retries):
             try:
-                r = requests.post(url, data={"data": query}, timeout=60)
+                r = requests.post(url, data={"data": query}, timeout=60, headers={"User-Agent": "ProxApp/1.0 (grocery store locator)"})
                 r.raise_for_status()
                 elements = r.json().get("elements", [])
                 print(f"  {state_abbr}: {len(elements)} locations found (via {url})")
@@ -103,7 +103,7 @@ def element_to_row(el):
     return {
         "retailer": "kroger",
         "full_address": full_address,
-        "zip_code": zip_code,
+        "zip_code": zip_code[:5] if zip_code else "",
         "latitude": el["lat"],
         "longitude": el["lon"],
         "geocode_source": "osm",
@@ -113,8 +113,24 @@ def element_to_row(el):
     }
 
 def write_batch(rows):
-    sb.table("store_locations").insert(rows).execute()
-
+    for row in rows:
+        res = sb.table("store_locations")\
+            .update({
+                "latitude": row["latitude"],
+                "longitude": row["longitude"],
+                "geocode_source": "osm",
+                "geocode_confidence": "exact",
+                "show_on_map": True,
+                "full_address": row.get("full_address", ""),
+                "geocoded_at": row["geocoded_at"],
+            })\
+            .eq("retailer_key", "kroger")\
+            .eq("zip_code", row["zip_code"])\
+            .execute()
+        # Insert if no existing row matched
+        if not res.data:
+            row["retailer_key"] = "kroger"
+            sb.table("store_locations").insert(row).execute()
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")

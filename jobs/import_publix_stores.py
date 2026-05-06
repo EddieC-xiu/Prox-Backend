@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from data.publix_data import publix_data
+from data.publix_locations import publix_data
 from supabase import create_client
 from dotenv import load_dotenv
 from geopy.geocoders import Nominatim
