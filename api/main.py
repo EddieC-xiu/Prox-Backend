@@ -14,7 +14,7 @@ from services.cross_retailer_service import (
     search_products,
     normalize_retailer,
 )
-from scoring.product_normalizer import build_canonical_name
+from services.price_history_service import get_price_history
 from config.supabase import get_supabase_client
 
 app = FastAPI(
@@ -266,5 +266,123 @@ def retailers():
                 for k, v in sorted(counts.items(), key=lambda x: -x[1])
             ],
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/deals/{match_key}")
+def deal_details(
+    match_key: str,
+    zip_code:     str | None = Query(None, description="User zip code for nearby store prices"),
+    radius_miles: float      = Query(10.0, ge=1, le=100),
+):
+    """
+    Deal details for a specific product by match_key.
+    Returns current deal info, price summary, and nearby store prices.
+    Maps to the Deal Details screen in the mobile app.
+    """
+    try:
+        # Get current deals for this match_key
+        query = (
+            sb.table("flyer_deals")
+            .select("match_key, canonical_product_name, product_price, retailer, store_id, coupon_detail, date_added, image_link, category, brand, display_size")
+            .eq("match_key", match_key)
+            .not_.is_("product_price", "null")
+        )
+        rows = query.execute().data or []
+
+        if not rows:
+            raise HTTPException(status_code=404, detail=f"No deals found for match_key '{match_key}'")
+
+        prices = [float(r["product_price"]) for r in rows if r.get("product_price")]
+        if not prices:
+            raise HTTPException(status_code=404, detail=f"No prices found for match_key '{match_key}'")
+
+        # If zip_code provided, filter to nearby stores
+        nearby_stores = []
+        if zip_code:
+            from services.deal_location_service import get_deals_near_zip
+            nearby_deals = get_deals_near_zip(zip_code, radius_miles, limit=500)
+            nearby_match = [d for d in nearby_deals if d.get("match_key") == match_key]
+            nearby_stores = sorted(nearby_match, key=lambda x: (x.get("distance_miles", 999), x.get("product_price", 999)))
+
+        return {
+            "match_key":       match_key,
+            "canonical_name":  rows[0].get("canonical_product_name"),
+            "category":        rows[0].get("category"),
+            "brand":           rows[0].get("brand"),
+            "display_size":    rows[0].get("display_size"),
+            "coupon_detail":   rows[0].get("coupon_detail"),
+            "image_url":       rows[0].get("image_link"),
+            "price_summary": {
+                "min":    min(prices),
+                "max":    max(prices),
+                "median": round(statistics.median(prices), 2),
+            },
+            "nearby_stores":      nearby_stores,
+            "all_retailer_count": len({r["retailer"] for r in rows if r.get("retailer")}),
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/deals/{match_key}/history")
+def deal_history(
+    match_key: str,
+    store_id:  str | None = Query(None, description="Filter to a specific store_id"),
+    days:      int        = Query(90, ge=7, le=365, description="Days of history to return"),
+):
+    """
+    Price history for a product, used to render the price history chart.
+    Optionally filtered to a single store.
+    """
+    try:
+        if store_id:
+            rows = get_price_history(match_key, store_id, days=days)
+        else:
+            # Get history across all stores, grouped by date
+            since = (__import__("datetime").datetime.now(__import__("datetime").timezone.utc)
+                     - __import__("datetime").timedelta(days=days)).isoformat()
+            res = (
+                sb.table("price_history")
+                .select("observed_date, product_price, store_id")
+                .eq("match_key", match_key)
+                .gte("observed_date", since)
+                .order("observed_date", desc=False)
+                .execute()
+            )
+            rows = res.data or []
+
+        if not rows:
+            raise HTTPException(status_code=404, detail=f"No price history for '{match_key}'")
+
+        # Group by date, take min price per day (best available price)
+        by_date: dict[str, list[float]] = {}
+        for r in rows:
+            day = (r.get("observed_date") or r.get("observed_at", ""))[:10]
+            try:
+                by_date.setdefault(day, []).append(float(r["product_price"]))
+            except (ValueError, TypeError):
+                pass
+
+        history = [
+            {"date": day, "min_price": min(prices), "max_price": max(prices)}
+            for day, prices in sorted(by_date.items())
+        ]
+
+        all_prices = [p for prices in by_date.values() for p in prices]
+        return {
+            "match_key":    match_key,
+            "store_id":     store_id,
+            "days":         days,
+            "data_points":  len(history),
+            "all_time_low": min(all_prices),
+            "all_time_high": max(all_prices),
+            "history":      history,
+        }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
