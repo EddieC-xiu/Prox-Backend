@@ -9,7 +9,6 @@
 
 import math
 import logging
-from datetime import datetime
 from config.supabase import get_supabase_client
 from services.store_distance import get_nearby_stores
 
@@ -147,19 +146,19 @@ def get_deals_near_zip(
         return []
 
     nearby_map = {s["store_id"]: s for s in nearby}
-    today      = datetime.utcnow().date().isoformat()
 
     q = (
         supabase.table("flyer_deals")
         .select(
-            "id, product_name, price, original_price, discount_pct, "
-            "valid_from, valid_to, category, image_url, retailer_key, "
+            "id, product_name, product_price, category, image_link, "
+            "retailer_key, retailer, match_key, canonical_product_name, "
+            "coupon_detail, display_size, brand, "
             "store_id, match_confidence, candidate_store_count, matched_by, "
             "candidate_store_ids"
         )
         .in_("store_id", list(nearby_map.keys()))
-        .gte("valid_to", today)
-        .order("discount_pct", desc=True)
+        .not_.is_("product_price", "null")
+        .order("product_price", desc=False)
         .limit(limit)
     )
     if category:
@@ -218,7 +217,7 @@ def get_map_pins_near_zip(
                 "best_product":   None,
             }
         pins[pin_key]["deal_count"] += 1
-        p = deal.get("price")
+        p = deal.get("product_price")
         if p is not None and (
             pins[pin_key]["best_price"] is None or p < pins[pin_key]["best_price"]
         ):
@@ -261,9 +260,9 @@ def get_cart_optimizer_stores(
             }
         carts[pin_key]["items"].append({
             "product": deal["product_name"],
-            "price":   deal.get("price"),
+            "price":   deal.get("product_price"),
         })
-        carts[pin_key]["total_price"] += deal.get("price") or 0
+        carts[pin_key]["total_price"] += deal.get("product_price") or 0
 
     for c in carts.values():
         c["items_found"] = len(c["items"])

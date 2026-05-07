@@ -1,7 +1,7 @@
 # services/cross_retailer_service.py
 #
 # Cross-retailer price comparison for a given product.
-# Uses test_flyer_deals_duplicate as source of truth.
+# Uses flyer_deals as source of truth.
 #
 # Key behaviors:
 # - Default = exact size mode (most retailers, like-for-like)
@@ -591,7 +591,7 @@ def compare_product_across_retailers(
 
     def _fetch_exact(name: str) -> list[dict]:
         q = (
-            sb.table("test_flyer_deals_duplicate")
+            sb.table("flyer_deals")
             .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit")
             .eq("canonical_product_name", name)
             .not_.is_("product_price", "null")
@@ -612,7 +612,7 @@ def compare_product_across_retailers(
 
     if not rows or len(set(r.get("retailer") for r in rows)) <= 1:
         q = (
-            sb.table("test_flyer_deals_duplicate")
+            sb.table("flyer_deals")
             .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit")
             .ilike("canonical_product_name", f"%{canonical_product_name}%")
             .not_.is_("product_price", "null")
@@ -667,7 +667,7 @@ def search_products(
     store_locations = _get_store_locations() if user_lat is not None else {}
 
     rows = (
-        sb.table("test_flyer_deals_duplicate")
+        sb.table("flyer_deals")
         .select("canonical_product_name, brand, product_price, retailer, zip_code")
         .ilike("canonical_product_name", f"%{query}%")
         .not_.is_("product_price", "null")

@@ -139,7 +139,7 @@ def best_deals(
         batch = 1000
         while True:
             batch_rows = (
-                sb.table("test_flyer_deals_duplicate")
+                sb.table("flyer_deals")
                 .select("canonical_product_name, brand, product_price, retailer, base_amount, base_unit")
                 .not_.is_("canonical_product_name", "null")
                 .not_.is_("product_price", "null")
@@ -252,7 +252,7 @@ def retailers():
     """Returns list of retailers and deal counts."""
     try:
         rows = (
-            sb.table("test_flyer_deals_duplicate")
+            sb.table("flyer_deals")
             .select("retailer")
             .not_.is_("retailer", "null")
             .execute()
@@ -298,13 +298,39 @@ def deal_details(
         if not prices:
             raise HTTPException(status_code=404, detail=f"No prices found for match_key '{match_key}'")
 
-        # If zip_code provided, filter to nearby stores
+        # If zip_code provided, find deals for this product at nearby stores
         nearby_stores = []
         if zip_code:
-            from services.deal_location_service import get_deals_near_zip
-            nearby_deals = get_deals_near_zip(zip_code, radius_miles, limit=500)
-            nearby_match = [d for d in nearby_deals if d.get("match_key") == match_key]
-            nearby_stores = sorted(nearby_match, key=lambda x: (x.get("distance_miles", 999), x.get("product_price", 999)))
+            from services.store_distance import get_nearby_stores
+            nearby = get_nearby_stores(zip_code, radius_miles)
+            if nearby:
+                nearby_ids = [s["store_id"] for s in nearby]
+                nearby_map = {s["store_id"]: s for s in nearby}
+                # Query deals for this specific match_key at nearby stores
+                for i in range(0, len(nearby_ids), 200):
+                    batch = nearby_ids[i:i+200]
+                    res = (
+                        sb.table("flyer_deals")
+                        .select("store_id, product_price, retailer, coupon_detail")
+                        .eq("match_key", match_key)
+                        .in_("store_id", batch)
+                        .not_.is_("product_price", "null")
+                        .execute()
+                    )
+                    for deal in (res.data or []):
+                        sid = deal["store_id"]
+                        store = nearby_map.get(sid, {})
+                        nearby_stores.append({
+                            "retailer":       deal.get("retailer"),
+                            "product_price":  float(deal["product_price"]),
+                            "coupon_detail":  deal.get("coupon_detail"),
+                            "store_id":       sid,
+                            "address":        store.get("address"),
+                            "city":           store.get("city"),
+                            "state":          store.get("state"),
+                            "distance_miles": store.get("distance_miles"),
+                        })
+                nearby_stores.sort(key=lambda x: (x.get("distance_miles") or 999, x.get("product_price") or 999))
 
         return {
             "match_key":       match_key,
