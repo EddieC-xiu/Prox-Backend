@@ -6,13 +6,12 @@
 #   PYTHONUTF8=1 PYTHONPATH=. uvicorn api.main:app --reload --port 8000
 
 import statistics
-from collections import defaultdict, Counter
+from collections import Counter
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from services.cross_retailer_service import (
     compare_product_across_retailers,
     search_products,
-    normalize_retailer,
 )
 from services.price_history_service import get_price_history
 from config.supabase import get_supabase_client
@@ -129,120 +128,54 @@ def compare(
 @app.get("/best-deals")
 def best_deals(
     limit:         int   = Query(20,   ge=1,  le=100, description="Max deals"),
-    min_savings:   float = Query(15.0, ge=0,  le=100, description="Min % savings"),
-    min_retailers: int   = Query(2,    ge=2,          description="Min retailers carrying product"),
+    min_savings:   float = Query(10.0, ge=0,  le=100, description="Min % below median price"),
+    min_retailers: int   = Query(2,    ge=1,          description="Min retailers carrying product"),
+    min_days:      int   = Query(3,    ge=1,          description="Min days of price history"),
 ):
-    """Returns products with the highest savings potential across retailers."""
+    """Returns best deals using the pre-computed best_deals_comprehensive view."""
     try:
-        rows = []
-        offset = 0
-        batch = 1000
-        while True:
-            batch_rows = (
-                sb.table("flyer_deals")
-                .select("canonical_product_name, brand, product_price, retailer, base_amount, base_unit")
-                .not_.is_("canonical_product_name", "null")
-                .not_.is_("product_price", "null")
-                .range(offset, offset + batch - 1)
-                .execute()
-                .data or []
-            )
-            rows.extend(batch_rows)
-            if len(batch_rows) < batch:
-                break
-            offset += batch
-
-        products: dict[tuple, dict] = defaultdict(lambda: {
-            "prices": [], "ppus": [], "retailers": set()
-        })
-
-        for row in rows:
-            raw   = row["canonical_product_name"] or ""
-            brand = row.get("brand")
-            key   = (raw, brand)
-            try:
-                price = float(row["product_price"])
-                if price <= 0:
-                    continue
-            except (TypeError, ValueError):
-                continue
-
-            ppu = _calc_ppu(price, row.get("base_amount"), row.get("base_unit"))
-
-            products[key]["prices"].append(price)
-            if ppu:
-                products[key]["ppus"].append(ppu)
-            products[key]["retailers"].add(
-                normalize_retailer((row.get("retailer") or "").lower())
-            )
+        rows = (
+            sb.table("best_deals_comprehensive")
+            .select("canonical_product_name, brand, match_key, best_current_price, "
+                    "all_time_low, all_time_high, median_price, pct_below_median, "
+                    "price_status, composite_score, retailer_count, days_tracked, "
+                    "absolute_savings, pct_savings")
+            .not_.is_("composite_score", "null")
+            .not_.is_("canonical_product_name", "null")
+            .gte("retailer_count", min_retailers)
+            .gte("days_tracked", min_days)
+            .gte("pct_below_median", min_savings)
+            .lte("best_current_price", 200)
+            .order("composite_score", desc=True)
+            .limit(limit)
+            .execute()
+            .data or []
+        )
 
         deals = []
-        for (name, brand), data in products.items():
-            if len(data["retailers"]) < min_retailers:
+        for r in rows:
+            name = r.get("canonical_product_name") or ""
+            if len(name) > 80:
                 continue
-
-            # Filter produce — not meaningful to compare by price
             name_words = set(name.lower().split())
             if name_words & _PRODUCE_KEYWORDS:
                 continue
-
-            # Filter long scraper artifact names
-            if len(name) > 80:
-                continue
-
-            prices = data["prices"]
-            ppus   = data["ppus"]
-
-            # Outlier filter on prices
-            if len(prices) >= 3:
-                med    = statistics.median(prices)
-                prices = [p for p in prices if p <= med * 2.0]
-            if not prices:
-                continue
-
-            min_p = min(prices)
-            max_p = max(prices)
-            if max_p == 0:
-                continue
-
-            # Use PPU savings if available (more accurate for multi-size products)
-            # This prevents bulk water at 87% savings from misleading users
-            if len(ppus) >= 2:
-                ppus_filtered = ppus
-                if len(ppus) >= 3:
-                    med_ppu      = statistics.median(ppus)
-                    ppus_filtered = [p for p in ppus if p <= med_ppu * 2.0]
-                if ppus_filtered:
-                    min_ppu     = min(ppus_filtered)
-                    max_ppu     = max(ppus_filtered)
-                    savings_pct = round(((max_ppu - min_ppu) / max_ppu) * 100, 1) if max_ppu else 0
-                    best_ppu    = round(min_ppu, 4)
-                else:
-                    savings_pct = round(((max_p - min_p) / max_p) * 100, 1)
-                    best_ppu    = None
-            else:
-                savings_pct = round(((max_p - min_p) / max_p) * 100, 1)
-                best_ppu    = None
-
-            if savings_pct < min_savings:
-                continue
-
             deals.append({
                 "canonical_product_name": name,
-                "brand":                  brand,
-                "min_price":              min_p,
-                "max_price":              max_p,
-                "avg_price":              round(sum(prices) / len(prices), 2),
-                "best_price_per_oz":      best_ppu,
-                "savings_pct_vs_max":     savings_pct,
-                "absolute_savings":       round(max_p - min_p, 2),
-                "retailer_count":         len(data["retailers"]),
-                "popularity_score":       len(prices),
+                "brand":              r.get("brand"),
+                "match_key":          r.get("match_key"),
+                "best_price":         r.get("best_current_price"),
+                "all_time_low":       r.get("all_time_low"),
+                "median_price":       r.get("median_price"),
+                "pct_below_median":   r.get("pct_below_median"),
+                "price_status":       r.get("price_status"),
+                "composite_score":    r.get("composite_score"),
+                "retailer_count":     r.get("retailer_count"),
+                "days_tracked":       r.get("days_tracked"),
+                "absolute_savings":   r.get("absolute_savings"),
             })
 
-        deals.sort(key=lambda d: (-d["retailer_count"], -d["savings_pct_vs_max"]))
-        return {"count": len(deals[:limit]), "deals": deals[:limit]}
-
+        return {"count": len(deals), "deals": deals}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
