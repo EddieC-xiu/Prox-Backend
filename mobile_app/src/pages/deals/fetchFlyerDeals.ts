@@ -1,41 +1,18 @@
+import { supabase } from "@/integrations/supabase/client";
 import type { FlyerDealRow } from "@/pages/deals/flyerDeals";
 
-const PROX_API = "https://prox-api.fly.dev";
+const BROWSE_FETCH_LIMIT = 2000;
 
 export async function fetchFlyerDeals(
-  _zipCode: string,
-  _minDate: string
+  zipCode: string,
+  minDate: string
 ): Promise<{ data: FlyerDealRow[] | null; error: unknown }> {
-  try {
-    const params = new URLSearchParams({
-      limit: "100",
-      min_savings: "5",
-      min_retailers: "2",
-      min_days: "1",
-    });
-    const res = await fetch(`${PROX_API}/best-deals?${params}`);
-    if (!res.ok) throw new Error(`API error ${res.status}`);
-    const json = await res.json();
-
-    const data: FlyerDealRow[] = (json.deals ?? []).map((d: Record<string, unknown>) => ({
-      product_name:      d.canonical_product_name as string ?? null,
-      product_price:     d.best_price as number ?? null,
-      retailer:          `${d.retailer_count} retailers`,
-      zip_code:          _zipCode,
-      product_size:      null,
-      image_link:        null,
-      retailer_logo_url: null,
-      brand:             d.brand as string ?? null,
-      category:          d.category as string ?? null,
-      is_store_brand:    null,
-      is_organic:        null,
-      base_amount:       null,
-      base_unit:         null,
-      match_key:         d.match_key as string ?? null,
-    }));
-
-    return { data, error: null };
-  } catch (error) {
-    return { data: null, error };
-  }
+  return supabase
+    .from("flyer_deals")
+    .select("product_name, product_price, retailer, zip_code, product_size, image_link, brand, category, is_store_brand, is_organic, base_amount, base_unit, match_key")
+    .eq("zip_code", zipCode)
+    .gte("created_at", minDate)
+    .not("product_price", "is", null)
+    .order("product_price", { ascending: true })
+    .limit(BROWSE_FETCH_LIMIT);
 }
