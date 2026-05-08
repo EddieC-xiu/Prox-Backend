@@ -177,7 +177,7 @@ def best_deals(
                 "composite_score":    r.get("composite_score"),
                 "retailer_count":     r.get("retailer_count"),
                 "days_tracked":       r.get("days_tracked"),
-                "absolute_savings":   r.get("absolute_savings"),
+                "absolute_savings":   round((r.get("median_price") or 0) - (r.get("best_current_price") or 0), 2),
             })
 
         return {"count": len(deals), "deals": deals}
