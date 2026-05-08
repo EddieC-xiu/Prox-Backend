@@ -85,8 +85,11 @@ export function DealDetails() {
     price: p.min_price,
   })) ?? [];
 
-  const savingsPct = deal.price_summary.median > 0
-    ? Math.round(((deal.price_summary.median - deal.price_summary.min) / deal.price_summary.median) * 100)
+  const bestPrice = deal.nearby_stores.length > 0
+    ? deal.nearby_stores[0].product_price
+    : deal.price_summary.min;
+  const savingsPct = deal.price_summary.median > 0 && bestPrice < deal.price_summary.median
+    ? Math.round(((deal.price_summary.median - bestPrice) / deal.price_summary.median) * 100)
     : 0;
 
   return (

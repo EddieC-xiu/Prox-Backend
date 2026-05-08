@@ -230,6 +230,37 @@ export function Deals() {
     />
   );
 
+  // Show zip prompt if no location set
+  if (!effectiveZip) {
+    return (
+      <div className="h-[100dvh] flex flex-col items-center justify-center bg-[var(--app-bg)] px-6 gap-6">
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold text-[#111827]">Find deals near you</h2>
+          <p className="text-sm text-gray-500">Enter your zip code to see this week's best grocery deals at stores nearby.</p>
+        </div>
+        <div className="w-full max-w-xs space-y-3">
+          <input
+            type="text"
+            maxLength={5}
+            placeholder="Enter zip code"
+            className="w-full rounded-xl border-2 border-[#211B16] px-4 py-3 text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-green-500"
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "");
+              if (val.length === 5) setZipcode(val);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const val = (e.target as HTMLInputElement).value.replace(/\D/g, "");
+                if (val.length === 5) setZipcode(val);
+              }
+            }}
+          />
+          <p className="text-xs text-center text-gray-400">Press Enter or type 5 digits to continue</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       data-testid="deals-page-shell"
