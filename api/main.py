@@ -159,6 +159,23 @@ def best_deals(
             .data or []
         )
 
+        # Batch fetch categories from flyer_deals for all match_keys
+        match_keys = [r["match_key"] for r in rows if r.get("match_key")]
+        category_map: dict[str, str] = {}
+        if match_keys:
+            cat_rows = (
+                sb.table("flyer_deals")
+                .select("match_key, category")
+                .in_("match_key", match_keys)
+                .not_.is_("category", "null")
+                .limit(500)
+                .execute()
+                .data or []
+            )
+            for cr in cat_rows:
+                if cr["match_key"] not in category_map and cr.get("category"):
+                    category_map[cr["match_key"]] = cr["category"]
+
         deals = []
         for r in rows:
             name = r.get("canonical_product_name") or ""
@@ -180,6 +197,7 @@ def best_deals(
                 "retailer_count":     r.get("retailer_count"),
                 "days_tracked":       r.get("days_tracked"),
                 "absolute_savings":   round((r.get("median_price") or 0) - (r.get("best_current_price") or 0), 2),
+                "category":           category_map.get(r.get("match_key", ""), None),
             })
 
         return {"count": len(deals), "deals": deals}
