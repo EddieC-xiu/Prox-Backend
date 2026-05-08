@@ -187,6 +187,13 @@ export function Deals() {
     zipcode,
   } = useDealsPageState();
 
+  // Auto-open location panel if no zip set
+  React.useEffect(() => {
+    if (!effectiveZip) {
+      openLocationPanel();
+    }
+  }, [effectiveZip, openLocationPanel]);
+
   const handleDealClick = (deal: OptimizedCartItem) => {
     if (deal.match_key) {
       navigate(`/deals/${encodeURIComponent(deal.match_key)}?zip=${deal.zip_code ?? ""}`);
