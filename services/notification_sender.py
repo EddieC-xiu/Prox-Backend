@@ -74,6 +74,7 @@ def build_notification_payload(
     savings_pct:     float,
     deal_reason:     str,
     trigger_type:    str = "drop",
+    match_key:       str | None = None,
 ) -> dict:
     """
     Build OneSignal API payload matching the Prox mobile app's expected format.
@@ -103,7 +104,7 @@ def build_notification_payload(
         "headings":                  {"en": title},
         "contents":                  {"en": body},
         "data": {
-            "deep_link": "/deals?source=new-deals-alert",
+            "deep_link": f"/deals/{match_key}?source=notification" if match_key else "/deals?source=new-deals-alert",
         },
         "ios_sound":    "default",
         "android_sound": "default",
@@ -122,6 +123,7 @@ def send_notification(
     savings_pct:     float,
     deal_reason:     str,
     trigger_type:    str = "drop",
+    match_key:       str | None = None,
     dry_run:         bool = False,
 ) -> dict:
     """
@@ -143,6 +145,7 @@ def send_notification(
         savings_pct     = savings_pct,
         deal_reason     = deal_reason,
         trigger_type    = trigger_type,
+        match_key       = match_key,
     )
 
     if dry_run:

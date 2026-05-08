@@ -129,6 +129,7 @@ def get_trigger_deals(trigger_types=["drop", "new"]) -> list:
                 "previous_price":         delta["baseline_price"],
                 "delta_type":             delta["delta_type"],
                 "delta_pct":              delta.get("price_change_pct"),
+                "match_key":              delta["match_key"],
             })
         return results
 
@@ -409,6 +410,7 @@ def main():
                             savings_pct     = details["savings_pct"],
                             deal_reason     = deal_reason,
                             trigger_type    = delta_type,
+                            match_key       = details.get("match_key"),
                         )
                         if not send_result.get("success"):
                             logger.error(f"Failed to send to {user_id[:8]}: {send_result.get('error')}")
