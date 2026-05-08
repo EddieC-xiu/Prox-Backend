@@ -7,7 +7,6 @@ export async function fetchFlyerDeals(
   _minDate: string
 ): Promise<{ data: FlyerDealRow[] | null; error: unknown }> {
   try {
-    // Use best-deals API — works nationwide regardless of which zip codes were scraped
     const params = new URLSearchParams({
       limit: "100",
       min_savings: "5",
@@ -27,7 +26,7 @@ export async function fetchFlyerDeals(
       image_link:        null,
       retailer_logo_url: null,
       brand:             d.brand as string ?? null,
-      category:          null,
+      category:          d.category as string ?? null,
       is_store_brand:    null,
       is_organic:        null,
       base_amount:       null,
