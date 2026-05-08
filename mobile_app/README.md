@@ -15,5 +15,6 @@ to wire in the Prox Backend API.
 - `src/pages/deals/fetchFlyerDeals.ts` — added `match_key` to Supabase select
 - `src/components/cart-optimizer/types.ts` — added optional `match_key` to `OptimizedCartItem`
 
-## How to apply to mobile app
-Copy these files into the corresponding paths in the `atc5nc/mobile_app` repo on the `ui_testing` branch.
+## Status
+These changes are tested locally against a clone of `atc5nc/mobile_app`.
+Ready to be reviewed and merged into `ui_testing` when Alston gives the go-ahead.
