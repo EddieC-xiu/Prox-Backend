@@ -1,3 +1,4 @@
+// v2
 import React from "react";
 import { Check, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -276,7 +277,7 @@ export function DealsItemsView({
           layout="carousel"
           addedItems={addedItems}
           onAddDealToCart={onAddDealToCart}
-          onDealClick={handleDealClick}
+          onDealClick={onDealClick}
           getDealItemId={getDealItemId}
           normalizeImageUrl={normalizeImageUrl}
           placeholderImage={placeholderImage}
