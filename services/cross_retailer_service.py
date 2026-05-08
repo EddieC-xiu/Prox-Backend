@@ -668,7 +668,7 @@ def search_products(
 
     rows = (
         sb.table("flyer_deals")
-        .select("canonical_product_name, brand, product_price, retailer, zip_code, match_key")
+        .select("canonical_product_name, brand, product_price, retailer, zip_code, match_key, image_link")
         .ilike("canonical_product_name", f"%{query}%")
         .not_.is_("product_price", "null")
         .not_.is_("canonical_product_name", "null")
@@ -699,7 +699,7 @@ def search_products(
         key        = (normalized, brand)
 
         if key not in seen:
-            seen[key] = {"retailers": set(), "prices": [], "match_key": row.get("match_key")}
+            seen[key] = {"retailers": set(), "prices": [], "match_key": row.get("match_key"), "image_link": row.get("image_link")}
         seen[key]["retailers"].add(normalize_retailer(retailer_raw))
         seen[key]["prices"].append(float(row["product_price"]))
 
@@ -716,6 +716,7 @@ def search_products(
             "max_price":              max(prices),
             "avg_price":              round(sum(prices) / len(prices), 2),
             "match_key":              data.get("match_key"),
+            "image_link":             data.get("image_link"),
         })
 
     return sorted(results, key=lambda x: x["retailer_count"], reverse=True)[:limit]
