@@ -134,6 +134,9 @@ def best_deals(
 ):
     """Returns best deals using the pre-computed best_deals_comprehensive view."""
     try:
+        from datetime import datetime, timedelta, timezone
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).date().isoformat()
+
         rows = (
             sb.table("best_deals_comprehensive")
             .select("canonical_product_name, brand, match_key, best_current_price, "
@@ -142,10 +145,12 @@ def best_deals(
                     "absolute_savings, pct_savings")
             .not_.is_("composite_score", "null")
             .not_.is_("canonical_product_name", "null")
+            .not_.is_("match_key", "null")
             .gte("retailer_count", min_retailers)
             .gte("days_tracked", min_days)
             .gte("pct_below_median", min_savings)
-            .lte("best_current_price", 200)
+            .gte("last_seen", cutoff)
+            .lte("best_current_price", 100)
             .order("composite_score", desc=True)
             .limit(limit)
             .execute()
