@@ -7,6 +7,8 @@ export interface SearchResult {
   min_price: number;
   max_price: number;
   avg_price: number;
+  match_key: string;
+  image_link: string | null;
 }
 
 export interface BestDeal {

@@ -28,7 +28,7 @@ export async function proxSearchSingleItem(params: {
       zip_code:          params.zipCode,
       distance_m:        0,
       product_size:      null,
-      image_link:        null,
+      image_link:        r.image_link ?? null,
       retailer_logo_url: null,
       brand:             null,
       category:          null,
@@ -46,7 +46,7 @@ export async function proxSearchSingleItem(params: {
       product_price:      r.min_price,
       distance_m:         0,
       product_size:       null,
-      image_link:         null,
+      image_link:         r.image_link ?? null,
       retailer_logo_url:  null,
       match_key:          r.match_key ?? null,
     });
