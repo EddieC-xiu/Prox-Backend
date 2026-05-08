@@ -80,7 +80,7 @@ type EditableCartItem = {
   details: string;
 };
 
-const GUEST_DEALS_QUERY_LIMIT = 1;
+const GUEST_DEALS_QUERY_LIMIT = 25;
 const ITEMS_PER_PAGE = 12;
 const STAPLE_NAMES = ["Chicken Breast", "Ground Beef", "Large Eggs", "Whole Milk", "Cheddar Cheese"];
 
