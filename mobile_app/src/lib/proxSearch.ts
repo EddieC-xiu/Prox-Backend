@@ -14,13 +14,17 @@ export async function proxSearchSingleItem(params: {
     radiusMiles: params.radiusMiles,
   });
 
-  const items: OptimizedCartItem[] = results
-    .filter((r) => r.canonical_product_name && r.min_price > 0)
-    .map((r) => ({
-      searched_item: params.searchTerm,
+  const items: OptimizedCartItem[] = [];
+  const menuItems: DealMenuItem[] = [];
+
+  for (const r of results) {
+    if (!r.canonical_product_name || r.min_price <= 0) continue;
+    const retailer = `${r.retailer_count} stores`;
+    items.push({
+      searched_item:     params.searchTerm,
       product_name:      r.canonical_product_name,
       product_price:     r.min_price,
-      retailer:          `${r.retailer_count} stores`,
+      retailer,
       zip_code:          params.zipCode,
       distance_m:        0,
       product_size:      null,
@@ -33,20 +37,20 @@ export async function proxSearchSingleItem(params: {
       base_amount:       null,
       base_unit:         null,
       match_key:         r.match_key ?? null,
-    }));
-
-  const menuItems: DealMenuItem[] = items.map((item) => ({
-    retailer:           item.retailer,
-    zip_code:           item.zip_code,
-    searched_item_name: params.searchTerm,
-    product_name:       item.product_name,
-    product_price:      item.product_price,
-    distance_m:         0,
-    product_size:       null,
-    image_link:         null,
-    retailer_logo_url:  null,
-    match_key:          item.match_key,
-  }));
+    });
+    menuItems.push({
+      retailer,
+      zip_code:           params.zipCode,
+      searched_item_name: params.searchTerm,
+      product_name:       r.canonical_product_name,
+      product_price:      r.min_price,
+      distance_m:         0,
+      product_size:       null,
+      image_link:         null,
+      retailer_logo_url:  null,
+      match_key:          r.match_key ?? null,
+    });
+  }
 
   return { results: items, rawMenu: menuItems, filteredMenu: menuItems };
 }
