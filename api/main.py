@@ -15,6 +15,7 @@ from services.cross_retailer_service import (
 )
 from services.price_history_service import get_price_history
 from config.supabase import get_supabase_client
+from api.endpoints_search import router as search_router
 
 app = FastAPI(
     title="Prox API",
@@ -30,6 +31,7 @@ app.add_middleware(
 )
 
 sb = get_supabase_client()
+app.include_router(search_router)
 
 _PRODUCE_KEYWORDS = {
     "grapes", "strawberries", "strawberry", "banana", "bananas",

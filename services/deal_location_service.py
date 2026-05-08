@@ -158,6 +158,7 @@ def get_deals_near_zip(
         )
         .in_("store_id", list(nearby_map.keys()))
         .not_.is_("product_price", "null")
+        .gt("product_price", 0)
         .order("product_price", desc=False)
         .limit(limit)
     )

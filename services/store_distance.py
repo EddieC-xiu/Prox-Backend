@@ -1,7 +1,10 @@
 # services/store_distance.py
 import time
+import pgeocode
 from math import radians, sin, cos, sqrt, atan2
 from config.supabase import supabase
+
+_nomi = pgeocode.Nominatim("us")
 
 # ---------------------------------------------------------------------------
 # In-memory caches
@@ -37,18 +40,14 @@ def haversine(lat1, lon1, lat2, lon2):
 # ---------------------------------------------------------------------------
 
 def get_lat_lon_for_zip(zip_code):
-    """Look up lat/lon for a ZIP code from zip_centroids table.
+    """Look up lat/lon for a ZIP code using pgeocode (local dataset, no DB call).
     Results are cached permanently for the lifetime of the process."""
     if zip_code in _zip_coord_cache:
         return _zip_coord_cache[zip_code]
 
-    result = supabase.table("zip_centroids")\
-        .select("latitude, longitude")\
-        .eq("zip_code", zip_code)\
-        .execute().data
-
-    if result:
-        coords = (result[0]["latitude"], result[0]["longitude"])
+    info = _nomi.query_postal_code(zip_code)
+    if info is not None and str(info.get("latitude", "nan")) != "nan":
+        coords = (float(info["latitude"]), float(info["longitude"]))
         _zip_coord_cache[zip_code] = coords
         return coords
 
@@ -107,7 +106,7 @@ def get_nearest_stores_by_zip(zip_code, radius_miles=25, limit=10):
 
     lat, lon = get_lat_lon_for_zip(zip_code)
     if not lat or not lon:
-        print(f"ZIP {zip_code} not found in zip_centroids table")
+        print(f"ZIP {zip_code} coordinates not found")
         return []
 
     results = get_nearest_stores(lat, lon, radius_miles, limit)
@@ -156,7 +155,7 @@ def get_nearby_stores(
     """
     lat, lon = get_lat_lon_for_zip(zip_code)
     if not lat or not lon:
-        print(f"[DISTANCE] ZIP {zip_code} not found in zip_centroids table")
+        print(f"[DISTANCE] ZIP {zip_code} coordinates not found")
         return []
 
     lat_delta = radius_miles / 69.0
