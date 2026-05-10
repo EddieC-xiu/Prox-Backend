@@ -1,4 +1,4 @@
-const BASE_URL = "https://prox-api.fly.dev";
+const BASE_URL = "https://prox-api-production.up.railway.app";
 
 export interface SearchResult {
   canonical_product_name: string;
