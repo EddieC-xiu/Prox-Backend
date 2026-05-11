@@ -699,9 +699,14 @@ def search_products(
         key        = (normalized, brand)
 
         if key not in seen:
-            seen[key] = {"retailers": set(), "prices": [], "match_key": row.get("match_key"), "image_link": row.get("image_link")}
+            seen[key] = {"retailers": set(), "prices": [], "match_key": None, "image_link": None}
         seen[key]["retailers"].add(normalize_retailer(retailer_raw))
         seen[key]["prices"].append(float(row["product_price"]))
+        # Prefer non-null match_key and image_link
+        if not seen[key]["match_key"] and row.get("match_key"):
+            seen[key]["match_key"] = row["match_key"]
+        if not seen[key]["image_link"] and row.get("image_link"):
+            seen[key]["image_link"] = row["image_link"]
 
     results = []
     for (normalized_name, brand), data in seen.items():
