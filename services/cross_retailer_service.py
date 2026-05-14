@@ -564,6 +564,11 @@ def _build_result(
             f"Best value is ${best_ppu:.4f}/oz at {retailers[0]['retailer']}. "
             f"You could save up to {ppu_savings}% by choosing the right retailer."
         )
+    elif len(retailers) <= 1:
+        compare_summary = (
+            f"Found at {retailers[0]['retailer']} for ${min_price:.2f}"
+            + (f" ({size_display})" if size_display else "") + "."
+        )
     else:
         compare_summary = (
             f"Comparing {len(retailers)} retailers"
