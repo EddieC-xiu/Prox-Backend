@@ -256,6 +256,8 @@ def _make_deal_reason(r, rank, total_retailers, avg_price, avg_ppu, use_ppu, siz
     size  = r.get("size") or size_display
 
     if rank == 0:
+        if total_retailers <= 1:
+            return "Only retailer found for this product"
         if use_ppu and ppu and avg_ppu:
             savings_pct = round((avg_ppu - ppu) / avg_ppu * 100)
             return f"Best value — {savings_pct}% below average price per oz across {total_retailers} retailers"
@@ -326,6 +328,13 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
         ppus    = [r["price_per_oz"] for r in retailers if r.get("price_per_oz")]
         avg_ppu = round(sum(ppus) / len(ppus), 4) if ppus else None
         for i, r in enumerate(retailers):
+            if total_retailers <= 1:
+                r["vs_avg"] = None
+                r["vs_avg_pct"] = None
+                r["deal_quality"] = None
+                r["deal_reason"] = _make_deal_reason(r, i, total_retailers, avg_price, avg_ppu,
+                                                       use_ppu=True, size_display=size_display)
+                continue
             ppu = r.get("price_per_oz")
             if ppu is not None and avg_ppu:
                 r["vs_avg"]     = round(r["price"] - avg_price, 2)
@@ -341,6 +350,13 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
                                                    use_ppu=True, size_display=size_display)
     else:
         for i, r in enumerate(retailers):
+            if total_retailers <= 1:
+                r["vs_avg"] = None
+                r["vs_avg_pct"] = None
+                r["deal_quality"] = None
+                r["deal_reason"] = _make_deal_reason(r, i, total_retailers, avg_price, avg_ppu=None,
+                                                       use_ppu=False, size_display=size_display)
+                continue
             vs_avg          = round(r["price"] - avg_price, 2)
             vs_avg_pct      = round((vs_avg / avg_price) * 100, 1) if avg_price else 0
             r["vs_avg"]     = vs_avg
