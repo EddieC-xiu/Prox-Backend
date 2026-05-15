@@ -308,6 +308,14 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
     retailers = sorted(seen.values(),
                        key=lambda r: (r.get("price_per_oz") or 999999) if use_ppu else r["price"])
 
+    # Enrich each retailer with lat/lng from store location cache
+    for r in retailers:
+        latlon = _get_store_latlon(r["retailer"], r.get("zip_code") or "")
+        if latlon:
+            r["lat"], r["lng"] = latlon[0], latlon[1]
+        else:
+            r["lat"], r["lng"] = None, None
+
     if use_ppu:
         ppus_all = [r["price_per_oz"] for r in retailers if r.get("price_per_oz")]
         if len(ppus_all) >= 3:
