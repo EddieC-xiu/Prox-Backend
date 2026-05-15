@@ -159,7 +159,7 @@ def _load_store_locations() -> dict:
         while True:
             batch = (
                 sb.table("store_locations")
-                .select("retailer, zip_code, latitude, longitude")
+                .select("retailer, zip_code, latitude, longitude, full_address, geocode_confidence")
                 .not_.is_("latitude", "null")
                 .not_.is_("longitude", "null")
                 .range(offset, offset + 999)
@@ -173,7 +173,12 @@ def _load_store_locations() -> dict:
         result = {}
         for r in rows:
             key = (r["retailer"].lower().strip(), (r["zip_code"] or "").strip())
-            result[key] = (float(r["latitude"]), float(r["longitude"]))
+            result[key] = {
+                "lat": float(r["latitude"]),
+                "lng": float(r["longitude"]),
+                "address": r.get("full_address") or None,
+                "confidence": r.get("geocode_confidence") or "zip",
+            }
         return result
     except Exception:
         return {}
@@ -189,20 +194,15 @@ def _get_store_locations() -> dict:
     return _STORE_LOCATION_CACHE
 
 
-def _get_store_latlon(retailer, zip_code, store_locations):
+def _get_store_info(retailer, zip_code, store_locations):
+    """Returns store dict with lat, lng, address, confidence — or None."""
     key = (retailer.lower().strip(), (zip_code or "").strip())
     if key in store_locations:
         return store_locations[key]
-    for (r, z), latlon in store_locations.items():
-        if z == (zip_code or "").strip():
-            return latlon
-    if zip_code:
-        try:
-            res = sb.table("zip_centroids").select("latitude, longitude").eq("zip_code", zip_code).limit(1).execute()
-            if res.data:
-                return float(res.data[0]["latitude"]), float(res.data[0]["longitude"])
-        except Exception:
-            pass
+    # Fallback: same retailer, any zip match
+    for (r, z), info in store_locations.items():
+        if r == retailer.lower().strip() and z == (zip_code or "").strip():
+            return info
     return None
 
 
@@ -308,6 +308,14 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
     retailers = sorted(seen.values(),
                        key=lambda r: (r.get("price_per_oz") or 999999) if use_ppu else r["price"])
 
+    # Enrich with real store address (OSM-geocoded, not centroids)
+    store_locs = _get_store_locations()
+    for r in retailers:
+        info = _get_store_info(r["retailer"], r.get("zip_code") or "", store_locs)
+        if info and info.get("confidence") != "zip" and info.get("address"):
+            r["store_address"] = info["address"]
+        else:
+            r["store_address"] = None
 
     if use_ppu:
         ppus_all = [r["price_per_oz"] for r in retailers if r.get("price_per_oz")]
@@ -385,9 +393,9 @@ def _build_result(
         zip_code     = (row.get("zip_code") or "").strip()
         retailer_raw = row.get("retailer") or ""
         if user_lat is not None and radius_miles is not None:
-            store_latlon = _get_store_latlon(retailer_raw, zip_code, store_locations)
+            store_latlon = _get_store_info(retailer_raw, zip_code, store_locations)
             if store_latlon:
-                dist = _haversine_miles(user_lat, user_lon, store_latlon[0], store_latlon[1])
+                dist = _haversine_miles(user_lat, user_lon, store_latlon["lat"], store_latlon["lng"])
                 if dist > radius_miles:
                     continue
         location_filtered.append(row)
