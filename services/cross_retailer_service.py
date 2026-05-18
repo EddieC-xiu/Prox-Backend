@@ -683,6 +683,27 @@ def compare_product_across_retailers(
                     rows                   = best_rows
                     canonical_product_name = best_name
 
+    # If still no rows, try progressively shorter versions of the name
+    # e.g. "crunch berries cereal" → "crunch berries" → "crunch"
+    if not rows:
+        words = canonical_product_name.split()
+        for n in range(len(words) - 1, 0, -1):
+            shorter = " ".join(words[:n])
+            q = (
+                sb.table("flyer_deals")
+                .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit")
+                .ilike("canonical_product_name", f"%{shorter}%")
+                .not_.is_("product_price", "null")
+                .limit(200)
+            )
+            if brand:
+                q = q.eq("brand", brand)
+            shorter_rows = q.execute().data or []
+            if shorter_rows:
+                rows = shorter_rows
+                canonical_product_name = shorter
+                break
+
     if not rows:
         return {"product": canonical_product_name, "brand": brand, "retailers": []}
 
