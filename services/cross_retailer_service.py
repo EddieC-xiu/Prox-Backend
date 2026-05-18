@@ -196,14 +196,26 @@ def _get_store_locations() -> dict:
 
 def _get_store_info(retailer, zip_code, store_locations):
     """Returns store dict with lat, lng, address, confidence — or None."""
-    key = (retailer.lower().strip(), (zip_code or "").strip())
-    if key in store_locations:
-        return store_locations[key]
-    # Fallback: same retailer, any zip match
+    retailer_key = retailer.lower().strip()
+    zip_key = (zip_code or "").strip()
+
+    # Exact match
+    exact = store_locations.get((retailer_key, zip_key))
+    if exact and exact.get("address") and exact.get("confidence") != "zip":
+        return exact
+
+    # Same zip prefix (first 3 digits) — finds nearby stores of same chain
+    zip_prefix = zip_key[:3]
+    best = None
     for (r, z), info in store_locations.items():
-        if r == retailer.lower().strip() and z == (zip_code or "").strip():
-            return info
-    return None
+        if r == retailer_key and info.get("address") and info.get("confidence") != "zip":
+            if z.startswith(zip_prefix):
+                return info  # same zip area, has real address
+            if best is None:
+                best = info  # keep any verified address as last resort
+
+    # Return exact match even without address, or best available
+    return exact or best
 
 
 def _normalize_size_key(base_amount, base_unit):
