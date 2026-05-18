@@ -204,8 +204,8 @@ def _get_store_info(retailer, zip_code, store_locations):
     if exact and exact.get("address") and exact.get("confidence") != "zip":
         return exact
 
-    # Same zip prefix (first 3 digits) — finds nearby stores of same chain
-    zip_prefix = zip_key[:3]
+    # Same zip prefix (first 2 digits) — finds stores in same metro area
+    zip_prefix = zip_key[:2]
     best = None
     for (r, z), info in store_locations.items():
         if r == retailer_key and info.get("address") and info.get("confidence") != "zip":
@@ -747,9 +747,9 @@ def search_products(
             continue
 
         if user_lat is not None:
-            store_latlon = _get_store_latlon(retailer_raw, row_zip, store_locations)
-            if store_latlon:
-                dist = _haversine_miles(user_lat, user_lon, store_latlon[0], store_latlon[1])
+            store_info = _get_store_info(retailer_raw, row_zip, store_locations)
+            if store_info:
+                dist = _haversine_miles(user_lat, user_lon, store_info["lat"], store_info["lng"])
                 if dist > radius_miles:
                     continue
 
