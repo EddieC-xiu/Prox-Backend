@@ -674,12 +674,29 @@ def compare_product_across_retailers(
     if not rows:
         return {"product": canonical_product_name, "brand": brand, "retailers": []}
 
-    return _build_result(
+    result = _build_result(
         canonical_product_name, brand, rows,
         user_lat=user_lat, user_lon=user_lon,
         radius_miles=radius_miles if zip_code else None,
         selected_size=size,
     )
+
+    # If geographic filter left us with 0 retailers, retry nationally so
+    # users always see pricing context even when local data is sparse
+    if zip_code and len(result.get("retailers", [])) == 0:
+        result = _build_result(
+            canonical_product_name, brand, rows,
+            user_lat=None, user_lon=None,
+            radius_miles=None,
+            selected_size=size,
+        )
+        if result.get("retailers"):
+            result["compare_summary"] = (
+                result.get("compare_summary", "")
+                + " (National pricing — no nearby stores found.)"
+            )
+
+    return result
 
 
 def search_products(
