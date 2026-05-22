@@ -11,12 +11,52 @@
 # - Long canonical names (>80 chars) filtered as scraper artifacts
 
 import math
+import re
 import statistics
 from collections import defaultdict
 from config.supabase import get_supabase_client
 from scoring.product_normalizer import build_canonical_name
 
 sb = get_supabase_client()
+
+# ── Kiran's canonical name lookup ────────────────────────────────────────────
+_KIRAN_LOOKUP: dict[str, str] | None = None
+
+def _load_kiran_lookup() -> dict[str, str]:
+    """Load canonical_name_test (Kiran's AI-validated canonical names) into memory."""
+    lookup: dict[str, str] = {}
+    offset = 0
+    while True:
+        try:
+            batch = (
+                sb.table("canonical_name_test")
+                .select("normalized_signature, canonical_name")
+                .eq("confidence", "high")
+                .range(offset, offset + 999)
+                .execute()
+                .data or []
+            )
+        except Exception:
+            break
+        for row in batch:
+            if row.get("normalized_signature") and row.get("canonical_name"):
+                lookup[row["normalized_signature"]] = row["canonical_name"]
+        if len(batch) < 1000:
+            break
+        offset += 1000
+    return lookup
+
+def _get_kiran_lookup() -> dict[str, str]:
+    global _KIRAN_LOOKUP
+    if _KIRAN_LOOKUP is None:
+        _KIRAN_LOOKUP = _load_kiran_lookup()
+    return _KIRAN_LOOKUP
+
+def _kiran_canonical(product_name: str) -> str | None:
+    """Return Kiran's validated canonical name for a product, or None if not found."""
+    sig = re.sub(r'[^a-z0-9\s]', ' ', product_name.lower())
+    sig = re.sub(r'\s+', ' ', sig).strip()
+    return _get_kiran_lookup().get(sig)
 
 RETAILER_ALIASES = {
     "walmart":                    "Walmart",              "Walmart":                    "Walmart",
@@ -320,14 +360,18 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
     retailers = sorted(seen.values(),
                        key=lambda r: (r.get("price_per_oz") or 999999) if use_ppu else r["price"])
 
-    # Enrich with real store address (OSM-geocoded, not centroids)
+    # Enrich with real store address + coordinates (OSM-geocoded, not centroids)
     store_locs = _get_store_locations()
     for r in retailers:
         info = _get_store_info(r["retailer"], r.get("zip_code") or "", store_locs)
-        if info and info.get("confidence") != "zip" and info.get("address"):
-            r["store_address"] = info["address"]
+        if info and info.get("confidence") != "zip":
+            r["store_address"] = info.get("address") or None
+            r["store_lat"] = info.get("lat")
+            r["store_lng"] = info.get("lng")
         else:
             r["store_address"] = None
+            r["store_lat"] = None
+            r["store_lng"] = None
 
     if use_ppu:
         ppus_all = [r["price_per_oz"] for r in retailers if r.get("price_per_oz")]
@@ -625,6 +669,11 @@ def compare_product_across_retailers(
     radius_miles: float = 25.0,
     size: str | None = None,
 ) -> dict:
+    # Use Kiran's AI-validated canonical name if available — more accurate than ours
+    kiran_name = _kiran_canonical(canonical_product_name)
+    if kiran_name:
+        canonical_product_name = kiran_name
+
     user_lat, user_lon = None, None
     if zip_code:
         latlon = _get_user_latlon(zip_code)

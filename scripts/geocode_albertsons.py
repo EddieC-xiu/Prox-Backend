@@ -56,10 +56,10 @@ def run():
                 "geocoded_at": "now()"
             }).eq("id", store["id"]).execute()
             success += 1
-            print(f"  ✓ ({lat}, {lon})")
+            print(f"  OK ({lat}, {lon})")
         else:
             failed += 1
-            print(f"  ✗ Could not geocode")
+            print(f"  FAIL Could not geocode")
 
         time.sleep(1)
 

@@ -1,6 +1,6 @@
 # scripts/import_unmatched_retailers.py
 #
-# Finds retailers in test_flyer_deals_duplicate with no store_locations match
+# Finds retailers in flyer_deals (production) with no store_locations match
 # and imports their locations from OpenStreetMap via Overpass API.
 #
 # Usage:
@@ -232,12 +232,13 @@ def parse_location(el: dict) -> dict | None:
 
 
 def get_unmatched_retailers() -> list[str]:
-    """Get distinct retailers with no store_id in test_flyer_deals_duplicate."""
+    """Get distinct retailers with no store_id in flyer_deals (production)."""
     rows = (
-        sb.table("test_flyer_deals_duplicate")
+        sb.table("flyer_deals")
         .select("retailer")
         .is_("store_id", "null")
         .not_.is_("retailer", "null")
+        .limit(5000)
         .execute()
         .data or []
     )
@@ -312,21 +313,20 @@ def main():
             try:
                 # Use osm_id as conflict target — handles all duplicate scenarios
                 sb.table("store_locations").upsert(
-                    locations, on_conflict="osm_id"
+                    locations, on_conflict="retailer_key,zip_code"
                 ).execute()
                 total_imported += len(locations)
                 logger.info(f"  Imported {len(locations)} locations for {retailer_key}")
             except Exception as e:
-                # If osm_id conflict fails, try inserting row by row skipping dupes
                 logger.warning(f"  Batch upsert failed for {retailer_key}, trying row by row: {e}")
                 for loc in locations:
                     try:
                         sb.table("store_locations").upsert(
-                            [loc], on_conflict="osm_id"
+                            [loc], on_conflict="retailer_key,zip_code"
                         ).execute()
                         total_imported += 1
                     except Exception:
-                        pass  # skip duplicate rows silently
+                        pass
 
     print(f"\nDone. Total imported: {total_imported} locations.")
 
