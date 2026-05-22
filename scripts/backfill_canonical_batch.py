@@ -48,8 +48,9 @@ def main():
             existing_brand = row.get("brand")
             brand = existing_brand or extract_brand(product_name)
 
-            # Try Kiran's AI-validated lookup first, fall back to our normalizer
-            canonical = _kiran_canonical(product_name) or build_canonical_name(product_name, brand)
+            our_canonical = build_canonical_name(product_name, brand)
+            # Try Kiran first with raw name, then with our normalized output as fallback key
+            canonical = _kiran_canonical(product_name, pre_normalized=our_canonical) or our_canonical
 
             if not canonical or len(canonical) < 2:
                 canonical = product_name.lower().strip()[:120]

@@ -52,11 +52,29 @@ def _get_kiran_lookup() -> dict[str, str]:
         _KIRAN_LOOKUP = _load_kiran_lookup()
     return _KIRAN_LOOKUP
 
-def _kiran_canonical(product_name: str) -> str | None:
-    """Return Kiran's validated canonical name for a product, or None if not found."""
-    sig = re.sub(r'[^a-z0-9\s]', ' ', product_name.lower())
-    sig = re.sub(r'\s+', ' ', sig).strip()
-    return _get_kiran_lookup().get(sig)
+def _kiran_canonical(product_name: str, pre_normalized: str | None = None) -> str | None:
+    """Return Kiran's validated canonical name for a product, or None if not found.
+
+    Tries two keys in order:
+    1. The raw product_name normalized to lowercase alphanum+spaces (works when
+       the name is already short/clean, e.g. 'Organic Lemons')
+    2. pre_normalized — our own canonical output (brand-stripped, stopwords removed)
+       which is closer in format to Kiran's signatures for longer product names
+    """
+    lookup = _get_kiran_lookup()
+
+    def _sig(s: str) -> str:
+        s = re.sub(r'[^a-z0-9\s]', ' ', s.lower())
+        return re.sub(r'\s+', ' ', s).strip()
+
+    result = lookup.get(_sig(product_name))
+    if result:
+        return result
+    if pre_normalized:
+        result = lookup.get(_sig(pre_normalized))
+        if result:
+            return result
+    return None
 
 RETAILER_ALIASES = {
     "walmart":                    "Walmart",              "Walmart":                    "Walmart",
@@ -670,7 +688,8 @@ def compare_product_across_retailers(
     size: str | None = None,
 ) -> dict:
     # Use Kiran's AI-validated canonical name if available — more accurate than ours
-    kiran_name = _kiran_canonical(canonical_product_name)
+    # canonical_product_name is already our normalized output, so pass as pre_normalized too
+    kiran_name = _kiran_canonical(canonical_product_name, pre_normalized=canonical_product_name)
     if kiran_name:
         canonical_product_name = kiran_name
 
