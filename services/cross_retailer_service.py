@@ -267,17 +267,26 @@ def _get_store_info(retailer, zip_code, store_locations):
 
     # Exact match — try both retailer_key and display name
     exact = store_locations.get((retailer_key, zip_key)) or store_locations.get((display_key, zip_key))
-    if exact and exact.get("address") and exact.get("confidence") != "zip":
-        return exact
+    if exact and exact.get("confidence") != "zip":
+        if exact.get("address"):
+            return exact  # best: exact zip + address
 
     # Same zip prefix (first 2 digits) — finds stores in same metro area
+    # Prefer entries with a full address; accept coordinate-only as fallback
     zip_prefix = zip_key[:2]
+    prefix_coords_only = None
     for (r, z), info in store_locations.items():
-        if r in (retailer_key, display_key) and info.get("address") and info.get("confidence") != "zip":
+        if r in (retailer_key, display_key) and info.get("confidence") != "zip":
             if z.startswith(zip_prefix):
-                return info
+                if info.get("address"):
+                    return info  # best: same metro + address
+                elif prefix_coords_only is None:
+                    prefix_coords_only = info  # acceptable: same metro, coords only
 
-    # Return exact match even without address (lat/lng still useful for map)
+    if prefix_coords_only:
+        return prefix_coords_only
+
+    # Last resort: exact zip match even without address (lat/lng still useful)
     return exact
 
 
