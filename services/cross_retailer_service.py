@@ -264,33 +264,32 @@ def reload_store_location_cache() -> int:
     return len(_STORE_LOCATION_CACHE)
 
 
-def _get_store_info(retailer, zip_code, store_locations):
+def _get_store_info(retailer, zip_code, store_locations, user_lat=None, user_lng=None):
     """Returns store dict with lat, lng, address, confidence — or None."""
     display_key = retailer.lower().strip()
-    # Derive retailer_key by stripping spaces/punctuation (e.g. "el super" → "elsuper")
     retailer_key = re.sub(r"[^a-z0-9]", "", display_key)
     zip_key = (zip_code or "").strip()
 
-    # Exact match — try both retailer_key and display name
+    # Exact zip match
     exact = store_locations.get((retailer_key, zip_key)) or store_locations.get((display_key, zip_key))
-    if exact and exact.get("confidence") != "zip":
-        if exact.get("address"):
-            return exact  # best: exact zip + address
+    if exact and exact.get("confidence") != "zip" and exact.get("address"):
+        return exact  # best: exact zip + address
 
-    # Same zip prefix (first 2 digits) — finds stores in same metro area
-    # Prefer entries with a full address; accept coordinate-only as fallback
-    zip_prefix = zip_key[:2]
-    prefix_coords_only = None
-    for (r, z), info in store_locations.items():
-        if r in (retailer_key, display_key) and info.get("confidence") != "zip":
-            if z.startswith(zip_prefix):
-                if info.get("address"):
-                    return info  # best: same metro + address
-                elif prefix_coords_only is None:
-                    prefix_coords_only = info  # acceptable: same metro, coords only
-
-    if prefix_coords_only:
-        return prefix_coords_only
+    # No exact addressed match — find the nearest store for this retailer to the user
+    if user_lat is not None and user_lng is not None:
+        best_info = None
+        best_dist = float("inf")
+        for (r, z), info in store_locations.items():
+            if r not in (retailer_key, display_key):
+                continue
+            if info.get("confidence") == "zip":
+                continue
+            d = _haversine_miles(user_lat, user_lng, info["lat"], info["lng"])
+            if d < best_dist:
+                best_dist = d
+                best_info = info
+        if best_info:
+            return best_info
 
     # Last resort: exact zip match even without address (lat/lng still useful)
     return exact
@@ -374,7 +373,7 @@ def _make_deal_reason(r, rank, total_retailers, avg_price, avg_ppu, use_ppu, siz
             return f"${diff:.2f} above average{size_str}"
 
 
-def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
+def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None, user_lat=None, user_lng=None):
     seen = {}
     for row in rows:
         retailer = normalize_retailer(row.get("retailer") or "")
@@ -401,7 +400,7 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None):
     # Enrich with real store address + coordinates (OSM-geocoded, not centroids)
     store_locs = _get_store_locations()
     for r in retailers:
-        info = _get_store_info(r["retailer"], r.get("zip_code") or "", store_locs)
+        info = _get_store_info(r["retailer"], r.get("zip_code") or "", store_locs, user_lat=user_lat, user_lng=user_lng)
         if info and info.get("confidence") != "zip":
             r["store_address"] = info.get("address") or None
             r["store_lat"] = info.get("lat")
@@ -487,7 +486,7 @@ def _build_result(
         zip_code     = (row.get("zip_code") or "").strip()
         retailer_raw = row.get("retailer") or ""
         if user_lat is not None and radius_miles is not None:
-            store_latlon = _get_store_info(retailer_raw, zip_code, store_locations)
+            store_latlon = _get_store_info(retailer_raw, zip_code, store_locations, user_lat=user_lat, user_lng=user_lon)
             if store_latlon:
                 dist = _haversine_miles(user_lat, user_lon, store_latlon["lat"], store_latlon["lng"])
                 if dist > radius_miles:
@@ -587,7 +586,7 @@ def _build_result(
     avg_price      = round(sum(prices_for_avg) / len(prices_for_avg), 2) if prices_for_avg else 0
     size_display   = _size_key_to_display(active_size_key) if active_size_key and not use_ppu_mode else None
 
-    retailers = _build_retailer_list(active_rows, avg_price, use_ppu=use_ppu_mode, size_display=size_display)
+    retailers = _build_retailer_list(active_rows, avg_price, use_ppu=use_ppu_mode, size_display=size_display, user_lat=user_lat, user_lng=user_lon)
 
     if not retailers:
         return {"product": canonical_product_name, "brand": brand, "retailers": []}
@@ -856,7 +855,7 @@ def search_products(
             continue
 
         if user_lat is not None:
-            store_info = _get_store_info(retailer_raw, row_zip, store_locations)
+            store_info = _get_store_info(retailer_raw, row_zip, store_locations, user_lat=user_lat, user_lng=user_lon)
             if store_info:
                 dist = _haversine_miles(user_lat, user_lon, store_info["lat"], store_info["lng"])
                 if dist > radius_miles:
