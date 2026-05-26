@@ -217,7 +217,7 @@ def _load_store_locations() -> dict:
         while True:
             batch = (
                 sb.table("store_locations")
-                .select("retailer, zip_code, latitude, longitude, full_address, geocode_confidence")
+                .select("retailer_key, retailer, zip_code, latitude, longitude, full_address, geocode_confidence")
                 .not_.is_("latitude", "null")
                 .not_.is_("longitude", "null")
                 .range(offset, offset + 999)
@@ -230,13 +230,19 @@ def _load_store_locations() -> dict:
             offset += 1000
         result = {}
         for r in rows:
-            key = (r["retailer"].lower().strip(), (r["zip_code"] or "").strip())
-            result[key] = {
+            zip_code = (r["zip_code"] or "").strip()
+            data = {
                 "lat": float(r["latitude"]),
                 "lng": float(r["longitude"]),
                 "address": r.get("full_address") or None,
                 "confidence": r.get("geocode_confidence") or "zip",
             }
+            # Index by retailer_key (standardized, e.g. "elsuper") — primary key
+            result[(r["retailer_key"], zip_code)] = data
+            # Also index by display name (e.g. "el super") in case lookup uses it
+            display_key = r["retailer"].lower().strip()
+            if (display_key, zip_code) not in result:
+                result[(display_key, zip_code)] = data
         return result
     except Exception:
         return {}
@@ -254,26 +260,25 @@ def _get_store_locations() -> dict:
 
 def _get_store_info(retailer, zip_code, store_locations):
     """Returns store dict with lat, lng, address, confidence — or None."""
-    retailer_key = retailer.lower().strip()
+    display_key = retailer.lower().strip()
+    # Derive retailer_key by stripping spaces/punctuation (e.g. "el super" → "elsuper")
+    retailer_key = re.sub(r"[^a-z0-9]", "", display_key)
     zip_key = (zip_code or "").strip()
 
-    # Exact match
-    exact = store_locations.get((retailer_key, zip_key))
+    # Exact match — try both retailer_key and display name
+    exact = store_locations.get((retailer_key, zip_key)) or store_locations.get((display_key, zip_key))
     if exact and exact.get("address") and exact.get("confidence") != "zip":
         return exact
 
     # Same zip prefix (first 2 digits) — finds stores in same metro area
     zip_prefix = zip_key[:2]
-    best = None
     for (r, z), info in store_locations.items():
-        if r == retailer_key and info.get("address") and info.get("confidence") != "zip":
+        if r in (retailer_key, display_key) and info.get("address") and info.get("confidence") != "zip":
             if z.startswith(zip_prefix):
-                return info  # same zip area, has real address
-            if best is None:
-                best = info  # keep any verified address as last resort
+                return info
 
-    # Return exact match even without address, or best available
-    return exact or best
+    # Return exact match even without address (lat/lng still useful for map)
+    return exact
 
 
 def _normalize_size_key(base_amount, base_unit):
