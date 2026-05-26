@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from services.cross_retailer_service import (
     compare_product_across_retailers,
     search_products,
+    reload_store_location_cache,
 )
 from services.price_history_service import get_price_history
 from config.supabase import get_supabase_client
@@ -73,6 +74,12 @@ def _calc_ppu(price: float, amount: str | None, unit: str | None) -> float | Non
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.post("/admin/reload-cache")
+def admin_reload_cache():
+    count = reload_store_location_cache()
+    return {"status": "ok", "store_locations_loaded": count}
 
 
 @app.get("/search")

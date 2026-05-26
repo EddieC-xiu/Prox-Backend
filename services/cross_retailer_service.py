@@ -258,6 +258,12 @@ def _get_store_locations() -> dict:
     return _STORE_LOCATION_CACHE
 
 
+def reload_store_location_cache() -> int:
+    global _STORE_LOCATION_CACHE
+    _STORE_LOCATION_CACHE = _load_store_locations()
+    return len(_STORE_LOCATION_CACHE)
+
+
 def _get_store_info(retailer, zip_code, store_locations):
     """Returns store dict with lat, lng, address, confidence — or None."""
     display_key = retailer.lower().strip()
