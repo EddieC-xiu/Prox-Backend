@@ -279,7 +279,7 @@ def _get_store_info(retailer, zip_code, store_locations, user_lat=None, user_lng
     if user_lat is not None and user_lng is not None:
         best_info = None
         best_dist = float("inf")
-        for (r, z), info in store_locations.items():
+        for (r, _), info in store_locations.items():
             if r not in (retailer_key, display_key):
                 continue
             if info.get("confidence") == "zip":
@@ -802,12 +802,14 @@ def compare_product_across_retailers(
     )
 
     # If local filter returns fewer than 3 retailers, supplement with national data
-    # so users always see a useful comparison regardless of local data coverage
+    # so users always see a useful comparison regardless of local data coverage.
+    # Pass user coords so _get_store_info can still find the nearest store for
+    # map pins — but omit radius_miles so no rows are filtered out.
     local_count = len(result.get("retailers", []))
     if zip_code and local_count < 3:
         national = _build_result(
             canonical_product_name, brand, rows,
-            user_lat=None, user_lon=None,
+            user_lat=user_lat, user_lon=user_lon,
             radius_miles=None,
             selected_size=size,
         )
