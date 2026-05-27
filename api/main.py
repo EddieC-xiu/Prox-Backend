@@ -5,9 +5,11 @@
 # Run with:
 #   PYTHONUTF8=1 PYTHONPATH=. uvicorn api.main:app --reload --port 8000
 
+import os
 import statistics
 from collections import Counter
 from fastapi import FastAPI, Query, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from services.cross_retailer_service import (
     compare_product_across_retailers,
@@ -69,6 +71,12 @@ def _calc_ppu(price: float, amount: str | None, unit: str | None) -> float | Non
         return None
     oz = amt * multiplier
     return round(price / oz, 4) if oz > 0 else None
+
+
+@app.get("/", include_in_schema=False)
+def dashboard():
+    path = os.path.join(os.path.dirname(__file__), "..", "index.html")
+    return FileResponse(os.path.normpath(path))
 
 
 @app.get("/health")
