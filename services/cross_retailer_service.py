@@ -220,6 +220,7 @@ def _load_store_locations() -> dict:
                 .select("retailer_key, retailer, zip_code, latitude, longitude, full_address, geocode_confidence")
                 .not_.is_("latitude", "null")
                 .not_.is_("longitude", "null")
+                .neq("geocode_confidence", "zip_centroid")
                 .range(offset, offset + 999)
                 .execute()
                 .data or []
