@@ -701,7 +701,7 @@ def _build_result(
 def compare_product_across_retailers(
     canonical_product_name: str,
     brand: str | None = None,
-    limit: int = 50,
+    limit: int = 500,
     zip_code: str | None = None,
     radius_miles: float = 25.0,
     size: str | None = None,
@@ -801,19 +801,24 @@ def compare_product_across_retailers(
         selected_size=size,
     )
 
-    # If geographic filter left us with 0 retailers, retry nationally so
-    # users always see pricing context even when local data is sparse
-    if zip_code and len(result.get("retailers", [])) == 0:
-        result = _build_result(
+    # If local filter returns fewer than 3 retailers, supplement with national data
+    # so users always see a useful comparison regardless of local data coverage
+    local_count = len(result.get("retailers", []))
+    if zip_code and local_count < 3:
+        national = _build_result(
             canonical_product_name, brand, rows,
             user_lat=None, user_lon=None,
             radius_miles=None,
             selected_size=size,
         )
-        if result.get("retailers"):
+        if len(national.get("retailers", [])) > local_count:
+            result = national
+            if local_count == 0:
+                note = "National pricing — no nearby stores found."
+            else:
+                note = "Showing national pricing — limited local data."
             result["compare_summary"] = (
-                result.get("compare_summary", "")
-                + " (National pricing — no nearby stores found.)"
+                result.get("compare_summary", "") + f" ({note})"
             )
 
     return result

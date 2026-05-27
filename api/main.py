@@ -107,7 +107,7 @@ def search(
 def compare(
     product:      str        = Query(..., min_length=2, description="Canonical product name"),
     brand:        str | None = Query(None,              description="Brand name (optional)"),
-    limit:        int        = Query(50, ge=1, le=100,  description="Max retailer rows"),
+    limit:        int        = Query(500, ge=1, le=1000, description="Max retailer rows"),
     zip_code:     str | None = Query(None,              description="User zip code for local results"),
     radius_miles: float      = Query(25.0, ge=1, le=200, description="Search radius in miles"),
     size:         str | None = Query(None,              description="Size key to filter by (e.g. '10.8_oz')"),
