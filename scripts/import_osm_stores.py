@@ -119,6 +119,8 @@ class RetailerDef:
 # (e.g. Q672170 was pulling Publix nodes instead of Meijer).
 RETAILERS: list[RetailerDef] = [
     # ── Verified wikidata IDs ───────────────────────────────────────────────
+    RetailerDef("cvs",          ["CVS", "CVS Pharmacy", "CVS/pharmacy"],
+                "Q1191797"),
     RetailerDef("walmart",      ["Walmart", "Walmart Supercenter", "Walmart Neighborhood Market"],
                 "Q483551",
                 exclude_countries=("CA", "MX")),
@@ -181,6 +183,10 @@ RETAILERS: list[RetailerDef] = [
     RetailerDef("groceryoutlet",["Grocery Outlet", "Grocery Outlet Bargain Market"]),
     RetailerDef("savemart",     ["Save Mart", "Save Mart Supermarkets"]),
     RetailerDef("lazyacres",    ["Lazy Acres", "Lazy Acres Market"]),
+    RetailerDef("smartfinal",   ["Smart & Final", "Smart and Final", "Smart & Final Extra!"],
+                allowed_zip_prefixes=("9",)),  # Smart & Final is West Coast only
+    RetailerDef("winco",        ["WinCo Foods", "WinCo"],
+                allowed_zip_prefixes=("8", "9", "73", "74", "75", "76", "77", "78", "79")),
 ]
 
 RETAILER_MAP: dict[str, RetailerDef] = {r.retailer_key: r for r in RETAILERS}

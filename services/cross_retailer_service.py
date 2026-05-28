@@ -266,17 +266,18 @@ def reload_store_location_cache() -> int:
 
 
 def _get_store_info(retailer, zip_code, store_locations, user_lat=None, user_lng=None):
-    """Returns store dict with lat, lng, address, confidence — or None."""
+    """Returns the single best store dict with lat, lng, address, confidence — or None.
+
+    When user coordinates are known, always returns the nearest real (non-centroid)
+    store to the user, ignoring the deal's zip_code (which may be from a different
+    state due to national flyer data). Only falls back to zip-based lookup when no
+    user location is provided.
+    """
     display_key = retailer.lower().strip()
     retailer_key = re.sub(r"[^a-z0-9]", "", display_key)
     zip_key = (zip_code or "").strip()
 
-    # Exact zip match
-    exact = store_locations.get((retailer_key, zip_key)) or store_locations.get((display_key, zip_key))
-    if exact and exact.get("confidence") != "zip" and exact.get("address"):
-        return exact  # best: exact zip + address
-
-    # No exact addressed match — find the nearest store for this retailer to the user
+    # User location known → always pick the nearest real store, regardless of deal zip
     if user_lat is not None and user_lng is not None:
         best_info = None
         best_dist = float("inf")
@@ -292,8 +293,8 @@ def _get_store_info(retailer, zip_code, store_locations, user_lat=None, user_lng
         if best_info:
             return best_info
 
-    # Last resort: exact zip match even without address (lat/lng still useful)
-    return exact
+    # No user location — fall back to exact zip match from the deal
+    return store_locations.get((retailer_key, zip_key)) or store_locations.get((display_key, zip_key))
 
 
 def _normalize_size_key(base_amount, base_unit):
