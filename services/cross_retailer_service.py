@@ -217,7 +217,7 @@ def _load_store_locations() -> dict:
         while True:
             batch = (
                 sb.table("store_locations")
-                .select("retailer_key, retailer, zip_code, latitude, longitude, full_address, geocode_confidence")
+                .select("retailer_key, retailer, zip_code, latitude, longitude, full_address, geocode_confidence, store_name, city, state")
                 .not_.is_("latitude", "null")
                 .not_.is_("longitude", "null")
                 .neq("geocode_confidence", "zip_centroid")
@@ -232,12 +232,17 @@ def _load_store_locations() -> dict:
         result = {}
         for r in rows:
             zip_code = (r["zip_code"] or "").strip()
+            # Build display address from full_address, or city+state+zip fallback
+            full_addr = r.get("full_address") or None
+            if not full_addr and r.get("city") and r.get("state"):
+                full_addr = f"{r['city']}, {r['state']} {zip_code}".strip()
             data = {
                 "lat": float(r["latitude"]),
                 "lng": float(r["longitude"]),
-                "address": r.get("full_address") or None,
+                "address": full_addr,
                 "confidence": r.get("geocode_confidence") or "zip",
                 "zip_code": zip_code,
+                "store_name": r.get("store_name") or None,
             }
             # Index by retailer_key (standardized, e.g. "elsuper") — primary key
             result[(r["retailer_key"], zip_code)] = data
@@ -408,13 +413,14 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None, user
             r["store_address"] = info.get("address") or None
             r["store_lat"] = info.get("lat")
             r["store_lng"] = info.get("lng")
-            # Replace deal zip with the actual matched store's zip
+            r["store_name"] = info.get("store_name") or None
             if info.get("zip_code"):
                 r["zip_code"] = info["zip_code"]
         else:
             r["store_address"] = None
             r["store_lat"] = None
             r["store_lng"] = None
+            r["store_name"] = None
 
     if use_ppu:
         ppus_all = [r["price_per_oz"] for r in retailers if r.get("price_per_oz")]
