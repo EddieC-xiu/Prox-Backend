@@ -232,24 +232,28 @@ def _load_store_locations() -> dict:
         result = {}
         for r in rows:
             zip_code = (r["zip_code"] or "").strip()
+            lat = float(r["latitude"])
+            lng = float(r["longitude"])
+            # When zip is missing, use lat/lng as unique key so entries don't collapse
+            zip_key = zip_code if zip_code else f"_geo_{lat:.4f}_{lng:.4f}"
             # Build display address from full_address, or city+state+zip fallback
             full_addr = r.get("full_address") or None
             if not full_addr and r.get("city") and r.get("state"):
                 full_addr = f"{r['city']}, {r['state']} {zip_code}".strip()
             data = {
-                "lat": float(r["latitude"]),
-                "lng": float(r["longitude"]),
+                "lat": lat,
+                "lng": lng,
                 "address": full_addr,
                 "confidence": r.get("geocode_confidence") or "zip",
                 "zip_code": zip_code,
                 "store_name": r.get("store_name") or None,
             }
             # Index by retailer_key (standardized, e.g. "elsuper") — primary key
-            result[(r["retailer_key"], zip_code)] = data
+            result[(r["retailer_key"], zip_key)] = data
             # Also index by display name (e.g. "el super") in case lookup uses it
             display_key = r["retailer"].lower().strip()
-            if (display_key, zip_code) not in result:
-                result[(display_key, zip_code)] = data
+            if (display_key, zip_key) not in result:
+                result[(display_key, zip_key)] = data
         return result
     except Exception:
         return {}
