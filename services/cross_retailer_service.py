@@ -237,6 +237,7 @@ def _load_store_locations() -> dict:
                 "lng": float(r["longitude"]),
                 "address": r.get("full_address") or None,
                 "confidence": r.get("geocode_confidence") or "zip",
+                "zip_code": zip_code,
             }
             # Index by retailer_key (standardized, e.g. "elsuper") — primary key
             result[(r["retailer_key"], zip_code)] = data
@@ -407,6 +408,9 @@ def _build_retailer_list(rows, avg_price, use_ppu=False, size_display=None, user
             r["store_address"] = info.get("address") or None
             r["store_lat"] = info.get("lat")
             r["store_lng"] = info.get("lng")
+            # Replace deal zip with the actual matched store's zip
+            if info.get("zip_code"):
+                r["zip_code"] = info["zip_code"]
         else:
             r["store_address"] = None
             r["store_lat"] = None
