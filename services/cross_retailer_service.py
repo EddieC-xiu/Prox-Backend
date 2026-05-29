@@ -743,7 +743,7 @@ def compare_product_across_retailers(
             .limit(limit)
         )
         if brand:
-            q = q.eq("brand", brand)
+            q = q.ilike("brand", brand)
         return q.execute().data or []
 
     rows = _fetch_exact(canonical_product_name)
@@ -764,7 +764,7 @@ def compare_product_across_retailers(
             .limit(500)
         )
         if brand:
-            q = q.eq("brand", brand)
+            q = q.ilike("brand", brand)
         fuzzy_rows = q.execute().data or []
 
         if fuzzy_rows:
@@ -800,7 +800,7 @@ def compare_product_across_retailers(
                 .limit(200)
             )
             if brand:
-                q = q.eq("brand", brand)
+                q = q.ilike("brand", brand)
             shorter_rows = q.execute().data or []
             if shorter_rows:
                 rows = shorter_rows
@@ -884,12 +884,14 @@ def search_products(
                 if dist > radius_miles:
                     continue
 
-        brand      = (row.get("brand") or "").lower().strip() or None
-        normalized = build_canonical_name(raw_canonical, brand)
-        key        = (normalized, brand)
+        brand     = (row.get("brand") or "").strip() or None
+        brand_key = (brand or "").lower()
+        normalized = build_canonical_name(raw_canonical, brand_key)
+        key        = (normalized, brand_key)
 
         if key not in seen:
-            seen[key] = {"retailers": set(), "prices": [], "match_key": None, "image_link": None}
+            seen[key] = {"retailers": set(), "prices": [], "match_key": None, "image_link": None,
+                         "raw_canonical": raw_canonical, "raw_brand": brand}
         seen[key]["retailers"].add(normalize_retailer(retailer_raw))
         seen[key]["prices"].append(float(row["product_price"]))
         # Prefer non-null match_key and image_link
@@ -899,13 +901,13 @@ def search_products(
             seen[key]["image_link"] = row["image_link"]
 
     results = []
-    for (normalized_name, brand), data in seen.items():
+    for (_, _brand_key), data in seen.items():
         prices = [p for p in data["prices"] if p > 0]
         if not prices:
             continue
         results.append({
-            "canonical_product_name": normalized_name,
-            "brand":                  brand,
+            "canonical_product_name": data["raw_canonical"],
+            "brand":                  data["raw_brand"],
             "retailer_count":         len(data["retailers"]),
             "min_price":              min(prices),
             "max_price":              max(prices),
