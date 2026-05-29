@@ -342,7 +342,7 @@ def deal_history(
             rows = get_price_history(match_key, store_id, days=days)
         else:
             # Get history across all stores, grouped by date
-            from services.price_history_service import _lowercase_brand_key
+            from services.price_history_service import _match_key_variants
             since = (__import__("datetime").datetime.now(__import__("datetime").timezone.utc)
                      - __import__("datetime").timedelta(days=days)).isoformat()
             def _fetch_history_all_stores(key: str) -> list[dict]:
@@ -352,11 +352,11 @@ def deal_history(
                     .gte("observed_date", since)\
                     .order("observed_date", desc=False)\
                     .execute().data or []
-            rows = _fetch_history_all_stores(match_key)
-            if not rows:
-                fallback = _lowercase_brand_key(match_key)
-                if fallback:
-                    rows = _fetch_history_all_stores(fallback)
+            rows = []
+            for _key in _match_key_variants(match_key):
+                rows = _fetch_history_all_stores(_key)
+                if rows:
+                    break
 
         if not rows:
             raise HTTPException(status_code=404, detail=f"No price history for '{match_key}'")

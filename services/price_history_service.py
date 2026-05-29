@@ -23,12 +23,31 @@ def upsert_price_history(rows: list[dict]) -> int:
     return written
 
 
-def _lowercase_brand_key(match_key: str) -> str | None:
-    """Return match_key with brand component lowercased (legacy format fallback)."""
-    parts = match_key.split("|", 1)
-    if len(parts) == 2 and parts[0] != parts[0].lower():
-        return parts[0].lower() + "|" + parts[1]
-    return None
+def _match_key_variants(match_key: str) -> list[str]:
+    """Return all format variants of a match_key to try in order.
+
+    Handles two historical format mismatches:
+    - Brand casing: 'Carolina|...|32' vs 'carolina|...|32'
+    - Size field: '...|32' vs '...|no_size'
+    """
+    parts = match_key.rsplit("|", 1)
+    if len(parts) != 2:
+        return [match_key]
+    base, size = parts
+    brand_canonical = base.split("|", 1)
+    if len(brand_canonical) != 2:
+        return [match_key]
+    brand, canonical = brand_canonical
+    brand_lower = brand.lower()
+
+    variants = [match_key]
+    if brand_lower != brand:
+        variants.append(f"{brand_lower}|{canonical}|{size}")
+    if size != "no_size":
+        variants.append(f"{brand}|{canonical}|no_size")
+        if brand_lower != brand:
+            variants.append(f"{brand_lower}|{canonical}|no_size")
+    return variants
 
 
 def _query_history(client, key: str, store_id: str, since: str) -> list[dict]:
@@ -44,12 +63,11 @@ def _query_history(client, key: str, store_id: str, since: str) -> list[dict]:
 def get_price_history(match_key: str, store_id: str, days: int = 90) -> list[dict]:
     client = get_supabase_client()
     since  = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
-    rows   = _query_history(client, match_key, store_id, since)
-    if not rows:
-        fallback = _lowercase_brand_key(match_key)
-        if fallback:
-            rows = _query_history(client, fallback, store_id, since)
-    return rows
+    for key in _match_key_variants(match_key):
+        rows = _query_history(client, key, store_id, since)
+        if rows:
+            return rows
+    return []
 
 
 def get_baseline_price(match_key: str, store_id: str, days: int = 90) -> float | None:
