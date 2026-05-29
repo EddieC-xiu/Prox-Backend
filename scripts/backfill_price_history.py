@@ -21,22 +21,13 @@ DRY_RUN      = "--dry-run" in sys.argv
 MAX_PRICE    = 999999.0  # sanity cap — skip bulk/case pricing and data errors
 
 
-def build_match_key(brand, canonical, size_oz) -> str | None:
-    if brand and canonical and size_oz:
-        return f"{brand}|{canonical}|{size_oz}"
-    if brand and canonical:
-        return f"{brand}|{canonical}|no_size"
-    return None
-
-
 def fetch_batch(client, offset: int) -> list[dict]:
     for attempt in range(MAX_RETRIES):
         try:
             res = (
                 client.table(SOURCE_TABLE)
-                .select("id, brand, canonical_product_name, product_price, base_amount, base_unit, store_id")
-                .not_.is_("brand", "null")
-                .not_.is_("canonical_product_name", "null")
+                .select("id, match_key, brand, canonical_product_name, product_price, base_amount, base_unit, store_id")
+                .not_.is_("match_key", "null")
                 .not_.is_("product_price", "null")
                 .range(offset, offset + FETCH_BATCH - 1)
                 .execute()
@@ -76,10 +67,10 @@ def main():
         to_write = []
         seen     = {}
         for row in batch:
+            match_key = row.get("match_key")
             brand     = row.get("brand")
             canonical = row.get("canonical_product_name")
             size_oz   = normalize_size_oz(row.get("base_amount"), row.get("base_unit"), canonical or "")
-            match_key = build_match_key(brand, canonical, size_oz)
 
             if not match_key:
                 total_skipped += 1

@@ -23,17 +23,33 @@ def upsert_price_history(rows: list[dict]) -> int:
     return written
 
 
-def get_price_history(match_key: str, store_id: str, days: int = 90) -> list[dict]:
-    client = get_supabase_client()
-    since  = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
-    res    = client.table(TABLE)\
+def _lowercase_brand_key(match_key: str) -> str | None:
+    """Return match_key with brand component lowercased (legacy format fallback)."""
+    parts = match_key.split("|", 1)
+    if len(parts) == 2 and parts[0] != parts[0].lower():
+        return parts[0].lower() + "|" + parts[1]
+    return None
+
+
+def _query_history(client, key: str, store_id: str, since: str) -> list[dict]:
+    return client.table(TABLE)\
         .select("observed_at, product_price, store_id")\
-        .eq("match_key", match_key)\
+        .eq("match_key", key)\
         .eq("store_id", store_id)\
         .gte("observed_at", since)\
         .order("observed_at", desc=False)\
-        .execute()
-    return res.data or []
+        .execute().data or []
+
+
+def get_price_history(match_key: str, store_id: str, days: int = 90) -> list[dict]:
+    client = get_supabase_client()
+    since  = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    rows   = _query_history(client, match_key, store_id, since)
+    if not rows:
+        fallback = _lowercase_brand_key(match_key)
+        if fallback:
+            rows = _query_history(client, fallback, store_id, since)
+    return rows
 
 
 def get_baseline_price(match_key: str, store_id: str, days: int = 90) -> float | None:
