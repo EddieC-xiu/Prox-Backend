@@ -139,6 +139,16 @@
   .rank-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); width: 24px; }
 
   .location-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); background: rgba(200,241,53,0.1); border: 1px solid rgba(200,241,53,0.2); padding: 2px 8px; border-radius: 20px; margin-left: 8px; }
+
+  .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 20px; }
+  .history-chart { width: 100%; height: 320px; display: block; margin-top: 20px; }
+  .history-grid-line { stroke: rgba(255,255,255,0.08); stroke-width: 1; }
+  .history-axis-label { fill: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 10px; }
+  .history-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .history-point { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+  .history-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  .history-table th { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .history-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 12px; }
 </style>
 </head>
 <body>
@@ -158,6 +168,7 @@
   <div class="tabs">
     <button class="tab active" onclick="switchTab('search')">Search</button>
     <button class="tab" onclick="switchTab('compare')">Compare</button>
+    <button class="tab" onclick="switchTab('history')">Price History</button>
     <button class="tab" onclick="switchTab('deals')">Best Deals</button>
   </div>
 
@@ -187,6 +198,14 @@
           <option value="50">50 mi</option>
           <option value="100">100 mi</option>
           <option value="250">250 mi</option>
+        </select>
+      </div>
+      <div class="input-group" style="flex:0 0 130px">
+        <label>Date Window</label>
+        <select id="searchDateWindow">
+          <option value="last_7">Last 7 days</option>
+          <option value="last_30" selected>Last 30 days</option>
+          <option value="all">All data</option>
         </select>
       </div>
       <button class="btn" onclick="doSearch()">Search</button>
@@ -219,10 +238,50 @@
           <option value="250">250 mi</option>
         </select>
       </div>
+      <div class="input-group" style="flex:0 0 130px">
+        <label>Date Window</label>
+        <select id="compareDateWindow">
+          <option value="last_7">Last 7 days</option>
+          <option value="last_30" selected>Last 30 days</option>
+          <option value="all">All data</option>
+        </select>
+      </div>
       <button class="btn" onclick="doCompare()">Compare</button>
     </div>
     <div class="loading" id="compareLoading"><div class="spinner"></div>Loading...</div>
     <div id="compareResults"></div>
+  </div>
+
+  <!-- PRICE HISTORY TAB -->
+  <div class="tab-panel" id="tab-history">
+    <div class="search-bar">
+      <div class="input-group" style="flex:3;min-width:220px">
+        <label>Product</label>
+        <input type="text" id="historyQ" placeholder="e.g. coffee creamer, rice, broccoli..." onkeydown="if(event.key==='Enter')doHistorySearch()">
+      </div>
+      <div class="input-group" style="flex:1;min-width:140px">
+        <label>Brand</label>
+        <input type="text" id="historyBrand" placeholder="optional" onkeydown="if(event.key==='Enter')doHistorySearch()">
+      </div>
+      <div class="input-group" style="flex:0 0 110px">
+        <label>Days</label>
+        <select id="historyDays">
+          <option value="30">30</option>
+          <option value="90" selected>90</option>
+          <option value="180">180</option>
+          <option value="365">365</option>
+        </select>
+      </div>
+      <div class="input-group" style="flex:1;min-width:120px">
+        <label>Store ID</label>
+        <input type="text" id="historyStoreId" placeholder="optional" onkeydown="if(event.key==='Enter')reloadSelectedHistory()">
+      </div>
+      <button class="btn" onclick="doHistorySearch()">Search</button>
+    </div>
+    <div class="loading" id="historySearchLoading"><div class="spinner"></div>Searching products...</div>
+    <div id="historySearchResults"></div>
+    <div class="loading" id="historyLoading"><div class="spinner"></div>Loading history...</div>
+    <div id="historyResults"></div>
   </div>
 
   <!-- BEST DEALS TAB -->
@@ -263,7 +322,7 @@
 </div>
 
 <script>
-const API = window.location.hostname === 'localhost' ? 'http://localhost:8000' : window.location.origin;
+const API = window.location.origin;
 
 async function checkHealth() {
   try {
@@ -278,7 +337,7 @@ checkHealth();
 
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t,i) => {
-    t.classList.toggle('active', ['search','compare','deals'][i] === name);
+    t.classList.toggle('active', ['search','compare','history','deals'][i] === name);
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(`tab-${name}`).classList.add('active');
@@ -286,6 +345,18 @@ function switchTab(name) {
 
 function loading(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
 function fmt(n) { return Number(n).toFixed(2); }
+function dateWindowLabel(key) {
+  const labels = {
+    last_7: 'Last 7 days',
+    last_30: 'Last 30 days',
+    all: 'All data'
+  };
+  return labels[key] || key || 'All data';
+}
+function appendDateParams(url, prefix) {
+  const dateWindow = document.getElementById(`${prefix}DateWindow`).value;
+  return `${url}&date_window=${encodeURIComponent(dateWindow)}`;
+}
 
 // ── SEARCH ───────────────────────────────────────────────────────────────────
 async function doSearch() {
@@ -297,7 +368,7 @@ async function doSearch() {
   loading('searchLoading', true);
   document.getElementById('searchResults').innerHTML = '';
   try {
-    let url = `${API}/search?q=${encodeURIComponent(q)}&limit=${limit}`;
+    let url = appendDateParams(`${API}/search?q=${encodeURIComponent(q)}&limit=${limit}`, 'search');
     if (zip) url += `&zip_code=${zip}&radius_miles=${radius}`;
     const r = await fetch(url);
     const data = await r.json();
@@ -317,9 +388,10 @@ function renderSearch(data, zip, radius) {
     return;
   }
   const locationTag = zip ? `<span class="location-tag">📍 ${zip} · ${radius}mi</span>` : '';
+  const dateTag = data.date_filter ? `<span class="location-tag">${dateWindowLabel(data.date_filter.date_window)} ${data.date_filter.date_from || ''}${data.date_filter.date_to ? ' to ' + data.date_filter.date_to : ''}</span>` : '';
   el.innerHTML = `
     <div class="results-header">
-      <div class="results-title">Results ${locationTag}</div>
+      <div class="results-title">Results ${locationTag}${dateTag}</div>
       <div class="results-count">${data.count} products for "${data.query}"</div>
     </div>
     <div class="product-grid">
@@ -349,6 +421,7 @@ function loadCompare(product, brand) {
   switchTab('compare');
   document.getElementById('compareProduct').value = product;
   document.getElementById('compareBrand').value = brand;
+  document.getElementById('compareDateWindow').value = document.getElementById('searchDateWindow').value;
   doCompare();
 }
 
@@ -361,7 +434,7 @@ async function doCompare(sizeKey) {
   loading('compareLoading', true);
   document.getElementById('compareResults').innerHTML = '';
   try {
-    let url = `${API}/compare?product=${encodeURIComponent(product)}`;
+    let url = appendDateParams(`${API}/compare?product=${encodeURIComponent(product)}`, 'compare');
     if (brand)   url += `&brand=${encodeURIComponent(brand)}`;
     if (zip)     url += `&zip_code=${zip}&radius_miles=${radius}`;
     if (sizeKey) url += `&size=${encodeURIComponent(sizeKey)}`;
@@ -379,6 +452,7 @@ async function doCompare(sizeKey) {
 function renderCompare(data, zip, radius) {
   const el = document.getElementById('compareResults');
   const locationTag = zip ? `<span class="location-tag">📍 ${zip} · ${radius}mi</span>` : '';
+  const dateTag = data.date_filter ? `<span class="location-tag">${dateWindowLabel(data.date_filter.date_window)} ${data.date_filter.date_from || ''}${data.date_filter.date_to ? ' to ' + data.date_filter.date_to : ''}</span>` : '';
   const isPPU = data.compare_mode === 'price_per_oz';
 
   // In PPU mode compute $/oz savings — avoids misleading % from bulk size vs small size
@@ -418,7 +492,7 @@ function renderCompare(data, zip, radius) {
 
   el.innerHTML = `
     <div class="compare-header">
-      <div class="compare-product-name">${data.product} ${locationTag}</div>
+      <div class="compare-product-name">${data.product} ${locationTag}${dateTag}</div>
       ${data.brand ? `<div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-top:2px">${data.brand}</div>` : ''}
       ${data.compare_summary ? `<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:8px;line-height:1.6">${data.compare_summary}</div>` : ''}
       ${sizeTabs}
@@ -483,6 +557,210 @@ function renderCompare(data, zip, radius) {
 }
 
 // ── BEST DEALS ────────────────────────────────────────────────────────────────
+// PRICE HISTORY
+let historySearchItems = [];
+let selectedHistoryProduct = null;
+
+async function doHistorySearch() {
+  const q = document.getElementById('historyQ').value.trim();
+  const brandFilter = document.getElementById('historyBrand').value.trim().toLowerCase();
+  if (!q) return;
+
+  loading('historySearchLoading', true);
+  document.getElementById('historySearchResults').innerHTML = '';
+  document.getElementById('historyResults').innerHTML = '';
+
+  try {
+    const url = `${API}/search?q=${encodeURIComponent(q)}&limit=20&date_window=last_7`;
+    const r = await fetch(url);
+    const data = await r.json();
+    loading('historySearchLoading', false);
+    if (!r.ok) { showError('historySearchResults', data.detail); return; }
+
+    historySearchItems = (data.results || [])
+      .filter(p => p.match_key)
+      .filter(p => !brandFilter || String(p.brand || '').toLowerCase().includes(brandFilter));
+    renderHistorySearch(data.query);
+  } catch(e) {
+    loading('historySearchLoading', false);
+    showError('historySearchResults', 'Could not reach API - is the server running?');
+  }
+}
+
+function renderHistorySearch(query) {
+  const el = document.getElementById('historySearchResults');
+  if (!historySearchItems.length) {
+    el.innerHTML = '<div class="empty">No products with price history keys found.</div>';
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="results-header">
+      <div class="results-title">Products</div>
+      <div class="results-count">${historySearchItems.length} results for "${query}"</div>
+    </div>
+    <div class="product-grid">
+      ${historySearchItems.map((p, i) => `
+        <div class="product-card" onclick="loadHistoryProduct(${i})">
+          <div class="product-name">${p.canonical_product_name}</div>
+          ${p.brand ? `<div class="product-brand">${p.brand}</div>` : ''}
+          <div class="product-meta">
+            <div class="price-range">
+              <span class="price-min">$${fmt(p.min_price)}</span>
+              <span class="price-sep">-</span>
+              <span class="price-max">$${fmt(p.max_price)}</span>
+            </div>
+            <div class="retailer-badge">${p.retailer_count} retailers</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function loadHistoryProduct(index) {
+  const product = historySearchItems[index];
+  if (!product || !product.match_key) return;
+  selectedHistoryProduct = product;
+  doHistory(product.match_key, product);
+}
+
+function reloadSelectedHistory() {
+  if (!selectedHistoryProduct) return;
+  doHistory(selectedHistoryProduct.match_key, selectedHistoryProduct);
+}
+
+async function doHistory(matchKey, product) {
+  const days = document.getElementById('historyDays').value;
+  const storeId = document.getElementById('historyStoreId').value.trim();
+  if (!matchKey) return;
+
+  loading('historyLoading', true);
+  document.getElementById('historyResults').innerHTML = '';
+
+  try {
+    let url = `${API}/deals/${encodeURIComponent(matchKey)}/history?days=${days}`;
+    if (storeId) url += `&store_id=${encodeURIComponent(storeId)}`;
+    const r = await fetch(url);
+    const data = await r.json();
+    loading('historyLoading', false);
+    if (!r.ok) { showError('historyResults', data.detail); return; }
+    renderHistory(data, product);
+  } catch(e) {
+    loading('historyLoading', false);
+    showError('historyResults', 'Could not reach API - is the server running?');
+  }
+}
+
+function historyPolyline(points, minPrice, maxPrice, width, height, pad) {
+  if (!points.length) return '';
+  const range = Math.max(maxPrice - minPrice, 0.01);
+  return points.map((p, i) => {
+    const x = points.length === 1
+      ? width / 2
+      : pad + (i / (points.length - 1)) * (width - pad * 2);
+    const y = height - pad - ((p.min_price - minPrice) / range) * (height - pad * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+}
+
+function renderHistory(data, product) {
+  const el = document.getElementById('historyResults');
+  const history = data.history || [];
+  if (!history.length) {
+    el.innerHTML = '<div class="empty">No price history found.</div>';
+    return;
+  }
+
+  const prices = history.flatMap(p => [Number(p.min_price), Number(p.max_price)]).filter(Number.isFinite);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const width = 900;
+  const height = 320;
+  const pad = 48;
+  const line = historyPolyline(history, minPrice, maxPrice, width, height, pad);
+  const priceRange = Math.max(maxPrice - minPrice, 0.01);
+  const points = history.map((p, i) => {
+    const x = history.length === 1 ? width / 2 : pad + (i / (history.length - 1)) * (width - pad * 2);
+    const y = height - pad - ((Number(p.min_price) - minPrice) / priceRange) * (height - pad * 2);
+    return `<circle class="history-point" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5">
+      <title>${p.date}: best price $${fmt(p.min_price)}${p.min_store_id ? `, store ${p.min_store_id}` : ''}</title>
+    </circle>`;
+  }).join('');
+
+  const yTicks = [maxPrice, (minPrice + maxPrice) / 2, minPrice];
+  const grid = yTicks.map(value => {
+    const y = height - pad - ((value - minPrice) / priceRange) * (height - pad * 2);
+    return `
+      <line class="history-grid-line" x1="${pad}" y1="${y.toFixed(1)}" x2="${width - pad}" y2="${y.toFixed(1)}"></line>
+      <text class="history-axis-label" x="10" y="${(y + 4).toFixed(1)}">$${fmt(value)}</text>
+    `;
+  }).join('');
+
+  const firstDate = history[0].date;
+  const lastDate = history[history.length - 1].date;
+
+  el.innerHTML = `
+    <div class="history-card">
+      <div class="results-header">
+        <div class="results-title">Best Price History</div>
+        <div class="results-count">${data.data_points} points - ${data.days} days</div>
+      </div>
+      ${product ? `
+        <div class="product-name" style="margin-bottom:4px">${product.canonical_product_name}</div>
+        ${product.brand ? `<div class="product-brand">${product.brand}</div>` : ''}
+      ` : ''}
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);word-break:break-all">${data.match_key}</div>
+      <div class="compare-stats">
+        <div class="stat">
+          <div class="stat-label">All Time Low</div>
+          <div class="stat-value accent">$${fmt(data.all_time_low)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">All Time High</div>
+          <div class="stat-value">$${fmt(data.all_time_high)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">First Seen</div>
+          <div class="stat-value" style="font-size:14px">${firstDate}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Last Seen</div>
+          <div class="stat-value" style="font-size:14px">${lastDate}</div>
+        </div>
+      </div>
+      <svg class="history-chart" viewBox="0 0 ${width} ${height}" role="img">
+        ${grid}
+        <line class="history-grid-line" x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}"></line>
+        <polyline class="history-line" points="${line}"></polyline>
+        ${points}
+        <text class="history-axis-label" x="${pad}" y="${height - 14}">${firstDate}</text>
+        <text class="history-axis-label" x="${width - pad - 80}" y="${height - 14}">${lastDate}</text>
+      </svg>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Best Price</th>
+            <th>Best Store</th>
+            <th>Max Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${history.slice().reverse().map(p => `
+            <tr>
+              <td>${p.date}</td>
+              <td>$${fmt(p.min_price)}</td>
+              <td>${p.min_store_id || data.store_id || '-'}</td>
+              <td>$${fmt(p.max_price)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
 async function doDeals() {
   const minSavings   = document.getElementById('dealsMinSavings').value;
   const minRetailers = document.getElementById('dealsMinRetailers').value;

@@ -13,6 +13,7 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from services.cross_retailer_service import (
     compare_product_across_retailers,
+    describe_date_filter,
     search_products,
     reload_store_location_cache,
 )
@@ -96,15 +97,27 @@ def search(
     limit:        int        = Query(10, ge=1, le=50,   description="Max results"),
     zip_code:     str | None = Query(None,              description="User zip code for local results"),
     radius_miles: float      = Query(25.0, ge=1, le=200, description="Search radius in miles"),
+    date_window:  str        = Query("last_30",          description="Date filter: all, last_7, last_30"),
+    date_from:    str | None = Query(None,               description="YYYY-MM-DD"),
+    date_to:      str | None = Query(None,               description="YYYY-MM-DD"),
 ):
     """Search for products by name, optionally filtered by location."""
     try:
-        results = search_products(q, limit=limit, zip_code=zip_code, radius_miles=radius_miles)
+        results = search_products(
+            q,
+            limit=limit,
+            zip_code=zip_code,
+            radius_miles=radius_miles,
+            date_window=date_window,
+            date_from=date_from,
+            date_to=date_to,
+        )
         return {
             "query":        q,
             "count":        len(results),
             "zip_code":     zip_code,
             "radius_miles": radius_miles if zip_code else None,
+            "date_filter":  describe_date_filter(date_window, date_from, date_to),
             "results":      results,
         }
     except Exception as e:
@@ -119,6 +132,9 @@ def compare(
     zip_code:     str | None = Query(None,              description="User zip code for local results"),
     radius_miles: float      = Query(25.0, ge=1, le=200, description="Search radius in miles"),
     size:         str | None = Query(None,              description="Size key to filter by (e.g. '10.8_oz')"),
+    date_window:  str        = Query("last_30",          description="Date filter: all, last_7, last_30"),
+    date_from:    str | None = Query(None,               description="YYYY-MM-DD"),
+    date_to:      str | None = Query(None,               description="YYYY-MM-DD"),
 ):
     """Compare prices for a specific product, optionally filtered by location and size."""
     try:
@@ -126,6 +142,9 @@ def compare(
             product, brand=brand, limit=limit,
             zip_code=zip_code, radius_miles=radius_miles,
             size=size,
+            date_window=date_window,
+            date_from=date_from,
+            date_to=date_to,
         )
         if not result.get("retailers"):
             raise HTTPException(
@@ -135,6 +154,7 @@ def compare(
             )
         result["zip_code"]     = zip_code
         result["radius_miles"] = radius_miles if zip_code else None
+        result["date_filter"]  = describe_date_filter(date_window, date_from, date_to)
         return result
     except HTTPException:
         raise
@@ -361,21 +381,30 @@ def deal_history(
         if not rows:
             raise HTTPException(status_code=404, detail=f"No price history for '{match_key}'")
 
-        # Group by date, take min price per day (best available price)
-        by_date: dict[str, list[float]] = {}
+        # Group by date and keep the store that produced the daily best price.
+        by_date: dict[str, list[dict]] = {}
         for r in rows:
             day = (r.get("observed_date") or r.get("observed_at", ""))[:10]
             try:
-                by_date.setdefault(day, []).append(float(r["product_price"]))
+                price = float(r["product_price"])
             except (ValueError, TypeError):
-                pass
+                continue
+            by_date.setdefault(day, []).append({
+                "price": price,
+                "store_id": r.get("store_id"),
+            })
 
         history = [
-            {"date": day, "min_price": min(prices), "max_price": max(prices)}
-            for day, prices in sorted(by_date.items())
+            {
+                "date": day,
+                "min_price": min(points, key=lambda p: p["price"])["price"],
+                "max_price": max(p["price"] for p in points),
+                "min_store_id": min(points, key=lambda p: p["price"]).get("store_id"),
+            }
+            for day, points in sorted(by_date.items())
         ]
 
-        all_prices = [p for prices in by_date.values() for p in prices]
+        all_prices = [p["price"] for points in by_date.values() for p in points]
         return {
             "match_key":    match_key,
             "store_id":     store_id,

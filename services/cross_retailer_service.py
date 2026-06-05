@@ -14,6 +14,7 @@ import math
 import re
 import statistics
 from collections import defaultdict
+from datetime import date, datetime, timedelta
 from config.supabase import get_supabase_client
 from scoring.product_normalizer import build_canonical_name
 
@@ -155,6 +156,78 @@ _UNIT_TO_OZ = {
 }
 
 _MAX_NAME_LENGTH = 80
+
+
+def _date_bounds(
+    date_window: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
+) -> tuple[date | None, date | None]:
+    window = (date_window or "all").strip().lower()
+    today = date.today()
+
+    if window == "all":
+        return None, None
+    if window == "current_week":
+        # Current flyer week: Wednesday through Tuesday.
+        days_since_wednesday = (today.weekday() - 2) % 7
+        start = today - timedelta(days=days_since_wednesday)
+        return start, start + timedelta(days=6)
+    if window == "last_7":
+        return today - timedelta(days=6), today
+    if window == "last_30":
+        return today - timedelta(days=29), today
+    if window == "custom":
+        start = date.fromisoformat(date_from) if date_from else None
+        end = date.fromisoformat(date_to) if date_to else None
+        return start, end
+    return None, None
+
+
+def _row_date(row: dict) -> date | None:
+    raw = row.get("date_added") or row.get("created_at")
+    if not raw:
+        return None
+    try:
+        return date.fromisoformat(str(raw)[:10])
+    except ValueError:
+        return None
+
+
+def _filter_rows_by_date(
+    rows: list[dict],
+    date_window: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
+) -> list[dict]:
+    start, end = _date_bounds(date_window, date_from, date_to)
+    if not start and not end:
+        return rows
+
+    filtered = []
+    for row in rows:
+        d = _row_date(row)
+        if d is None:
+            continue
+        if start and d < start:
+            continue
+        if end and d > end:
+            continue
+        filtered.append(row)
+    return filtered
+
+
+def describe_date_filter(
+    date_window: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
+) -> dict:
+    start, end = _date_bounds(date_window, date_from, date_to)
+    return {
+        "date_window": (date_window or "all"),
+        "date_from": start.isoformat() if start else None,
+        "date_to": end.isoformat() if end else None,
+    }
 
 
 def normalize_retailer(raw: str) -> str:
@@ -721,6 +794,9 @@ def compare_product_across_retailers(
     zip_code: str | None = None,
     radius_miles: float = 25.0,
     size: str | None = None,
+    date_window: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
 ) -> dict:
     # Use Kiran's AI-validated canonical name if available — more accurate than ours
     # canonical_product_name is already our normalized output, so pass as pre_normalized too
@@ -737,14 +813,14 @@ def compare_product_across_retailers(
     def _fetch_exact(name: str) -> list[dict]:
         q = (
             sb.table("flyer_deals")
-            .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit")
+            .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit, date_added, created_at")
             .eq("canonical_product_name", name)
             .not_.is_("product_price", "null")
             .limit(limit)
         )
         if brand:
             q = q.ilike("brand", brand)
-        return q.execute().data or []
+        return _filter_rows_by_date(q.execute().data or [], date_window, date_from, date_to)
 
     rows = _fetch_exact(canonical_product_name)
 
@@ -758,14 +834,14 @@ def compare_product_across_retailers(
     if not rows or len(set(r.get("retailer") for r in rows)) <= 1:
         q = (
             sb.table("flyer_deals")
-            .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit")
+            .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit, date_added, created_at")
             .ilike("canonical_product_name", f"%{canonical_product_name}%")
             .not_.is_("product_price", "null")
             .limit(500)
         )
         if brand:
             q = q.ilike("brand", brand)
-        fuzzy_rows = q.execute().data or []
+        fuzzy_rows = _filter_rows_by_date(q.execute().data or [], date_window, date_from, date_to)
 
         if fuzzy_rows:
             groups: dict[str, list] = defaultdict(list)
@@ -794,14 +870,14 @@ def compare_product_across_retailers(
             shorter = " ".join(words[:n])
             q = (
                 sb.table("flyer_deals")
-                .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit")
+                .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit, date_added, created_at")
                 .ilike("canonical_product_name", f"%{shorter}%")
                 .not_.is_("product_price", "null")
                 .limit(200)
             )
             if brand:
                 q = q.ilike("brand", brand)
-            shorter_rows = q.execute().data or []
+            shorter_rows = _filter_rows_by_date(q.execute().data or [], date_window, date_from, date_to)
             if shorter_rows:
                 rows = shorter_rows
                 canonical_product_name = shorter
@@ -847,6 +923,9 @@ def search_products(
     limit: int = 10,
     zip_code: str | None = None,
     radius_miles: float = 25.0,
+    date_window: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
 ) -> list[dict]:
     user_lat, user_lon = None, None
     if zip_code:
@@ -858,7 +937,7 @@ def search_products(
 
     rows = (
         sb.table("flyer_deals")
-        .select("canonical_product_name, brand, product_price, retailer, zip_code, match_key, image_link")
+        .select("canonical_product_name, brand, product_price, retailer, zip_code, match_key, image_link, date_added, created_at")
         .ilike("canonical_product_name", f"%{query}%")
         .not_.is_("product_price", "null")
         .not_.is_("canonical_product_name", "null")
@@ -866,6 +945,7 @@ def search_products(
         .execute()
         .data or []
     )
+    rows = _filter_rows_by_date(rows, date_window, date_from, date_to)
 
     seen: dict[tuple, dict] = {}
 
