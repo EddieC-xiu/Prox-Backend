@@ -29,6 +29,7 @@ def _match_key_variants(match_key: str) -> list[str]:
     Handles two historical format mismatches:
     - Brand casing: 'Carolina|...|32' vs 'carolina|...|32'
     - Size field: '...|32' vs '...|no_size'
+    - Numeric size formatting: '...|80' vs '...|80.0'
     """
     parts = match_key.rsplit("|", 1)
     if len(parts) != 2:
@@ -40,13 +41,31 @@ def _match_key_variants(match_key: str) -> list[str]:
     brand, canonical = brand_canonical
     brand_lower = brand.lower()
 
-    variants = [match_key]
-    if brand_lower != brand:
-        variants.append(f"{brand_lower}|{canonical}|{size}")
+    sizes = [size]
     if size != "no_size":
-        variants.append(f"{brand}|{canonical}|no_size")
-        if brand_lower != brand:
-            variants.append(f"{brand_lower}|{canonical}|no_size")
+        try:
+            numeric_size = float(size)
+            if numeric_size.is_integer():
+                size_with_decimal = f"{numeric_size:.1f}"
+                if size_with_decimal not in sizes:
+                    sizes.append(size_with_decimal)
+            size_without_decimal = f"{numeric_size:g}"
+            if size_without_decimal not in sizes:
+                sizes.append(size_without_decimal)
+        except (TypeError, ValueError):
+            pass
+        sizes.append("no_size")
+
+    brands = [brand]
+    if brand_lower != brand:
+        brands.append(brand_lower)
+
+    variants = []
+    for variant_size in sizes:
+        for variant_brand in brands:
+            variant = f"{variant_brand}|{canonical}|{variant_size}"
+            if variant not in variants:
+                variants.append(variant)
     return variants
 
 

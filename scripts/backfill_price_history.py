@@ -1,143 +1,277 @@
 """
+Backfill cleaned daily price history from flyer_deals.
+
+This script is intentionally standalone: it uses only Python's standard library
+so it can run locally without installing the backend dependencies.
+
 Usage:
-    PYTHONPATH=. python scripts/backfill_price_history.py --dry-run
-    PYTHONPATH=. python scripts/backfill_price_history.py
+    python scripts/backfill_price_history.py --dry-run --days 7
+    python scripts/backfill_price_history.py --days 7
 """
+import argparse
+import json
 import logging
-import sys
+import os
+import re
 import time
-from datetime import datetime, timezone
-from scoring.product_normalizer import normalize_size_oz
-from services.price_history_service import upsert_price_history
-from config.supabase import get_supabase_client
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 SOURCE_TABLE = "flyer_deals"
-FETCH_BATCH  = 500
-MAX_RETRIES  = 2
-DRY_RUN      = "--dry-run" in sys.argv
-MAX_PRICE    = 999999.0  # sanity cap — skip bulk/case pricing and data errors
+TARGET_TABLE = "price_history"
+FETCH_BATCH = 1000
+WRITE_BATCH = 500
+MAX_RETRIES = 2
+MAX_PRICE = 999999.0
+MIN_REAL_SIZE_OZ = 1.5
+
+SIZE_IN_NAME_RE = re.compile(
+    r"(\d+(?:\.\d+)?)\s*(oz|fl\.?\s*oz|g|gram|lb|pound|ml|liter)\b",
+    re.IGNORECASE,
+)
 
 
-def fetch_batch(client, offset: int) -> list[dict]:
-    for attempt in range(MAX_RETRIES):
-        try:
-            res = (
-                client.table(SOURCE_TABLE)
-                .select("id, match_key, brand, canonical_product_name, product_price, base_amount, base_unit, store_id")
-                .not_.is_("match_key", "null")
-                .not_.is_("product_price", "null")
-                .range(offset, offset + FETCH_BATCH - 1)
-                .execute()
-            )
-            return res.data or []
-        except Exception as e:
-            logger.warning(f"Fetch failed at offset {offset} (attempt {attempt+1}): retrying in 2s")
-            time.sleep(2)
-    logger.error(f"Fetch permanently failed at offset {offset} — skipping")
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Backfill one daily best price row per match_key + store_id + date."
+    )
+    parser.add_argument("--dry-run", action="store_true", help="Count rows without writing to price_history")
+    parser.add_argument("--days", type=int, default=7, help="Only backfill flyer_deals from the last N days")
+    return parser.parse_args()
+
+
+def load_env_file() -> None:
+    env_path = Path(__file__).resolve().parents[1] / ".env"
+    if not env_path.exists():
+        return
+
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+def supabase_config() -> tuple[str, str]:
+    load_env_file()
+    url = (os.environ.get("SUPABASE_URL") or "").rstrip("/")
+    key = os.environ.get("SUPABASE_KEY") or ""
+    if not url or not key:
+        raise EnvironmentError("SUPABASE_URL and SUPABASE_KEY must be set in .env or environment variables.")
+    return url, key
+
+
+def request_json(
+    method: str,
+    path: str,
+    params: dict | None = None,
+    payload: object | None = None,
+) -> object:
+    base_url, key = supabase_config()
+    query = f"?{urlencode(params)}" if params else ""
+    url = f"{base_url}/rest/v1/{path}{query}"
+    data = None if payload is None else json.dumps(payload).encode("utf-8")
+    headers = {
+        "apikey": key,
+        "Authorization": f"Bearer {key}",
+        "Content-Type": "application/json",
+    }
+    if method == "POST" and path.startswith(TARGET_TABLE):
+        headers["Prefer"] = "resolution=merge-duplicates,return=minimal"
+
+    req = Request(url, data=data, headers=headers, method=method)
+    with urlopen(req, timeout=120) as res:
+        body = res.read()
+        if not body:
+            return None
+        return json.loads(body.decode("utf-8"))
+
+
+def to_oz(amount: float, unit: str) -> float | None:
+    u = unit.lower().replace(" ", "").replace(".", "")
+    if u in ("oz", "floz"):
+        return round(amount, 2)
+    if u in ("g", "gram"):
+        return round(amount * 0.035274, 2)
+    if u in ("lb", "pound"):
+        return round(amount * 16.0, 2)
+    if u == "ml":
+        return round(amount * 0.033814, 2)
+    if u in ("l", "liter"):
+        return round(amount * 33.814, 2)
     return None
 
 
+def normalize_size_oz(base_amount, base_unit, product_name: str) -> float | None:
+    db_oz = None
+    if base_amount is not None and base_unit:
+        try:
+            db_oz = to_oz(float(base_amount), str(base_unit))
+        except (TypeError, ValueError):
+            pass
+
+    name_candidates = []
+    for amt_str, unit in SIZE_IN_NAME_RE.findall(product_name or ""):
+        oz = to_oz(float(amt_str), unit)
+        if oz and oz >= MIN_REAL_SIZE_OZ:
+            name_candidates.append(oz)
+
+    name_oz = max(name_candidates) if name_candidates else None
+    if db_oz and db_oz >= MIN_REAL_SIZE_OZ:
+        return db_oz
+    if name_oz:
+        return name_oz
+    return db_oz
+
+
+def fetch_batch(offset: int, cutoff_iso: str) -> list[dict] | None:
+    params = {
+        "select": (
+            "id,match_key,brand,canonical_product_name,product_price,"
+            "base_amount,base_unit,store_id,date_added,created_at"
+        ),
+        "match_key": "not.is.null",
+        "store_id": "not.is.null",
+        "product_price": "not.is.null",
+        "or": f"(date_added.gte.{cutoff_iso},created_at.gte.{cutoff_iso})",
+        "offset": str(offset),
+        "limit": str(FETCH_BATCH),
+    }
+
+    for attempt in range(MAX_RETRIES):
+        try:
+            return request_json("GET", SOURCE_TABLE, params=params) or []
+        except Exception as e:
+            logger.warning(f"Fetch failed at offset {offset} (attempt {attempt + 1}): {e}; retrying in 2s")
+            time.sleep(2)
+    logger.error(f"Fetch permanently failed at offset {offset}; skipping")
+    return None
+
+
+def row_deal_date(row: dict) -> str | None:
+    raw = row.get("date_added") or row.get("created_at")
+    return str(raw)[:10] if raw else None
+
+
+def make_record(row: dict, price: float, deal_date: str, observed_at: str) -> dict:
+    canonical = row.get("canonical_product_name")
+    return {
+        "match_key": row.get("match_key"),
+        "store_id": row.get("store_id"),
+        "brand": row.get("brand"),
+        "canonical_product_name": canonical,
+        "size_oz": normalize_size_oz(row.get("base_amount"), row.get("base_unit"), canonical or ""),
+        "product_price": price,
+        "observed_at": observed_at,
+        "observed_date": deal_date,
+    }
+
+
+def upsert_price_history(rows: list[dict]) -> int:
+    written = 0
+    params = {"on_conflict": "match_key,store_id,observed_date"}
+    for i in range(0, len(rows), WRITE_BATCH):
+        batch = rows[i:i + WRITE_BATCH]
+        request_json("POST", TARGET_TABLE, params=params, payload=batch)
+        written += len(batch)
+        logger.info(f"Upserted {written:,}/{len(rows):,} price_history rows")
+    return written
+
+
+def cleanup_duplicates() -> None:
+    request_json("POST", "rpc/cleanup_price_history_dupes", payload={})
+
+
 def main():
-    client = get_supabase_client()
-    now    = datetime.now(timezone.utc).isoformat()
+    args = parse_args()
+    now = datetime.now(timezone.utc)
+    observed_at = now.isoformat()
+    cutoff = (now.date() - timedelta(days=args.days - 1)).isoformat()
 
-    offset        = 0
+    offset = 0
     total_fetched = 0
-    total_written = 0
     total_skipped = 0
+    grouped: dict[tuple, dict] = {}
 
-    logger.info(f"Starting {'DRY RUN ' if DRY_RUN else ''}price_history backfill from {SOURCE_TABLE}...")
+    logger.info(
+        f"Starting {'DRY RUN ' if args.dry_run else ''}price_history backfill from {SOURCE_TABLE} "
+        f"for rows since {cutoff}"
+    )
 
     while True:
-        batch = fetch_batch(client, offset)
+        batch = fetch_batch(offset, cutoff)
 
         if batch is None:
             offset += FETCH_BATCH
             continue
-
         if not batch:
             break
 
         total_fetched += len(batch)
 
-        # Build price_history rows
-        to_write = []
-        seen     = {}
         for row in batch:
             match_key = row.get("match_key")
-            brand     = row.get("brand")
-            canonical = row.get("canonical_product_name")
-            size_oz   = normalize_size_oz(row.get("base_amount"), row.get("base_unit"), canonical or "")
+            store_id = row.get("store_id")
+            deal_date = row_deal_date(row)
 
-            if not match_key:
+            if not match_key or store_id is None or not deal_date:
+                total_skipped += 1
+                continue
+            if deal_date < cutoff:
                 total_skipped += 1
                 continue
 
-            # Price sanity check
-            price = float(row.get("product_price") or 0)
+            try:
+                price = float(row.get("product_price") or 0)
+            except (TypeError, ValueError):
+                total_skipped += 1
+                continue
+
             if price <= 0 or price > MAX_PRICE:
-                logger.debug(f"Skipping bad price ${price} for {canonical}")
                 total_skipped += 1
                 continue
 
-            record = {
-                "match_key":              match_key,
-                "store_id":               row.get("store_id"),
-                "brand":                  brand,
-                "canonical_product_name": canonical,
-                "size_oz":                size_oz,
-                "product_price":          price,
-                "observed_at":            now,
-                "observed_date":          datetime.now(timezone.utc).date().isoformat(),
-            }
+            group_key = (match_key, store_id, deal_date)
+            existing = grouped.get(group_key)
 
-            # Deduplicate within batch
-            dedup_key = (match_key, row.get("store_id"))
-            seen[dedup_key] = record
-
-        to_write = list(seen.values())
-
-        if not to_write:
-            offset += FETCH_BATCH
-            continue
-
-        if DRY_RUN:
-            total_written += len(to_write)
-        else:
-            for attempt in range(MAX_RETRIES):
-                try:
-                    written = upsert_price_history(to_write)
-                    total_written += written
-                    break
-                except Exception as e:
-                    logger.warning(f"Write failed at offset {offset} (attempt {attempt+1}): retrying in 2s")
-                    time.sleep(2)
-                    if attempt == MAX_RETRIES - 1:
-                        logger.error(f"Write permanently failed at offset {offset} — skipping {len(to_write)} rows")
-                        total_skipped += len(to_write)
+            if not existing or price < existing["product_price"]:
+                grouped[group_key] = make_record(row, price, deal_date, observed_at)
 
         offset += FETCH_BATCH
 
         if total_fetched % 10000 == 0:
-            logger.info(f"Progress: {total_fetched:,} fetched | {total_written:,} written | {total_skipped:,} skipped")
+            logger.info(
+                f"Progress: {total_fetched:,} fetched | {len(grouped):,} grouped | {total_skipped:,} skipped"
+            )
 
-    # Cleanup duplicates
-    if not DRY_RUN:
+    rows_to_write = list(grouped.values())
+    total_written = 0
+
+    if args.dry_run:
+        total_written = len(rows_to_write)
+    elif rows_to_write:
+        total_written = upsert_price_history(rows_to_write)
+
+    if not args.dry_run:
         logger.info("Running duplicate cleanup...")
         try:
-            client.rpc("cleanup_price_history_dupes", {}).execute()
+            cleanup_duplicates()
             logger.info("Duplicate cleanup complete.")
         except Exception as e:
             logger.warning(f"Cleanup step failed (non-critical): {e}")
 
-    print(f"\nDone.")
+    print("\nDone.")
     print(f"  Fetched:  {total_fetched:,}")
+    print(f"  Grouped:  {len(grouped):,}")
     print(f"  Written:  {total_written:,}")
     print(f"  Skipped:  {total_skipped:,}")
-    if DRY_RUN:
+    if args.dry_run:
         print("\n[DRY RUN] Nothing was written.")
 
 
