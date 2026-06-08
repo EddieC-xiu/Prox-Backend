@@ -7,6 +7,7 @@ so it can run locally without installing the backend dependencies.
 Usage:
     python scripts/backfill_price_history.py --dry-run --days 7
     python scripts/backfill_price_history.py --days 7
+    python scripts/backfill_price_history.py --date-field processed_at --from-date 2026-06-07 --to-date 2026-06-08
 """
 import argparse
 import json
@@ -42,6 +43,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dry-run", action="store_true", help="Count rows without writing to price_history")
     parser.add_argument("--days", type=int, default=7, help="Only backfill flyer_deals from the last N days")
+    parser.add_argument("--from-date", help="Start date, YYYY-MM-DD. Overrides --days when provided.")
+    parser.add_argument("--to-date", help="End date, YYYY-MM-DD inclusive. Defaults to today.")
+    parser.add_argument(
+        "--date-field",
+        choices=("deal_date", "processed_at"),
+        default="deal_date",
+        help="Use deal_date for date_added/created_at, or processed_at for pipeline-ready rows.",
+    )
     return parser.parse_args()
 
 
@@ -70,7 +79,7 @@ def supabase_config() -> tuple[str, str]:
 def request_json(
     method: str,
     path: str,
-    params: dict | None = None,
+    params: dict | list[tuple[str, str]] | None = None,
     payload: object | None = None,
 ) -> object:
     base_url, key = supabase_config()
@@ -130,32 +139,49 @@ def normalize_size_oz(base_amount, base_unit, product_name: str) -> float | None
     return db_oz
 
 
-def fetch_batch(offset: int, cutoff_iso: str) -> list[dict] | None:
-    params = {
-        "select": (
+def fetch_batch(
+    last_seen_id: int,
+    start_iso: str,
+    end_exclusive_iso: str,
+    date_field: str,
+) -> list[dict] | None:
+    params: list[tuple[str, str]] = [
+        ("select", (
             "id,match_key,brand,canonical_product_name,product_price,"
-            "base_amount,base_unit,store_id,date_added,created_at"
-        ),
-        "match_key": "not.is.null",
-        "store_id": "not.is.null",
-        "product_price": "not.is.null",
-        "or": f"(date_added.gte.{cutoff_iso},created_at.gte.{cutoff_iso})",
-        "offset": str(offset),
-        "limit": str(FETCH_BATCH),
-    }
+            "base_amount,base_unit,store_id,date_added,created_at,processed_at"
+        )),
+        ("match_key", "not.is.null"),
+        ("store_id", "not.is.null"),
+        ("product_price", "not.is.null"),
+        ("id", f"gt.{last_seen_id}"),
+        ("order", "processed_at.asc,id.asc" if date_field == "processed_at" else "date_added.asc,id.asc"),
+        ("limit", str(FETCH_BATCH)),
+    ]
+
+    if date_field == "processed_at":
+        params.extend([
+            ("processed_at", f"gte.{start_iso}T00:00:00+00:00"),
+            ("processed_at", f"lt.{end_exclusive_iso}T00:00:00+00:00"),
+        ])
+    else:
+        end_inclusive_iso = (datetime.fromisoformat(end_exclusive_iso).date() - timedelta(days=1)).isoformat()
+        params.extend([
+            ("date_added", f"gte.{start_iso}"),
+            ("date_added", f"lte.{end_inclusive_iso}"),
+        ])
 
     for attempt in range(MAX_RETRIES):
         try:
             return request_json("GET", SOURCE_TABLE, params=params) or []
         except Exception as e:
-            logger.warning(f"Fetch failed at offset {offset} (attempt {attempt + 1}): {e}; retrying in 2s")
+            logger.warning(f"Fetch failed after id {last_seen_id} (attempt {attempt + 1}): {e}; retrying in 2s")
             time.sleep(2)
-    logger.error(f"Fetch permanently failed at offset {offset}; skipping")
+    logger.error(f"Fetch permanently failed after id {last_seen_id}; stopping")
     return None
 
 
-def row_deal_date(row: dict) -> str | None:
-    raw = row.get("date_added") or row.get("created_at")
+def row_deal_date(row: dict, date_field: str) -> str | None:
+    raw = row.get("processed_at") if date_field == "processed_at" else row.get("date_added") or row.get("created_at")
     return str(raw)[:10] if raw else None
 
 
@@ -178,9 +204,22 @@ def upsert_price_history(rows: list[dict]) -> int:
     params = {"on_conflict": "match_key,store_id,observed_date"}
     for i in range(0, len(rows), WRITE_BATCH):
         batch = rows[i:i + WRITE_BATCH]
-        request_json("POST", TARGET_TABLE, params=params, payload=batch)
-        written += len(batch)
-        logger.info(f"Upserted {written:,}/{len(rows):,} price_history rows")
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                request_json("POST", TARGET_TABLE, params=params, payload=batch)
+                written += len(batch)
+                logger.info(f"Upserted {written:,}/{len(rows):,} price_history rows")
+                break
+            except Exception as e:
+                if attempt >= MAX_RETRIES:
+                    logger.error(f"Write permanently failed for rows {i}-{i + len(batch) - 1}: {e}")
+                    raise
+                wait = 2 * (attempt + 1)
+                logger.warning(
+                    f"Write failed for rows {i}-{i + len(batch) - 1} "
+                    f"(attempt {attempt + 1}): {e}; retrying in {wait}s"
+                )
+                time.sleep(wait)
     return written
 
 
@@ -192,38 +231,40 @@ def main():
     args = parse_args()
     now = datetime.now(timezone.utc)
     observed_at = now.isoformat()
-    cutoff = (now.date() - timedelta(days=args.days - 1)).isoformat()
+    start_date = args.from_date or (now.date() - timedelta(days=args.days - 1)).isoformat()
+    end_date = args.to_date or now.date().isoformat()
+    end_exclusive = (datetime.fromisoformat(end_date).date() + timedelta(days=1)).isoformat()
 
-    offset = 0
+    last_seen_id = 0
     total_fetched = 0
     total_skipped = 0
     grouped: dict[tuple, dict] = {}
 
     logger.info(
         f"Starting {'DRY RUN ' if args.dry_run else ''}price_history backfill from {SOURCE_TABLE} "
-        f"for rows since {cutoff}"
+        f"using {args.date_field} from {start_date} through {end_date}"
     )
 
     while True:
-        batch = fetch_batch(offset, cutoff)
+        batch = fetch_batch(last_seen_id, start_date, end_exclusive, args.date_field)
 
         if batch is None:
-            offset += FETCH_BATCH
-            continue
+            break
         if not batch:
             break
 
         total_fetched += len(batch)
+        last_seen_id = max(int(row["id"]) for row in batch if row.get("id") is not None)
 
         for row in batch:
             match_key = row.get("match_key")
             store_id = row.get("store_id")
-            deal_date = row_deal_date(row)
+            deal_date = row_deal_date(row, args.date_field)
 
             if not match_key or store_id is None or not deal_date:
                 total_skipped += 1
                 continue
-            if deal_date < cutoff:
+            if deal_date < start_date or deal_date > end_date:
                 total_skipped += 1
                 continue
 
@@ -243,11 +284,10 @@ def main():
             if not existing or price < existing["product_price"]:
                 grouped[group_key] = make_record(row, price, deal_date, observed_at)
 
-        offset += FETCH_BATCH
-
         if total_fetched % 10000 == 0:
             logger.info(
-                f"Progress: {total_fetched:,} fetched | {len(grouped):,} grouped | {total_skipped:,} skipped"
+                f"Progress: {total_fetched:,} fetched | {len(grouped):,} grouped | "
+                f"{total_skipped:,} skipped | last_id={last_seen_id}"
             )
 
     rows_to_write = list(grouped.values())
