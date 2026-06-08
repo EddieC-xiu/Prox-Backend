@@ -15,6 +15,7 @@ import re
 import statistics
 from collections import defaultdict
 from datetime import date, datetime, timedelta
+import pgeocode
 from config.supabase import get_supabase_client
 from scoring.product_normalizer import build_canonical_name
 
@@ -217,6 +218,36 @@ def _filter_rows_by_date(
     return filtered
 
 
+def _filter_rows_by_brand(rows: list[dict], brand: str | None = None) -> list[dict]:
+    if not brand:
+        return rows
+    target = brand.strip().lower()
+    return [
+        row for row in rows
+        if (row.get("brand") or "").strip().lower() == target
+    ]
+
+
+def _apply_date_query(q, date_window: str | None = None, date_from: str | None = None, date_to: str | None = None):
+    start, end = _date_bounds(date_window, date_from, date_to)
+    if start:
+        q = q.gte("date_added", start.isoformat())
+    if end:
+        q = q.lte("date_added", end.isoformat())
+    return q
+
+
+def _finalize_compare_rows(
+    rows: list[dict],
+    brand: str | None = None,
+    date_window: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
+) -> list[dict]:
+    rows = _filter_rows_by_brand(rows, brand)
+    return _filter_rows_by_date(rows, date_window, date_from, date_to)
+
+
 def describe_date_filter(
     date_window: str | None = None,
     date_from: str | None = None,
@@ -274,14 +305,43 @@ def _haversine_miles(lat1, lon1, lat2, lon2):
     return R * 2 * math.asin(math.sqrt(a))
 
 
-def _get_user_latlon(zip_code: str) -> tuple[float, float] | None:
+_ZIP_NOMI = pgeocode.Nominatim("us")
+_ZIP_LATLON_CACHE: dict[str, tuple[float, float] | None] = {}
+
+
+def _get_zip_latlon(zip_code: str) -> tuple[float, float] | None:
+    zip_key = (zip_code or "").strip()
+    if not zip_key:
+        return None
+    if zip_key in _ZIP_LATLON_CACHE:
+        return _ZIP_LATLON_CACHE[zip_key]
+
     try:
-        res = sb.table("zip_centroids").select("latitude, longitude").eq("zip_code", zip_code).limit(1).execute()
-        if res.data:
-            return float(res.data[0]["latitude"]), float(res.data[0]["longitude"])
+        res = _ZIP_NOMI.query_postal_code(zip_key)
+        lat = float(res.latitude)
+        lng = float(res.longitude)
+        if not math.isnan(lat) and not math.isnan(lng):
+            latlon = (lat, lng)
+            _ZIP_LATLON_CACHE[zip_key] = latlon
+            return latlon
     except Exception:
         pass
+
+    try:
+        res = sb.table("zip_centroids").select("latitude, longitude").eq("zip_code", zip_key).limit(1).execute()
+        if res.data:
+            latlon = (float(res.data[0]["latitude"]), float(res.data[0]["longitude"]))
+            _ZIP_LATLON_CACHE[zip_key] = latlon
+            return latlon
+    except Exception:
+        pass
+
+    _ZIP_LATLON_CACHE[zip_key] = None
     return None
+
+
+def _get_user_latlon(zip_code: str) -> tuple[float, float] | None:
+    return _get_zip_latlon(zip_code)
 
 
 def _load_store_locations() -> dict:
@@ -567,19 +627,19 @@ def _build_result(
     radius_miles: float | None = None,
     selected_size: str | None = None,
 ) -> dict:
-    store_locations = _get_store_locations() if user_lat is not None else {}
+    store_locations = {}
 
     # Step 1: Location filter
     location_filtered = []
     for row in rows:
-        zip_code     = (row.get("zip_code") or "").strip()
-        retailer_raw = row.get("retailer") or ""
         if user_lat is not None and radius_miles is not None:
-            store_latlon = _get_store_info(retailer_raw, zip_code, store_locations, user_lat=user_lat, user_lng=user_lon)
-            if store_latlon:
-                dist = _haversine_miles(user_lat, user_lon, store_latlon["lat"], store_latlon["lng"])
-                if dist > radius_miles:
-                    continue
+            row_zip = (row.get("zip_code") or "").strip()
+            row_latlon = _get_zip_latlon(row_zip)
+            if not row_latlon:
+                continue
+            dist = _haversine_miles(user_lat, user_lon, row_latlon[0], row_latlon[1])
+            if dist > radius_miles:
+                continue
         location_filtered.append(row)
 
     if not location_filtered:
@@ -816,11 +876,12 @@ def compare_product_across_retailers(
             .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit, date_added, created_at")
             .eq("canonical_product_name", name)
             .not_.is_("product_price", "null")
+            .order("date_added", desc=True)
+            .order("id", desc=True)
             .limit(limit)
         )
-        if brand:
-            q = q.ilike("brand", brand)
-        return _filter_rows_by_date(q.execute().data or [], date_window, date_from, date_to)
+        q = _apply_date_query(q, date_window, date_from, date_to)
+        return _finalize_compare_rows(q.execute().data or [], brand, date_window, date_from, date_to)
 
     rows = _fetch_exact(canonical_product_name)
 
@@ -837,11 +898,12 @@ def compare_product_across_retailers(
             .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit, date_added, created_at")
             .ilike("canonical_product_name", f"%{canonical_product_name}%")
             .not_.is_("product_price", "null")
+            .order("date_added", desc=True)
+            .order("id", desc=True)
             .limit(500)
         )
-        if brand:
-            q = q.ilike("brand", brand)
-        fuzzy_rows = _filter_rows_by_date(q.execute().data or [], date_window, date_from, date_to)
+        q = _apply_date_query(q, date_window, date_from, date_to)
+        fuzzy_rows = _finalize_compare_rows(q.execute().data or [], brand, date_window, date_from, date_to)
 
         if fuzzy_rows:
             groups: dict[str, list] = defaultdict(list)
@@ -873,11 +935,12 @@ def compare_product_across_retailers(
                 .select("retailer, product_price, zip_code, store_id, canonical_product_name, brand, base_amount, base_unit, date_added, created_at")
                 .ilike("canonical_product_name", f"%{shorter}%")
                 .not_.is_("product_price", "null")
+                .order("date_added", desc=True)
+                .order("id", desc=True)
                 .limit(200)
             )
-            if brand:
-                q = q.ilike("brand", brand)
-            shorter_rows = _filter_rows_by_date(q.execute().data or [], date_window, date_from, date_to)
+            q = _apply_date_query(q, date_window, date_from, date_to)
+            shorter_rows = _finalize_compare_rows(q.execute().data or [], brand, date_window, date_from, date_to)
             if shorter_rows:
                 rows = shorter_rows
                 canonical_product_name = shorter
@@ -898,7 +961,7 @@ def compare_product_across_retailers(
     # Pass user coords so _get_store_info can still find the nearest store for
     # map pins — but omit radius_miles so no rows are filtered out.
     local_count = len(result.get("retailers", []))
-    if zip_code and local_count < 3:
+    if False and zip_code and local_count < 3:
         national = _build_result(
             canonical_product_name, brand, rows,
             user_lat=user_lat, user_lon=user_lon,
@@ -933,18 +996,20 @@ def search_products(
         if latlon:
             user_lat, user_lon = latlon
 
-    store_locations = _get_store_locations() if user_lat is not None else {}
+    store_locations = {}
 
-    rows = (
+    q = (
         sb.table("flyer_deals")
         .select("canonical_product_name, brand, product_price, retailer, zip_code, match_key, image_link, date_added, created_at")
         .ilike("canonical_product_name", f"%{query}%")
         .not_.is_("product_price", "null")
         .not_.is_("canonical_product_name", "null")
+        .order("date_added", desc=True)
+        .order("id", desc=True)
         .limit(500)
-        .execute()
-        .data or []
     )
+    q = _apply_date_query(q, date_window, date_from, date_to)
+    rows = q.execute().data or []
     rows = _filter_rows_by_date(rows, date_window, date_from, date_to)
 
     seen: dict[tuple, dict] = {}
@@ -958,11 +1023,12 @@ def search_products(
             continue
 
         if user_lat is not None:
-            store_info = _get_store_info(retailer_raw, row_zip, store_locations, user_lat=user_lat, user_lng=user_lon)
-            if store_info:
-                dist = _haversine_miles(user_lat, user_lon, store_info["lat"], store_info["lng"])
-                if dist > radius_miles:
-                    continue
+            row_latlon = _get_zip_latlon(row_zip)
+            if not row_latlon:
+                continue
+            dist = _haversine_miles(user_lat, user_lon, row_latlon[0], row_latlon[1])
+            if dist > radius_miles:
+                continue
 
         brand     = (row.get("brand") or "").strip() or None
         brand_key = (brand or "").lower()
