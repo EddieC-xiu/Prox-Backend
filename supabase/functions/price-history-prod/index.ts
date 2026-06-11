@@ -7,8 +7,6 @@ type FlyerDealRow = {
   base_amount: number | string | null;
   base_unit: string | null;
   store_id: number | string | null;
-  date_added: string | null;
-  created_at: string | null;
   processed_at: string | null;
 };
 
@@ -28,15 +26,10 @@ type UpsertResult = {
   batches: number;
 };
 
-type SyncRpcRow = {
-  synced_date: string;
-  rows_written: number | string;
-};
-
-const SOURCE_TABLE = "flyer_deals";
 const TARGET_TABLE = "price_history";
-const FETCH_BATCH = 1000;
 const WRITE_BATCH = 2000;
+const DEFAULT_BATCH_SIZE = 1000;
+const MAX_BATCH_SIZE = 10000;
 const MAX_RETRIES = 3;
 const MAX_PRICE = 999999;
 const MIN_REAL_SIZE_OZ = 1.5;
@@ -48,30 +41,41 @@ Deno.serve(async (req) => {
 
   try {
     const body = await readJson(req);
-    const targetDate = normalizeTargetDate(body?.target_date) ?? yesterdayUtc();
     const dryRun = body?.dry_run === true;
+    const batchSize = normalizeBatchSize(body?.batch_size);
 
     if (dryRun) {
       return jsonResponse({
         ok: true,
         dry_run: true,
-        target_date: targetDate,
-        note: "Dry run is not available in RPC mode. Run without dry_run to sync idempotently.",
+        batch_size: batchSize,
+        note: "Dry run is a no-op because claiming rows mutates flyer_deals.",
         duration_ms: Date.now() - startedAt.getTime(),
       });
     }
 
-    const result = await syncPriceHistoryForDate(targetDate);
+    const claimedRows = await claimPriceHistoryRows(batchSize);
+    const claimedIds = claimedRows.map((row) => row.id);
+    const observedAt = new Date().toISOString();
+    const historyRows = buildPriceHistoryRows(claimedRows, observedAt);
+    const upsert = await upsertPriceHistory(historyRows);
+    const markedProcessed = claimedIds.length
+      ? await markPriceHistoryRowsProcessed(claimedIds)
+      : 0;
 
     return jsonResponse({
       ok: true,
       dry_run: false,
-      target_date: result.synced_date || targetDate,
-      rows_written: Number(result.rows_written ?? 0),
+      batch_size: batchSize,
+      rows_claimed: claimedRows.length,
+      rows_grouped: historyRows.length,
+      rows_written: upsert.written,
+      write_batches: upsert.batches,
+      rows_marked_processed: markedProcessed,
       duration_ms: Date.now() - startedAt.getTime(),
     });
   } catch (error) {
-    console.error("sync-price-history failed", error);
+    console.error("price-history-prod failed", error);
     return jsonResponse(
       {
         ok: false,
@@ -86,7 +90,7 @@ async function readJson(req: Request): Promise<Record<string, unknown>> {
   if (req.method === "GET") {
     const url = new URL(req.url);
     return {
-      target_date: url.searchParams.get("target_date") ?? undefined,
+      batch_size: url.searchParams.get("batch_size") ?? undefined,
       dry_run: url.searchParams.get("dry_run") === "true",
     };
   }
@@ -98,24 +102,12 @@ async function readJson(req: Request): Promise<Record<string, unknown>> {
   }
 }
 
-function normalizeTargetDate(value: unknown): string | null {
-  if (typeof value !== "string" || !value.trim()) {
-    return null;
+function normalizeBatchSize(value: unknown): number {
+  const parsed = Number(value ?? DEFAULT_BATCH_SIZE);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_BATCH_SIZE;
   }
-  const match = value.trim().match(/^(\d{4}-\d{2}-\d{2})/);
-  return match ? match[1] : null;
-}
-
-function yesterdayUtc(): string {
-  const d = new Date();
-  d.setUTCDate(d.getUTCDate() - 1);
-  return d.toISOString().slice(0, 10);
-}
-
-function nextDate(date: string): string {
-  const d = new Date(`${date}T00:00:00.000Z`);
-  d.setUTCDate(d.getUTCDate() + 1);
-  return d.toISOString().slice(0, 10);
+  return Math.min(Math.trunc(parsed), MAX_BATCH_SIZE);
 }
 
 function supabaseConfig(): { url: string; key: string } {
@@ -141,114 +133,55 @@ function baseHeaders(extra?: HeadersInit): HeadersInit {
   };
 }
 
-async function syncPriceHistoryForDate(targetDate: string): Promise<SyncRpcRow> {
+async function claimPriceHistoryRows(batchSize: number): Promise<FlyerDealRow[]> {
   const { url } = supabaseConfig();
   const res = await retry(async () => {
-    const response = await fetch(`${url}/rest/v1/rpc/sync_price_history_for_date`, {
+    const response = await fetch(`${url}/rest/v1/rpc/claim_price_history_rows`, {
       method: "POST",
       headers: baseHeaders({
         Prefer: "return=representation",
       }),
       body: JSON.stringify({
-        p_target_date: targetDate,
+        p_batch_size: batchSize,
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`rpc sync failed: ${response.status} ${await response.text()}`);
+      throw new Error(`claim rpc failed: ${response.status} ${await response.text()}`);
     }
 
     return response;
-  }, `sync_price_history_for_date ${targetDate}`);
+  }, `claim_price_history_rows batch_size=${batchSize}`);
 
   const data = await res.json();
-  if (Array.isArray(data) && data.length > 0) {
-    return data[0] as SyncRpcRow;
+  if (!Array.isArray(data)) {
+    throw new Error(`claim rpc returned unexpected response: ${JSON.stringify(data)}`);
   }
-  if (data && typeof data === "object") {
-    return data as SyncRpcRow;
-  }
-  throw new Error(`rpc sync returned unexpected response: ${JSON.stringify(data)}`);
+  return data as FlyerDealRow[];
 }
 
-async function fetchAllRows(targetDate: string): Promise<FlyerDealRow[]> {
-  const rows: FlyerDealRow[] = [];
-  let lastSeenId = 0;
+function buildPriceHistoryRows(rows: FlyerDealRow[], observedAt: string): PriceHistoryRow[] {
+  const grouped = new Map<string, PriceHistoryRow>();
 
-  while (true) {
-    const batch = await retry(
-      () => fetchRowsPage(targetDate, lastSeenId),
-      `fetch processed_at after id ${lastSeenId}`,
-    );
+  for (const row of rows) {
+    const record = makePriceHistoryRecord(row, observedAt);
+    if (!record) continue;
 
-    rows.push(...batch);
-
-    if (batch.length > 0) {
-      lastSeenId = Math.max(...batch.map((row) => row.id));
-      console.info(
-        `fetched ${rows.length} flyer_deals rows for ${targetDate}; last_seen_id=${lastSeenId}`,
-      );
-    }
-
-    if (batch.length < FETCH_BATCH) {
-      break;
+    const key = `${record.match_key}\u0000${record.store_id}\u0000${record.observed_date}`;
+    const existing = grouped.get(key);
+    if (!existing || record.product_price < existing.product_price) {
+      grouped.set(key, record);
     }
   }
 
-  return rows;
-}
-
-async function fetchRowsPage(
-  targetDate: string,
-  lastSeenId: number,
-): Promise<FlyerDealRow[]> {
-  const { url } = supabaseConfig();
-  const params = new URLSearchParams({
-    select: [
-      "id",
-      "match_key",
-      "brand",
-      "canonical_product_name",
-      "product_price",
-      "base_amount",
-      "base_unit",
-      "store_id",
-      "date_added",
-      "created_at",
-      "processed_at",
-    ].join(","),
-    match_key: "not.is.null",
-    store_id: "not.is.null",
-    product_price: "gt.0",
-    processed_at: `gte.${targetDate}T00:00:00+00:00`,
-    id: `gt.${lastSeenId}`,
-    limit: String(FETCH_BATCH),
-    order: "id.asc",
-  });
-  params.append("processed_at", `lt.${nextDate(targetDate)}T00:00:00+00:00`);
-
-  const res = await fetch(`${url}/rest/v1/${SOURCE_TABLE}?${params}`, {
-    headers: baseHeaders(),
-  });
-
-  if (!res.ok) {
-    throw new Error(`fetch failed: ${res.status} ${await res.text()}`);
-  }
-
-  return await res.json();
+  return [...grouped.values()];
 }
 
 function makePriceHistoryRecord(
   row: FlyerDealRow,
-  targetDate: string,
   observedAt: string,
 ): PriceHistoryRow | null {
-  if (!row.match_key || row.store_id === null || row.store_id === undefined) {
-    return null;
-  }
-
-  const observedDate = (row.processed_at ?? "").slice(0, 10);
-  if (observedDate !== targetDate) {
+  if (!row.match_key || row.store_id === null || row.store_id === undefined || !row.processed_at) {
     return null;
   }
 
@@ -265,7 +198,7 @@ function makePriceHistoryRecord(
     size_oz: normalizeSizeOz(row.base_amount, row.base_unit, row.canonical_product_name ?? ""),
     product_price: price,
     observed_at: observedAt,
-    observed_date: observedDate,
+    observed_date: row.processed_at.slice(0, 10),
   };
 }
 
@@ -345,6 +278,28 @@ async function upsertPriceHistory(rows: PriceHistoryRow[]): Promise<UpsertResult
   }
 
   return { written, batches };
+}
+
+async function markPriceHistoryRowsProcessed(ids: number[]): Promise<number> {
+  const { url } = supabaseConfig();
+  const res = await retry(async () => {
+    const response = await fetch(`${url}/rest/v1/rpc/mark_price_history_rows_processed`, {
+      method: "POST",
+      headers: baseHeaders(),
+      body: JSON.stringify({
+        p_ids: ids,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`mark processed rpc failed: ${response.status} ${await response.text()}`);
+    }
+
+    return response;
+  }, `mark_price_history_rows_processed count=${ids.length}`);
+
+  const data = await res.json();
+  return Number(data ?? 0);
 }
 
 async function retry<T>(fn: () => Promise<T>, label: string): Promise<T> {
