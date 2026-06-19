@@ -1,4 +1,8 @@
 .env
+.env.bak
+.DS_Store
 venv/
 __pycache__/
 .claude/
+.kroger_tokens.json
+.kroger_tokens.json.tmp
